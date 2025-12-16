@@ -37,6 +37,7 @@
     initializeDateRangeSelector()
     initializeAllCharts()
     setupExportButtons()
+    initializeSearch()
   })
 
   // ========================================
@@ -525,6 +526,73 @@
       info: 'info-circle-fill',
     }
     return icons[type] || icons.info
+  }
+
+  // ========================================
+  // SEARCH FUNCTIONALITY
+  // ========================================
+
+  function initializeSearch() {
+    const searchInput = document.getElementById('subscription-search-reports')
+    if (!searchInput) return
+
+    let searchTimeout
+
+    searchInput.addEventListener('input', function (e) {
+      const searchTerm = e.target.value.toLowerCase().trim()
+
+      // Debounce search for better performance
+      clearTimeout(searchTimeout)
+      searchTimeout = setTimeout(() => {
+        filterSubscriptions(searchTerm)
+      }, 300)
+    })
+
+    // Add clear button functionality
+    searchInput.addEventListener('search', function (e) {
+      if (e.target.value === '') {
+        filterSubscriptions('')
+      }
+    })
+  }
+
+  function filterSubscriptions(searchTerm) {
+    const table = document.querySelector('.subscription-table tbody')
+    if (!table) return
+
+    const rows = table.querySelectorAll('tr')
+    let visibleCount = 0
+
+    rows.forEach((row) => {
+      const text = row.textContent.toLowerCase()
+      const isMatch = text.includes(searchTerm)
+
+      if (isMatch) {
+        row.style.display = ''
+        visibleCount++
+      } else {
+        row.style.display = 'none'
+      }
+    })
+
+    // Update footer count
+    updateTableFooter(visibleCount, rows.length)
+
+    // Announce to screen readers
+    if (window.A11y && window.A11y.announceToScreenReader) {
+      const message =
+        visibleCount === 0
+          ? 'No subscriptions found'
+          : `Showing ${visibleCount} of ${rows.length} subscriptions`
+      window.A11y.announceToScreenReader(message, 'polite')
+    }
+  }
+
+  function updateTableFooter(visibleCount, totalCount) {
+    const footerText = document.querySelector('.table-card-footer span')
+    if (footerText) {
+      footerText.textContent = `Showing ${visibleCount} of ${totalCount} subscriptions`
+    }
   }
 
   // Add notification content styles

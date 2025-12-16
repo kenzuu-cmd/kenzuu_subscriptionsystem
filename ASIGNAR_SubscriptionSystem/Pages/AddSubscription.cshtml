@@ -122,7 +122,7 @@
         }
 
         .form-group-modern {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem; /* Increased from 1.5rem for better breathing room */
         }
 
         .form-label-modern {
@@ -627,7 +627,7 @@
                     </div>
 
                     <div class="form-body">
-                        <form method="post" id="subscription-form" novalidate aria-label="Add subscription form">
+                        <form method="post" id="subscription-form" data-validate="true" novalidate aria-label="Add subscription form">
                             
                             <!-- Service Name -->
                             <div class="form-group-modern">
@@ -650,17 +650,9 @@
                                            minlength="2"
                                            maxlength="50"
                                            autofocus
-                                           aria-required="true"
-                                           aria-describedby="service-name-error service-name-success" />
+                                           aria-required="true" />
                                 </div>
-                                <div class="feedback-message error" id="service-name-error" role="alert">
-                                    <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
-                                    <span>Please enter a valid service name (2-50 characters)</span>
-                                </div>
-                                <div class="feedback-message success" id="service-name-success" role="status">
-                                    <i class="bi bi-check-circle" aria-hidden="true"></i>
-                                    <span>Looks good!</span>
-                                </div>
+                                <!-- Feedback container will be dynamically inserted here by JS -->
                             </div>
 
                             <div class="row g-3">
@@ -683,7 +675,6 @@
                                                    max="999999" 
                                                    required
                                                    aria-required="true"
-                                                   aria-describedby="price-hint price-error"
                                                    aria-label="Price in Philippine Peso" />
                                             <!-- Custom Number Controls -->
                                             <div class="number-controls">
@@ -707,10 +698,7 @@
                                             <i class="bi bi-info-circle" aria-hidden="true"></i>
                                             <span>Enter amount in Philippine Peso (PHP)</span>
                                         </div>
-                                        <div class="feedback-message error" id="price-error" role="alert">
-                                            <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
-                                            <span>Please enter a valid amount (₱1 - ₱999,999)</span>
-                                        </div>
+                                        <!-- Feedback container will be dynamically inserted here by JS -->
                                     </div>
                                 </div>
 
@@ -727,8 +715,7 @@
                                                     class="form-select-modern" 
                                                     id="cycle-input"
                                                     required
-                                                    aria-required="true"
-                                                    aria-describedby="cycle-error">
+                                                    aria-required="true">
                                                 <option value="">Choose frequency...</option>
                                                 <option value="Daily">Daily</option>
                                                 <option value="Weekly">Weekly</option>
@@ -737,10 +724,7 @@
                                                 <option value="Yearly">Yearly</option>
                                             </select>
                                         </div>
-                                        <div class="feedback-message error" id="cycle-error" role="alert">
-                                            <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
-                                            <span>Please select a billing cycle</span>
-                                        </div>
+                                        <!-- Feedback container will be dynamically inserted here by JS -->
                                     </div>
                                 </div>
                             </div>
@@ -759,8 +743,7 @@
                                                     class="form-select-modern" 
                                                     id="category-input"
                                                     required
-                                                    aria-required="true"
-                                                    aria-describedby="category-error">
+                                                    aria-required="true">
                                                 <option value="">Select category...</option>
                                                 <option value="Entertainment">Entertainment</option>
                                                 <option value="Software">Software</option>
@@ -774,10 +757,7 @@
                                                 <option value="Other">Other</option>
                                             </select>
                                         </div>
-                                        <div class="feedback-message error" id="category-error" role="alert">
-                                            <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
-                                            <span>Please select a category</span>
-                                        </div>
+                                        <!-- Feedback container will be dynamically inserted here by JS -->
                                     </div>
                                 </div>
 
@@ -795,17 +775,13 @@
                                                    class="form-control-modern" 
                                                    id="date-input"
                                                    required
-                                                   aria-required="true"
-                                                   aria-describedby="date-hint date-error" />
+                                                   aria-required="true" />
                                         </div>
                                         <div class="input-hint" id="date-hint">
                                             <i class="bi bi-info-circle" aria-hidden="true"></i>
                                             <span>When is your next payment due?</span>
                                         </div>
-                                        <div class="feedback-message error" id="date-error" role="alert">
-                                            <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
-                                            <span>Please select a valid future date</span>
-                                        </div>
+                                        <!-- Feedback container will be dynamically inserted here by JS -->
                                     </div>
                                 </div>
                             </div>

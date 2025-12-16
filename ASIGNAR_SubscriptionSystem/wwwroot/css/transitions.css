@@ -1,0 +1,478 @@
+/**
+ * Transitions and Animations
+ * Smooth, subtle animations throughout the app
+ * 
+ * Improvements addressed:
+ * - #4: Smooth transitions for UI elements
+ * - #4: Respects prefers-reduced-motion
+ * - #7: Professional polish and visual feedback
+ */
+
+/* ========================================
+   BASE TRANSITIONS
+   ======================================== */
+
+/* Universal smooth transitions */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   BUTTON TRANSITIONS
+   ======================================== */
+
+.btn {
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Primary button specific */
+.btn-primary:hover {
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+}
+
+/* ========================================
+   CARD TRANSITIONS
+   ======================================== */
+
+.glass-card,
+.stat-card,
+.subscription-card,
+[class*=\"card\"] {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover,
+.stat-card:hover,
+.stat-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Card content fade-in */
+.glass-card > *,
+.stat-card > * {
+  animation: fadeInUp 0.5s ease backwards;
+}
+
+.glass-card > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.glass-card > *:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.glass-card > *:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+/* ========================================
+   NAVIGATION TRANSITIONS
+   ======================================== */
+
+.nav-link,
+.navbar-brand,
+.nav-link-clean,
+.nav-link-icon {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar {
+  transition: all 0.3s ease;
+}
+
+/* Mobile menu animation */
+.navbar-collapse {
+  transition: max-height 0.3s ease-in-out;
+}
+
+.navbar-collapse.collapsing {
+  transition: height 0.35s ease;
+}
+
+/* ========================================
+   FORM ELEMENT TRANSITIONS
+   ======================================== */
+
+input,
+select,
+textarea,
+.form-control,
+.form-select,
+.form-control-modern,
+.form-select-modern {
+  transition: all 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  transition: all 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Label float animation */
+.form-floating label {
+  transition: all 0.2s ease;
+}
+
+/* ========================================
+   PAGE TRANSITIONS
+   ======================================== */
+
+/* Fade in page content */
+main {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slide in from bottom */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide in from top */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale in */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========================================
+   MODAL TRANSITIONS
+   ======================================== */
+
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  transform: scale(0.9) translateY(-50px);
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1) translateY(0);
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  transition: opacity 0.3s ease;
+}
+
+/* ========================================
+   TABLE ROW TRANSITIONS
+   ======================================== */
+
+.table tbody tr {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.table-hover tbody tr:hover {
+  transform: translateX(4px);
+}
+
+/* ========================================
+   LOADING ANIMATIONS
+   ======================================== */
+
+/* Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner,
+.spinner-border {
+  animation: spin 0.75s linear infinite;
+}
+
+/* Pulse animation for loading states */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Skeleton loading */
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.skeleton {
+  animation: shimmer 1.2s ease-in-out infinite;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.1) 20%,
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  background-size: 800px 104px;
+}
+
+/* ========================================
+   NOTIFICATION TRANSITIONS
+   ======================================== */
+
+/* Slide in from right */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Slide out to right */
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.notification-enter {
+  animation: slideInRight 0.3s ease;
+}
+
+.notification-exit {
+  animation: slideOutRight 0.3s ease;
+}
+
+/* ========================================
+   BADGE & CHIP TRANSITIONS
+   ======================================== */
+
+.badge,
+.filter-chip {
+  transition: all 0.2s ease;
+}
+
+.badge:hover,
+.filter-chip:hover {
+  transform: scale(1.05);
+}
+
+/* ========================================
+   ICON TRANSITIONS
+   ======================================== */
+
+i,
+.bi {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn:hover i,
+.nav-link:hover i {
+  transform: scale(1.1);
+}
+
+/* Rotate on hover */
+.icon-rotate-hover:hover i {
+  transform: rotate(90deg);
+}
+
+/* ========================================
+   DROPDOWN TRANSITIONS
+   ======================================== */
+
+.dropdown-menu {
+  animation: fadeInDown 0.2s ease;
+  transition: opacity 0.2s ease;
+}
+
+.dropdown-menu.show {
+  animation: fadeInDown 0.2s ease;
+}
+
+/* ========================================
+   TOOLTIP & POPOVER TRANSITIONS
+   ======================================== */
+
+.tooltip {
+  transition: opacity 0.2s ease;
+}
+
+.popover {
+  animation: fadeIn 0.2s ease;
+}
+
+/* ========================================
+   FOCUS TRANSITIONS
+   ======================================== */
+
+*:focus-visible {
+  transition: outline 0.2s ease, box-shadow 0.2s ease;
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   SCROLL ANIMATIONS
+   ======================================== */
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll-triggered fade in */
+.fade-in-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========================================
+   STAGGER ANIMATIONS
+   ======================================== */
+
+/* Stagger animation for lists */
+.stagger-item {
+  animation: fadeInUp 0.5s ease backwards;
+}
+
+.stagger-item:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.stagger-item:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.stagger-item:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.stagger-item:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.stagger-item:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.stagger-item:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .btn::before {
+    display: none;
+  }
+
+  .skeleton {
+    animation: none;
+  }
+}
+
+/* ========================================
+   PERFORMANCE OPTIMIZATIONS
+   ======================================== */
+
+/* GPU acceleration for smooth animations */
+.btn,
+.glass-card,
+.nav-link,
+.modal-dialog {
+  will-change: transform;
+}
+
+/* Only animate transform and opacity for best performance */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    will-change: auto;
+  }
+
+  .animating {
+    will-change: transform, opacity;
+  }
+}

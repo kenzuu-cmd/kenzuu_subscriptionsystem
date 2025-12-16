@@ -177,8 +177,13 @@
                     <div class="table-card-header">
                         <h5 class="table-title mb-0">Subscription Details</h5>
                         <div class="search-wrapper">
-                            <i class="bi bi-search search-icon"></i>
-                            <input type="text" class="form-control" placeholder="Search transactions..." />
+                            <i class="bi bi-search search-icon" aria-hidden="true"></i>
+                            <input type="search" 
+                                   id="subscription-search-reports" 
+                                   class="form-control search-input" 
+                                   placeholder="Search transactions..." 
+                                   aria-label="Search subscription transactions"
+                                   autocomplete="off" />
                         </div>
                     </div>
 

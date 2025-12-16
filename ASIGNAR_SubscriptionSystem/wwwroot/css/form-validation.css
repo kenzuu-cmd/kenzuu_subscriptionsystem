@@ -1,0 +1,334 @@
+/**
+ * Form Validation Styles
+ * Visual feedback for form validation states
+ * 
+ * Improvements addressed:
+ * - #2: User feedback (loading, validation, errors)
+ * - #4: Accessibility (color contrast, focus states)
+ * - #6: Standardized UI components
+ */
+
+/* ========================================
+   VALIDATION STATES - Subtle & Clear
+   ======================================== */
+
+/* Valid state - Minimal visual change */
+.form-control.is-valid,
+.form-select.is-valid,
+.form-control-modern.is-valid,
+.form-select-modern.is-valid {
+  border-color: rgba(16, 185, 129, 0.4) !important; /* Subtle border */
+  background-color: transparent !important; /* Remove background tint */
+  padding-right: 1rem; /* No icon */
+}
+
+.form-control.is-valid:focus,
+.form-select.is-valid:focus,
+.form-control-modern.is-valid:focus,
+.form-select-modern.is-valid:focus {
+  border-color: var(--color-success) !important;
+  box-shadow: 0 0 0 0.15rem rgba(16, 185, 129, 0.15) !important; /* Lighter shadow */
+}
+
+/* Invalid state - Clear but not overwhelming */
+.form-control.is-invalid,
+.form-select.is-invalid,
+.form-control-modern.is-invalid,
+.form-select-modern.is-invalid {
+  border-color: rgba(
+    239,
+    68,
+    68,
+    0.5
+  ) !important; /* 50% opacity for softer look */
+  background-color: transparent !important; /* Remove background tint */
+  padding-right: 1rem; /* No icon */
+}
+
+.form-control.is-invalid:focus,
+.form-select.is-invalid:focus,
+.form-control-modern.is-invalid:focus,
+.form-select-modern.is-invalid:focus {
+  border-color: var(--color-danger) !important;
+  box-shadow: 0 0 0 0.15rem rgba(239, 68, 68, 0.15) !important; /* Lighter shadow */
+}
+
+/* Remove background validation icons - let feedback messages do the work */
+.form-control.is-valid,
+.form-control-modern.is-valid,
+.form-control.is-invalid,
+.form-control-modern.is-invalid {
+  background-image: none !important;
+}
+
+/* ========================================
+   FEEDBACK MESSAGES - Clear & Concise
+   ======================================== */
+
+.feedback-message {
+  font-size: 0.875rem; /* Slightly larger for readability */
+  margin-top: 0.625rem;
+  display: none;
+  align-items: center; /* Center align icon and text */
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  animation: slideDown 0.2s ease;
+  line-height: 1.5;
+  font-weight: 500; /* Slightly bolder for emphasis */
+}
+
+.feedback-message.show {
+  display: flex;
+}
+
+.feedback-message i {
+  flex-shrink: 0;
+  font-size: 1rem; /* Consistent icon size */
+}
+
+/* Success message - Kept minimal, only show when user needs encouragement */
+.feedback-message.success {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #059669; /* Darker green for better contrast */
+}
+
+.feedback-message.success i {
+  color: #10b981;
+}
+
+/* Error message - Clear and prominent but not alarming */
+.feedback-message.error {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #dc2626; /* Darker red for better contrast */
+}
+
+.feedback-message.error i {
+  color: #ef4444;
+}
+
+/* Warning message */
+.feedback-message.warning {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: #d97706; /* Darker orange for better contrast */
+}
+
+.feedback-message.warning i {
+  color: #f59e0b;
+}
+
+/* Info message */
+.feedback-message.info {
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  color: #2563eb; /* Darker blue for better contrast */
+}
+
+.feedback-message.info i {
+  color: #3b82f6;
+}
+
+/* ========================================
+   LOADING STATES
+   ======================================== */
+
+/* Loading button state */
+.btn.loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.btn.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: inherit;
+}
+
+/* Spinner for loading states */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.125rem;
+}
+
+/* Loading overlay for forms */
+.form-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: inherit;
+}
+
+.form-loading-overlay .spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ========================================
+   INPUT HINTS & HELP TEXT
+   ======================================== */
+
+.input-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  margin-top: 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  line-height: 1.4;
+}
+
+.input-hint i {
+  font-size: 0.8125rem;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.input-hint.success {
+  color: var(--color-success);
+}
+
+.input-hint.error {
+  color: var(--color-danger);
+}
+
+.input-hint.warning {
+  color: var(--color-warning);
+}
+
+/* ========================================
+   REQUIRED FIELD INDICATORS
+   ======================================== */
+
+.required {
+  color: var(--color-danger);
+  margin-left: 0.25rem;
+  font-weight: 700;
+}
+
+label.required::after {
+  content: ' *';
+  color: var(--color-danger);
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Shake animation for errors */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-0.5rem);
+  }
+  75% {
+    transform: translateX(0.5rem);
+  }
+}
+
+.shake {
+  animation: shake 0.4s ease;
+}
+
+/* ========================================
+   FOCUS STATES (Accessibility)
+   ======================================== */
+
+/* Enhanced focus for keyboard navigation */
+.form-control:focus-visible,
+.form-select:focus-visible,
+.form-control-modern:focus-visible,
+.form-select-modern:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 767.98px) {
+  .feedback-message {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .input-hint {
+    font-size: 0.6875rem;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .feedback-message,
+  .shake,
+  .form-loading-overlay .spinner {
+    animation: none;
+  }
+
+  .btn,
+  .form-control,
+  .form-select {
+    transition: none;
+  }
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  .form-control.is-valid,
+  .form-control.is-invalid {
+    border-width: 2px;
+  }
+
+  .feedback-message {
+    border-width: 2px;
+  }
+}

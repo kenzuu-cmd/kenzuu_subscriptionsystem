@@ -39,6 +39,17 @@
     outline-offset: 2px;
 }
 
+/* Hide focus outline when using mouse */
+body.using-mouse *:focus {
+    outline: none;
+}
+
+/* Always show focus for keyboard users */
+body:not(.using-mouse) *:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
