@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>@ViewData["Title"] - SubscriptionSystem</title>
+
+    @* ============================================
+       MOBILE/TABLET HERO GRADIENT ARCHITECTURE
+       ============================================
+       
+       All pages implement centered gradient strategy for mobile/tablet:
+       
+       Landing Page (Home.cshtml):
+       - landing-mobile-optimizations.css handles gradient centering
+       - Gradients repositioned to center behind hero headline, badges, CTAs
+       - Progressive scaling: 600px → 350px → 280px across breakpoints
+       - Backdrop-filter: blur(12-14px) with rgba(0,0,0,0.3-0.4) overlay
+       
+       Dashboard/Reports Pages:
+       - dashboard-hero-mobile.css provides centered header gradient
+       - Creates premium frame behind page title and action buttons
+       - Same progressive approach as landing page
+       
+       Key Implementation Details:
+       1. Centering: transform: translateX(-50%) on all gradient orbs
+       2. Blur: Increases on smaller screens (80px → 60px)
+       3. Opacity: Carefully tuned (0.3-0.45) for ambiance without overwhelming
+       4. Accessibility: All text maintains 4.5:1+ contrast (AA compliant)
+       5. Desktop: Preserves wide, immersive gradients (no centering)
+       
+       CSS Files:
+       - landing-mobile-optimizations.css (Landing page)
+       - dashboard-hero-mobile.css (Dashboard, Reports, Settings)
+       - reports-responsive.css (Reports-specific enhancements)
+       
+       Maintainer Notes:
+       - Test gradient visibility on real devices (not just browser DevTools)
+       - Verify text remains readable on all backgrounds
+       - Check safe area insets on iPhone 14/15 Pro (Dynamic Island)
+       - Ensure blur doesn't cause performance issues on older devices
+    *@
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/_design-tokens.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/_utilities.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/darkveil.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/_mobile.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer-responsive.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/onboarding.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/notifications.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/bulk-operations.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/ASIGNAR_SubscriptionSystem.styles.css" asp-append-version="true" />
+    
+    @* Allow pages to add additional stylesheets *@
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="d-flex flex-column min-vh-100">
+    @{
+        var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+        var isLandingPage = currentPage == "/Home";
+    }
+
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-to-content visually-hidden-focusable">Skip to main content</a>
+
+    <!-- Navigation (Unified Partial) -->
+    <header>
+        @await Html.PartialAsync("_NavBar")
+    </header>
+
+    <!-- Main Content Area (Flex-grow for sticky footer) -->
+    <main role="main" id="main-content" class="flex-grow-1 @(isLandingPage ? "" : "pb-5")">
+        @if (isLandingPage)
+        {
+            @RenderBody()
+        }
+        else
+        {
+            <div class="container">
+                @RenderBody()
+            </div>
+        }
+    </main>
+
+    <!-- Footer (Unified Partial) -->
+    @await Html.PartialAsync("_Footer")
+
+    <!-- JavaScript -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Load DarkVeil WebGL background -->
+    <script src="~/js/darkveil.js" asp-append-version="true"></script>
+    
+    <!-- Load mock data and UI components -->
+    <script src="~/js/mock-data.js" asp-append-version="true"></script>
+    <script src="~/js/subscription-ui.js" asp-append-version="true"></script>
+    <script src="~/js/notifications.js" asp-append-version="true"></script>
+    <script src="~/js/bulk-operations.js" asp-append-version="true"></script>
+    <script src="~/js/theme-switcher.js" asp-append-version="true"></script>
+    <script src="~/js/export-manager.js" asp-append-version="true"></script>
+    <script src="~/js/onboarding.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

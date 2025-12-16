@@ -1,0 +1,318 @@
+/**
+ * Footer Mobile Responsive Styles
+ * Comprehensive responsive improvements for all device sizes
+ */
+
+/* Tablets & Foldables Landscape */
+@media (max-width: 991.98px) {
+  .footer .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .footer .row {
+    row-gap: 2rem;
+  }
+
+  .footer h5 {
+    font-size: 1.125rem;
+  }
+
+  .footer h6 {
+    font-size: 0.8125rem;
+  }
+
+  .footer .text-secondary {
+    font-size: 0.875rem;
+  }
+
+  .footer .social-link {
+    width: 36px;
+    height: 36px;
+  }
+
+  .footer .social-link i {
+    font-size: 1.125rem;
+  }
+}
+
+/* Tablets Portrait & Large Phones */
+@media (max-width: 767.98px) {
+  .footer {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .footer .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .footer .py-5 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  .footer .py-4 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .footer .row {
+    row-gap: 2rem;
+  }
+
+  .footer .col-lg-4,
+  .footer .col-md-6,
+  .footer .col-md-3,
+  .footer .col-6 {
+    margin-bottom: 2rem;
+  }
+
+  .footer .col-lg-4:last-child,
+  .footer .col-md-6:last-child,
+  .footer .col-md-3:last-child,
+  .footer .col-6:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Brand column - center on mobile */
+  .footer .col-lg-4.col-md-6:first-child {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .footer .col-lg-4.col-md-6:first-child .d-flex.align-items-center {
+    justify-content: center;
+  }
+
+  .footer .col-lg-4.col-md-6:first-child p {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer .col-lg-4.col-md-6:first-child .d-flex.gap-3 {
+    justify-content: center;
+  }
+
+  /* Link columns - stack two per row */
+  .footer .col-6 {
+    text-align: left;
+  }
+
+  .footer h5 {
+    font-size: 1.125rem;
+  }
+
+  .footer h6 {
+    font-size: 0.8125rem;
+    margin-bottom: 1rem;
+  }
+
+  .footer .list-unstyled li {
+    margin-bottom: 0.625rem;
+  }
+
+  .footer .list-unstyled a {
+    font-size: 0.875rem;
+  }
+
+  .footer .social-link {
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+    min-width: 40px;
+    touch-action: manipulation;
+  }
+
+  /* Bottom section */
+  .footer .border-top {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .footer .bottom-links {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .footer .bottom-links .d-flex {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer .bottom-links a {
+    font-size: 0.8125rem;
+  }
+
+  .footer .copyright {
+    font-size: 0.8125rem;
+    margin-top: 1rem;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 575.98px) {
+  .footer {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .footer .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .footer .py-5 {
+    padding-top: 1.25rem !important;
+    padding-bottom: 1.25rem !important;
+  }
+
+  .footer .py-4 {
+    padding-top: 0.875rem !important;
+    padding-bottom: 0.875rem !important;
+  }
+
+  .footer .row {
+    row-gap: 1.5rem;
+  }
+
+  .footer .col-6 {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Brand column */
+  .footer .col-lg-4.col-md-6:first-child {
+    margin-bottom: 2rem;
+  }
+
+  .footer h5 {
+    font-size: 1rem;
+  }
+
+  .footer h6 {
+    font-size: 0.75rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .footer p.text-secondary {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+  }
+
+  .footer .list-unstyled li {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer .list-unstyled a {
+    font-size: 0.8125rem;
+  }
+
+  .footer .social-link {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    min-width: 36px;
+  }
+
+  .footer .social-link i {
+    font-size: 1rem;
+  }
+
+  .footer .d-flex.gap-3 {
+    gap: 0.75rem !important;
+  }
+
+  .footer .border-top {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+  }
+
+  .footer .bottom-links a {
+    font-size: 0.75rem;
+  }
+
+  .footer .copyright {
+    font-size: 0.75rem;
+    margin-top: 0.875rem;
+  }
+}
+
+/* Ultra-Small Devices */
+@media (max-width: 374.98px) {
+  .footer .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .footer h5 {
+    font-size: 0.9375rem;
+  }
+
+  .footer h6 {
+    font-size: 0.6875rem;
+  }
+
+  .footer p.text-secondary {
+    font-size: 0.75rem;
+  }
+
+  .footer .list-unstyled a {
+    font-size: 0.75rem;
+  }
+
+  .footer .social-link {
+    width: 32px;
+    height: 32px;
+    min-height: 32px;
+    min-width: 32px;
+  }
+
+  .footer .social-link i {
+    font-size: 0.875rem;
+  }
+}
+
+/* Touch Targets */
+@media (max-width: 991.98px) {
+  .footer a {
+    touch-action: manipulation;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .footer .social-link {
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .footer .list-unstyled a {
+    padding: 0.25rem 0;
+  }
+}
+
+/* Safe Area Support for Notched Devices */
+@media (max-width: 767.98px) {
+  .footer .container {
+    padding-left: max(1.5rem, env(safe-area-inset-left));
+    padding-right: max(1.5rem, env(safe-area-inset-right));
+    padding-bottom: max(0rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Remove Hover Effects on Touch Devices */
+@media (hover: none) and (pointer: coarse) {
+  .footer .social-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: none;
+  }
+
+  .footer .list-unstyled a:hover {
+    color: inherit;
+    transform: none;
+  }
+}

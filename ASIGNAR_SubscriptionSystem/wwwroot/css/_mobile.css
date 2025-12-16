@@ -1,0 +1,632 @@
+/**
+ * Mobile Responsive Styles
+ * Mobile-first responsive design overrides - ENHANCED
+ */
+
+/* ========================================
+   MOBILE TABLE CARDS - IMPROVED
+   ======================================== */
+
+@media (max-width: 767.98px) {
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: visible;
+        border-radius: 0;
+    }
+
+    #subscriptions-table {
+        display: block;
+    }
+
+    #subscriptions-table thead {
+        display: none;
+    }
+
+    #subscriptions-table tbody {
+        display: block;
+    }
+
+    #subscriptions-table tr {
+        display: block;
+        margin-bottom: 1rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 1.25rem;
+        transition: all 0.3s ease;
+    }
+
+    #subscriptions-table tr:hover {
+        background: rgba(255, 255, 255, 0.05);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    #subscriptions-table td {
+        display: block;
+        text-align: left !important;
+        padding: 0.625rem 0 !important;
+        border: none;
+    }
+
+    #subscriptions-table td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.375rem;
+    }
+
+    #subscriptions-table td:first-child {
+        padding-top: 0 !important;
+    }
+
+    #subscriptions-table td:first-child::before {
+        display: none;
+    }
+
+    #subscriptions-table td:last-child {
+        padding-bottom: 0 !important;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Service name on mobile */
+    #subscriptions-table td:first-child .d-flex {
+        margin-bottom: 1rem;
+    }
+
+    /* Actions button mobile */
+    .subscription-actions {
+        width: 100%;
+        justify-content: center;
+        padding: 0.75rem 1.25rem;
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+}
+
+/* Extra Small Phones */
+@media (max-width: 575.98px) {
+    #subscriptions-table tr {
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 0.875rem;
+    }
+
+    #subscriptions-table td {
+        padding: 0.5rem 0 !important;
+    }
+
+    #subscriptions-table td::before {
+        font-size: 0.6875rem;
+    }
+}
+
+/* ========================================
+   MOBILE FILTERS & SEARCH - ENHANCED
+   ======================================== */
+
+@media (max-width: 767.98px) {
+    .filter-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .filter-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .filter-chip {
+        flex: 0 1 calc(50% - 0.25rem);
+        min-width: 0;
+        padding: 0.75rem 1rem;
+        min-height: 44px;
+        font-size: 0.875rem;
+        touch-action: manipulation;
+    }
+
+    .search-input {
+        width: 100%;
+        margin-bottom: 1rem;
+        padding: 0.875rem 1rem;
+        font-size: 1rem;
+        min-height: 48px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .filter-chip {
+        flex: 0 1 100%;
+        padding: 0.8125rem 1rem;
+        font-size: 0.8125rem;
+    }
+}
+
+/* ========================================
+   MOBILE MODALS - ENHANCED
+   ======================================== */
+
+@media (max-width: 767.98px) {
+    .detail-modal {
+        width: 95vw;
+        max-width: none;
+        max-height: 90vh;
+        margin: 1rem;
+        border-radius: 16px;
+    }
+
+    .confirmation-modal {
+        width: 90vw;
+        border-radius: 16px;
+    }
+
+    .modal-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .modal-footer-actions {
+        flex-direction: column-reverse;
+        gap: 0.75rem;
+    }
+
+    .modal-footer-actions .btn,
+    .modal-footer-actions .btn-action {
+        width: 100%;
+        min-height: 48px;
+        justify-content: center;
+        touch-action: manipulation;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    .modal-header {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        padding: 1.25rem 1.5rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .detail-modal {
+        width: calc(100vw - 1rem);
+        max-height: 85vh;
+        margin: 0.5rem;
+        border-radius: 12px;
+    }
+
+    .modal-body {
+        padding: 1.25rem;
+    }
+
+    .modal-header {
+        padding: 1.25rem;
+    }
+
+    .modal-footer {
+        padding: 1rem 1.25rem;
+    }
+}
+
+/* ========================================
+   MOBILE NAVIGATION - ENHANCED
+   ======================================== */
+
+@media (max-width: 767.98px) {
+    .navbar-brand {
+        font-size: 1rem;
+    }
+
+    .navbar-brand i {
+        font-size: 1.5rem;
+    }
+
+    .navbar-toggler {
+        min-width: 44px;
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+
+    .nav-link {
+        padding: 0.875rem 1rem;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+
+    .navbar-collapse {
+        margin-top: 1rem;
+    }
+
+    .navbar-nav {
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .navbar-brand {
+        font-size: 0.9375rem;
+    }
+
+    .navbar-brand i {
+        font-size: 1.375rem;
+    }
+
+    .nav-link {
+        padding: 0.8125rem 1rem;
+        font-size: 0.9375rem;
+    }
+}
+
+/* ========================================
+   MOBILE FORMS - ENHANCED
+   ======================================== */
+
+@media (max-width: 767.98px) {
+    .glass-card.p-4,
+    .glass-card.p-md-5 {
+        padding: 1.5rem !important;
+        border-radius: 16px;
+    }
+
+    .form-control,
+    .form-select {
+        font-size: 1rem;
+        padding: 0.875rem 1rem;
+        min-height: 48px;
+        border-radius: 12px;
+    }
+
+    .form-control-lg {
+        font-size: 1rem;
+        padding: 1rem 1.25rem;
+        min-height: 52px;
+    }
+
+    .btn {
+        min-height: 48px;
+        padding: 0.875rem 1.5rem;
+        touch-action: manipulation;
+    }
+
+    .btn-lg {
+        padding: 1rem 1.75rem;
+        min-height: 52px;
+    }
+
+    /* Form rows stack on mobile */
+    .row.g-3 > [class*="col-"] {
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-text {
+        font-size: 0.8125rem;
+    }
+
+    .dashboard-header-section {
+        margin-bottom: 2rem;
+    }
+
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .page-subtitle {
+        font-size: 0.9375rem;
+    }
+
+    .btn-action {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .glass-card.p-4,
+    .glass-card.p-md-5 {
+        padding: 1.25rem !important;
+        border-radius: 12px;
+    }
+
+    .form-control,
+    .form-select {
+        font-size: 0.9375rem;
+        padding: 0.8125rem 1rem;
+    }
+
+    .form-control-lg {
+        font-size: 0.9375rem;
+        padding: 0.9375rem 1.125rem;
+    }
+
+    .btn {
+        font-size: 0.9375rem;
+        padding: 0.8125rem 1.25rem;
+    }
+
+    .btn-lg {
+        font-size: 0.9375rem;
+        padding: 0.9375rem 1.5rem;
+    }
+
+    .form-label {
+        font-size: 0.8125rem;
+    }
+
+    .form-text {
+        font-size: 0.75rem;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+    }
+
+    .page-subtitle {
+        font-size: 0.875rem;
+    }
+
+    .dashboard-header-section {
+        margin-bottom: 1.5rem;
+    }
+}
+
+    .btn-lg {
+        font-size: 0.9375rem;
+        padding: 0.9375rem 1.5rem;
+    }
+
+    .form-label {
+        font-size: 0.8125rem;
+    }
+
+    .form-text {
+        font-size: 0.75rem;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+    }
+
+    .page-subtitle {
+        font-size: 0.875rem;
+    }
+
+    .dashboard-header-section {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* ========================================
+   MOBILE DASHBOARD HEADER - ENHANCED
+   ======================================== */
+
+@media (max-width: 767.98px) {
+    .display-5 {
+        font-size: 2rem;
+    }
+
+    .display-4 {
+        font-size: 2.25rem;
+    }
+
+    .display-3 {
+        font-size: 2.5rem;
+    }
+
+    .spline-viewer-container {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    /* Center header on mobile */
+    .row.align-items-center.mb-5 {
+        text-align: center;
+    }
+
+    .row.align-items-center.mb-5 .col-md-4 {
+        text-align: center !important;
+        margin-top: 1.5rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .display-5 {
+        font-size: 1.75rem;
+    }
+
+    .display-4 {
+        font-size: 2rem;
+    }
+
+    .display-3 {
+        font-size: 2.25rem;
+    }
+
+    .spline-viewer-container {
+        width: 80px !important;
+        height: 80px !important;
+    }
+}
+
+/* ========================================
+   MOBILE REPORTS PAGE - ENHANCED
+   ======================================== */
+
+@media (max-width: 767.98px) {
+    .progress {
+        margin-bottom: 1rem;
+    }
+
+    .d-flex.gap-3 {
+        flex-direction: column;
+        gap: 1rem !important;
+    }
+
+    .service-icon {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+    }
+
+    .chart-container {
+        padding: 1.25rem;
+    }
+
+    canvas {
+        max-height: 250px !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .chart-container {
+        padding: 1rem;
+    }
+
+    canvas {
+        max-height: 220px !important;
+    }
+
+    .service-icon {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* ========================================
+   TOUCH-FRIENDLY INTERACTIONS - ENHANCED
+   ======================================== */
+
+@media (max-width: 991.98px) {
+    /* Ensure all interactive elements meet minimum touch target size */
+    .btn,
+    .filter-chip,
+    .nav-link,
+    .subscription-actions,
+    a:not(.nav-link),
+    button,
+    input[type="button"],
+    input[type="submit"],
+    select,
+    .toggle-slider {
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+
+    /* Icon buttons need proper sizing */
+    .btn-icon,
+    .icon-button {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0.625rem;
+    }
+}
+
+/* Remove hover effects on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .hover-lift:hover {
+        transform: none;
+    }
+
+    .hover-glow:hover {
+        box-shadow: none;
+    }
+
+    .btn:hover,
+    .filter-chip:hover,
+    .subscription-actions:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* Add active states instead */
+    .btn:active,
+    .filter-chip:active,
+    .subscription-actions:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+    }
+
+    a:active {
+        opacity: 0.8;
+    }
+}
+
+/* ========================================
+   SAFE AREA SUPPORT FOR NOTCHED DEVICES
+   ======================================== */
+
+@media (max-width: 767.98px) {
+    body {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+
+    .navbar {
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+    }
+
+    .container,
+    .container-fluid {
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+    }
+
+    .footer .container {
+        padding-left: max(1.5rem, env(safe-area-inset-left));
+        padding-right: max(1.5rem, env(safe-area-inset-right));
+        padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    }
+}
+
+/* ========================================
+   LANDSCAPE MODE OPTIMIZATIONS
+   ======================================== */
+
+@media (max-width: 991.98px) and (orientation: landscape) {
+    .dashboard-container {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .settings-container {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .modal {
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .spline-viewer-container {
+        display: none;
+    }
+}
+

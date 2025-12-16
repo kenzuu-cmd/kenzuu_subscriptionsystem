@@ -1,0 +1,253 @@
+﻿@page
+@model ReportsModel
+@{
+    ViewData["Title"] = "Reports & Analytics";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/app-dashboard.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/reports-responsive.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/dashboard-hero-mobile.css" asp-append-version="true" />
+}
+
+@* ============================================
+   REPORTS PAGE GRADIENT CENTERING
+   ============================================
+   
+   Uses same mobile/tablet gradient centering as Dashboard:
+   - Centered gradient behind page header on mobile/tablet
+   - Premium backdrop-filter for content focus
+   - Clean, transparent presentation on desktop
+   - AA accessible contrast maintained across all breakpoints
+*@
+
+<!-- Premium Reports Page with Animated Charts -->
+<div class="dashboard-container">
+    <div class="container-fluid px-4 py-4">
+        
+        <!-- Page Header -->
+        <div class="dashboard-header mb-4">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="dashboard-title mb-2">Reports & Analytics</h1>
+                    <p class="dashboard-subtitle mb-0">Track your subscription spending and discover insights</p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                    <button class="btn btn-outline-light me-2" onclick="exportDataToCSV()">
+                        <i class="bi bi-download"></i> Export CSV
+                    </button>
+                    <a href="/Index" class="btn btn-primary">
+                        <i class="bi bi-grid"></i> Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Date Range Selector -->
+        <div class="filter-section mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <label class="form-label small text-muted mb-2">Date Range</label>
+                    <div class="filter-chips">
+                        <button class="filter-chip" data-date-range="last3months">Last 3 Months</button>
+                        <button class="filter-chip active" data-date-range="last6months">Last 6 Months</button>
+                        <button class="filter-chip" data-date-range="last12months">Last Year</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="row g-4 mb-4">
+            <!-- Spending Trend Chart -->
+            <div class="col-12">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h5 class="chart-title mb-0">Spending Trend</h5>
+                        <button class="btn btn-sm btn-outline-light" data-export-chart="spendingTrend">
+                            <i class="bi bi-download"></i> Export
+                        </button>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="spending-trend-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <!-- Category Breakdown -->
+            <div class="col-lg-6">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h5 class="chart-title mb-0">Spend by Category</h5>
+                        <button class="btn btn-sm btn-outline-light" data-export-chart="categoryPie">
+                            <i class="bi bi-download"></i> Export
+                        </button>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="category-pie-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Subscriptions -->
+            <div class="col-lg-6">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h5 class="chart-title mb-0">Top 5 Subscriptions</h5>
+                        <button class="btn btn-sm btn-outline-light" data-export-chart="topSubs">
+                            <i class="bi bi-download"></i> Export
+                        </button>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="top-subs-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Insights -->
+        <div class="row g-4 mb-4">
+            <div class="col-12">
+                <div class="insights-card">
+                    <h5 class="insights-title mb-4">
+                        <i class="bi bi-lightbulb text-warning me-2"></i>
+                        AI-Powered Insights
+                    </h5>
+
+                    <div class="row g-4">
+                        <div class="col-lg-4">
+                            <div class="insight-item insight-success">
+                                <div class="insight-icon">
+                                    <i class="bi bi-piggy-bank"></i>
+                                </div>
+                                <div class="insight-content">
+                                    <h6 class="insight-heading">Savings Opportunity</h6>
+                                    <p class="insight-description">
+                                        You're paying for both <strong>Netflix</strong> and <strong>Hulu</strong>. 
+                                        Cancelling the one you use less could save you 
+                                        <span class="text-success fw-bold">₱7,200/year</span>.
+                                    </p>
+                                    <button class="btn btn-sm btn-success mt-2">View Details</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="insight-item insight-info">
+                                <div class="insight-icon">
+                                    <i class="bi bi-graph-up-arrow"></i>
+                                </div>
+                                <div class="insight-content">
+                                    <h6 class="insight-heading">Spending Trend</h6>
+                                    <p class="insight-description">
+                                        Your subscriptions increased by <span class="text-danger fw-bold">12%</span> this month 
+                                        due to the new Adobe Creative Cloud plan.
+                                    </p>
+                                    <button class="btn btn-sm btn-info mt-2">Analyze</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="insight-item insight-warning">
+                                <div class="insight-icon">
+                                    <i class="bi bi-calendar-check"></i>
+                                </div>
+                                <div class="insight-content">
+                                    <h6 class="insight-heading">Renewal Alert</h6>
+                                    <p class="insight-description">
+                                        3 annual subscriptions (<strong>GitHub Pro, Figma, Notion</strong>) 
+                                        are expiring next month totaling <span class="text-warning fw-bold">₱9,000</span>.
+                                    </p>
+                                    <button class="btn btn-sm btn-warning mt-2">Set Reminders</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Data Table -->
+        <div class="row g-4">
+            <div class="col-12">
+                <div class="table-card">
+                    <div class="table-card-header">
+                        <h5 class="table-title mb-0">Subscription Details</h5>
+                        <div class="search-wrapper">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" class="form-control" placeholder="Search transactions..." />
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="subscription-table">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Monthly Cost</th>
+                                    <th>Annual Cost</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="fw-bold text-white">Netflix Premium</span></td>
+                                    <td><span class="font-monospace">₱599.00</span></td>
+                                    <td><span class="font-monospace">₱7,188.00</span></td>
+                                    <td><span class="badge badge-secondary">Streaming</span></td>
+                                    <td><span class="badge badge-success">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="fw-bold text-white">Adobe Creative Cloud</span></td>
+                                    <td><span class="font-monospace">₱2,799.00</span></td>
+                                    <td><span class="font-monospace">₱33,588.00</span></td>
+                                    <td><span class="badge badge-secondary">Design</span></td>
+                                    <td><span class="badge badge-success">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="fw-bold text-white">Spotify Family</span></td>
+                                    <td><span class="font-monospace">₱299.00</span></td>
+                                    <td><span class="font-monospace">₱3,588.00</span></td>
+                                    <td><span class="badge badge-secondary">Music</span></td>
+                                    <td><span class="badge badge-success">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="fw-bold text-white">GitHub Pro</span></td>
+                                    <td><span class="font-monospace">₱200.00</span></td>
+                                    <td><span class="font-monospace">₱2,400.00</span></td>
+                                    <td><span class="badge badge-secondary">Development</span></td>
+                                    <td><span class="badge badge-info">Trial</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="fw-bold text-white">Figma Professional</span></td>
+                                    <td><span class="font-monospace">₱750.00</span></td>
+                                    <td><span class="font-monospace">₱9,000.00</span></td>
+                                    <td><span class="badge badge-secondary">Design</span></td>
+                                    <td><span class="badge badge-success">Active</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-card-footer">
+                        <span class="text-muted">Showing 1-5 of 5 subscriptions</span>
+                        <div class="pagination-controls">
+                            <button class="btn btn-sm btn-outline-light" disabled><i class="bi bi-chevron-left"></i></button>
+                            <button class="btn btn-sm btn-primary">1</button>
+                            <button class="btn btn-sm btn-outline-light" disabled><i class="bi bi-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="~/js/reports-premium.js" asp-append-version="true"></script>
+}

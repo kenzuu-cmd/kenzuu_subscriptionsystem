@@ -1,0 +1,175 @@
+/**
+ * CSS Utilities
+ * Reusable patterns for common layouts
+ */
+
+/* Sticky Footer Layout */
+.sticky-footer-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sticky-footer-layout > main {
+    flex: 1 0 auto;
+}
+
+.sticky-footer-layout > footer {
+    flex-shrink: 0;
+}
+
+/* Clearfix */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Visually Hidden */
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* Show on focus for keyboard navigation */
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* Text Truncation */
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.text-truncate-2-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.text-truncate-3-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Accessible Focus States */
+.focus-visible-ring:focus-visible {
+    outline: 2px solid var(--color-primary, #6366f1);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+.focus-visible-ring-danger:focus-visible {
+    outline: 2px solid var(--color-danger, #ef4444);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Layout Debugging */
+.layout-debug {
+    background: rgba(255, 0, 0, 0.1) !important;
+}
+
+.layout-debug > * {
+    outline: 2px dashed rgba(255, 0, 0, 0.5);
+    outline-offset: -2px;
+}
+
+.layout-debug > header {
+    background: rgba(0, 255, 0, 0.1) !important;
+}
+
+.layout-debug > main {
+    background: rgba(0, 0, 255, 0.1) !important;
+}
+
+.layout-debug > footer {
+    background: rgba(255, 255, 0, 0.1) !important;
+}
+
+/* Aspect Ratio Boxes */
+.aspect-ratio-16-9 {
+    aspect-ratio: 16 / 9;
+}
+
+.aspect-ratio-4-3 {
+    aspect-ratio: 4 / 3;
+}
+
+.aspect-ratio-1-1 {
+    aspect-ratio: 1 / 1;
+}
+
+/* Container Queries */
+@supports (container-type: inline-size) {
+    .container-query {
+        container-type: inline-size; /* Modern CSS: enables container queries */
+    }
+}
+
+/* === SCROLLBAR STYLING (Webkit browsers) === */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Print Styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+    
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+}

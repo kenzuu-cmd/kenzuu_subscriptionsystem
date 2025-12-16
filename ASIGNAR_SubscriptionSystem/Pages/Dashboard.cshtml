@@ -1,0 +1,379 @@
+@page
+@model SubscriptionSystem.Pages.DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+
+    string GetColorClass(string name)
+    {
+        var len = name.Length;
+        if (len % 4 == 0) return "bg-indigo-subtle";
+        if (len % 4 == 1) return "bg-rose-subtle";
+        if (len % 4 == 2) return "bg-emerald-subtle";
+        return "bg-amber-subtle";
+    }
+
+    string GetTimeRemaining(DateTime date)
+    {
+        var days = (date - DateTime.Today).TotalDays;
+        if (days < 0) return "Overdue";
+        if (days == 0) return "Today";
+        if (days == 1) return "Tomorrow";
+        return $"In {days} days";
+    }
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/app-dashboard.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/dashboard-hero-mobile.css" asp-append-version="true" />
+}
+
+@* ============================================
+   DASHBOARD HEADER GRADIENT CENTERING
+   ============================================
+   
+   Mobile/Tablet Strategy:
+   - Centered gradient backdrop behind dashboard header
+   - Creates premium, focused frame for page title and CTA button
+   - Backdrop-filter ensures text remains legible (AA accessible)
+   - Gradients scale progressively smaller on smaller screens
+   
+   Desktop Behavior:
+   - Clean, transparent header with no backdrop
+   - Preserves standard dashboard presentation
+   - Subtle text shadows only
+   
+   Accessibility:
+   - Maintains 4.5:1+ contrast ratio on all backgrounds
+   - Text shadows provide additional contrast layer
+   - Reduced motion respected
+   - Safe area insets for notched devices
+*@
+
+<!-- Premium Dashboard with Professional Layout -->
+<div class="dashboard-container">
+    <div class="container-fluid px-4 py-4">
+        
+        <!-- Page Header - Simplified and Focused -->
+        <div class="dashboard-header-section">
+            <div class="row align-items-center g-3">
+                <div class="col-lg-8 col-md-7">
+                    <div class="page-title-group">
+                        <h1 class="page-title">Dashboard</h1>
+                        <p class="page-subtitle">Manage your subscriptions and track spending</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5 text-md-end">
+                    <a asp-page="/AddSubscription" class="btn btn-primary btn-action btn-lg px-4">
+                        <i class="bi bi-plus-lg"></i>
+                        <span>Add Subscription</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards Grid - Improved Spacing & Alignment -->
+        <div class="metrics-grid">
+            <div class="row g-4">
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <div class="stat-card stat-card-hover">
+                        <div class="stat-card-body">
+                            <div class="stat-icon-wrapper stat-icon-primary">
+                                <i class="bi bi-wallet2"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-label">Monthly Burn</div>
+                                <div class="stat-value" data-target="@Model.TotalMonthly" id="stat-monthly">₱0</div>
+                                <div class="stat-meta">
+                                    <i class="bi bi-arrow-repeat"></i>
+                                    <span>Recurring every 30 days</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <div class="stat-card stat-card-hover">
+                        <div class="stat-card-body">
+                            <div class="stat-icon-wrapper stat-icon-success">
+                                <i class="bi bi-layers"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-label">Active Subscriptions</div>
+                                <div class="stat-value" id="stat-count">@Model.Subscriptions.Count</div>
+                                <div class="stat-meta stat-meta-success">
+                                    <i class="bi bi-arrow-up-short"></i>
+                                    <span>3 new this month</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <div class="stat-card stat-card-hover">
+                        <div class="stat-card-body">
+                            <div class="stat-icon-wrapper stat-icon-info">
+                                <i class="bi bi-graph-up"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-label">Yearly Projection</div>
+                                <div class="stat-value" data-target="@Model.YearlyProjected" id="stat-yearly">₱0</div>
+                                <div class="stat-meta">
+                                    <i class="bi bi-calendar-check"></i>
+                                    <span>Est. Annual Run Rate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <div class="stat-card stat-card-hover">
+                        <div class="stat-card-body stat-card-center">
+                            <div class="stat-content">
+                                <div class="stat-label">Savings Goal</div>
+                                <div class="progress-ring-container">
+                                    <svg class="progress-ring" width="120" height="120" viewBox="0 0 120 120">
+                                        <defs>
+                                            <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                                                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                            </linearGradient>
+                                        </defs>
+                                        <circle class="progress-ring-bg" cx="60" cy="60" r="52" 
+                                                fill="none" stroke="rgba(99, 102, 241, 0.1)" stroke-width="10"></circle>
+                                        <circle class="progress-ring-fill" cx="60" cy="60" r="52" 
+                                                fill="none" stroke="url(#progress-gradient)" stroke-width="10" 
+                                                stroke-linecap="round" 
+                                                stroke-dasharray="326.73" 
+                                                stroke-dashoffset="81.68"
+                                                transform="rotate(-90 60 60)"></circle>
+                                    </svg>
+                                    <div class="progress-ring-label">
+                                        <div class="progress-percentage">75%</div>
+                                        <div class="progress-text">Target</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <div class="row g-4">
+                <!-- Main Content Area -->
+                <div class="col-lg-8">
+                    <!-- Filter Section - Redesigned for Clarity -->
+                    <div class="filter-panel">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="subscription-search" class="form-label">Search Subscriptions</label>
+                                    <div class="input-group input-group-search">
+                                        <span class="input-group-icon">
+                                            <i class="bi bi-search"></i>
+                                        </span>
+                                        <input type="text" 
+                                               id="subscription-search" 
+                                               class="form-control" 
+                                               placeholder="Search by name, category..." 
+                                               aria-label="Search subscriptions" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Filter by Status</label>
+                                    <div class="filter-button-group" role="group" aria-label="Filter subscriptions by status">
+                                        <button class="filter-btn active" data-filter="all" aria-pressed="true">
+                                            All
+                                        </button>
+                                        <button class="filter-btn" data-filter="active" aria-pressed="false">
+                                            <i class="bi bi-check-circle"></i>
+                                            <span>Active</span>
+                                        </button>
+                                        <button class="filter-btn" data-filter="trial" aria-pressed="false">
+                                            <i class="bi bi-clock"></i>
+                                            <span>Trial</span>
+                                        </button>
+                                        <button class="filter-btn" data-filter="paused" aria-pressed="false">
+                                            <i class="bi bi-pause-circle"></i>
+                                            <span>Paused</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <!-- Subscriptions Table -->
+                <div class="table-card">
+                    <div class="table-card-header">
+                        <h5 class="table-title mb-0">Subscriptions</h5>
+                        <div class="table-actions">
+                            <button class="btn btn-sm btn-outline-light" data-sort="date" title="Sort by date">
+                                <i class="bi bi-calendar3"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-light" data-sort="price" title="Sort by price">
+                                <i class="bi bi-currency-dollar"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-light" data-sort="name" title="Sort by name">
+                                <i class="bi bi-sort-alpha-down"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-light" data-action="export" title="Export">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="subscription-table" id="subscriptions-table">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Cost</th>
+                                    <th>Cycle</th>
+                                    <th>Next Payment</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Subscriptions)
+                                {
+                                    var isUrgent = (item.NextPaymentDate - DateTime.Today).TotalDays <= 3;
+                                    var colorClass = GetColorClass(item.ServiceName);
+                                    var initial = item.ServiceName.Length > 0 ? item.ServiceName.Substring(0, 1) : "?";
+
+                                    <tr data-subscription-id="@item.ServiceName">
+                                        <td>
+                                            <div class="d-flex align-items-center gap-3">
+                                                <div class="service-avatar @colorClass">@initial</div>
+                                                <div>
+                                                    <div class="fw-bold text-white">@item.ServiceName</div>
+                                                    <small class="text-muted">@item.Category</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="fw-semibold text-white font-monospace">₱@item.Price</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-secondary">@item.BillingCycle</span>
+                                        </td>
+                                        <td>
+                                            @if (isUrgent)
+                                            {
+                                                <div class="text-danger fw-bold">@GetTimeRemaining(item.NextPaymentDate)</div>
+                                                <small class="text-muted">@item.NextPaymentDate.ToString("MMM dd, yyyy")</small>
+                                            }
+                                            else
+                                            {
+                                                <div class="text-white">@GetTimeRemaining(item.NextPaymentDate)</div>
+                                                <small class="text-muted">@item.NextPaymentDate.ToString("MMM dd, yyyy")</small>
+                                            }
+                                        </td>
+                                        <td class="text-end">
+                                            <button class="btn btn-sm btn-link text-muted" title="Actions">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-card-footer">
+                        <span class="text-muted">Showing @Model.Subscriptions.Count subscriptions</span>
+                        <div class="pagination-controls">
+                            <button class="btn btn-sm btn-outline-light" disabled><i class="bi bi-chevron-left"></i></button>
+                            <button class="btn btn-sm btn-primary">1</button>
+                            <button class="btn btn-sm btn-outline-light" disabled><i class="bi bi-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Upcoming Payments -->
+                <div class="sidebar-card mb-4">
+                    <h5 class="sidebar-card-title">Upcoming Payments</h5>
+                    <div class="reminder-list">
+                        <div class="reminder-item">
+                            <div class="reminder-header">
+                                <span class="reminder-title">Netflix Premium</span>
+                                <span class="badge badge-danger">Today</span>
+                            </div>
+                            <p class="reminder-text">₱599.00 will be charged today</p>
+                            <div class="reminder-actions">
+                                <button class="btn btn-sm btn-outline-light">View</button>
+                                <button class="btn btn-sm btn-link text-muted">Snooze</button>
+                            </div>
+                        </div>
+
+                        <div class="reminder-item">
+                            <div class="reminder-header">
+                                <span class="reminder-title">Adobe Creative Cloud</span>
+                                <span class="badge badge-warning">In 3 days</span>
+                            </div>
+                            <p class="reminder-text">₱2,799.00 renewal approaching</p>
+                            <div class="reminder-actions">
+                                <button class="btn btn-sm btn-outline-light">View</button>
+                                <button class="btn btn-sm btn-link text-muted">Snooze</button>
+                            </div>
+                        </div>
+
+                        <div class="reminder-item">
+                            <div class="reminder-header">
+                                <span class="reminder-title">Spotify Family</span>
+                                <span class="badge badge-info">In 7 days</span>
+                            </div>
+                            <p class="reminder-text">₱299.00 monthly payment</p>
+                            <div class="reminder-actions">
+                                <button class="btn btn-sm btn-outline-light">View</button>
+                                <button class="btn btn-sm btn-link text-muted">Snooze</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="sidebar-card">
+                    <h5 class="sidebar-card-title">Quick Actions</h5>
+                    <div class="quick-actions-grid">
+                        <a href="/AddSubscription" class="quick-action-item">
+                            <div class="quick-action-icon">
+                                <i class="bi bi-plus-lg"></i>
+                            </div>
+                            <span>Add New</span>
+                        </a>
+                        <a href="/Reports" class="quick-action-item">
+                            <div class="quick-action-icon">
+                                <i class="bi bi-graph-up"></i>
+                            </div>
+                            <span>Reports</span>
+                        </a>
+                        <a href="#" class="quick-action-item">
+                            <div class="quick-action-icon">
+                                <i class="bi bi-download"></i>
+                            </div>
+                            <span>Export</span>
+                        </a>
+                        <a href="/Settings" class="quick-action-item">
+                            <div class="quick-action-icon">
+                                <i class="bi bi-gear"></i>
+                            </div>
+                            <span>Settings</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/dashboard-premium.js" asp-append-version="true"></script>
+}

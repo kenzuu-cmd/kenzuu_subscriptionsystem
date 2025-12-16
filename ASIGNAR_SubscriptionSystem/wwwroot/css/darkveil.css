@@ -1,0 +1,73 @@
+/**
+ * DarkVeil WebGL Canvas Styles
+ * Ensures proper fullscreen canvas rendering
+ * DARK MODE ONLY - Light mode not supported
+ */
+
+.darkveil-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* Global background container */
+.darkveil-global-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Local background container (for specific sections like hero) */
+.darkveil-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+/* Performance optimization */
+.darkveil-canvas {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    will-change: contents;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .darkveil-canvas {
+        display: none;
+    }
+    
+    .darkveil-background,
+    .darkveil-global-background {
+        /* Fallback to static gradient */
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(10, 10, 15, 0.95) 100%);
+    }
+}
+
+/* Loading state - dark gradient overlay */
+.darkveil-global-background::before,
+.darkveil-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 15, 0.98) 100%);
+    z-index: -1;
+}

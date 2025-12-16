@@ -1,0 +1,1032 @@
+﻿@page
+@model ASIGNAR_SubscriptionSystem.Pages.AddSubscriptionModel
+@{
+    ViewData["Title"] = "Add New Subscription";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/add-subscription-responsive.css">
+    <style>
+        /* ============================================
+           PREMIUM ADD SUBSCRIPTION PAGE STYLES
+           - Enterprise-grade dark theme
+           - Consistent, accessible form controls
+           - Custom dropdown and number input styling
+           - Smooth animations and transitions
+           - Full WCAG 2.1 AA compliance
+           ============================================ */
+
+        /* Force clean page background - override any global styles */
+        body {
+            background: #0a0a0f !important;
+        }
+
+        main {
+            background: transparent !important;
+        }
+
+        /* Remove any potential pseudo-elements from body/main */
+        body::before,
+        body::after,
+        main::before,
+        main::after {
+            display: none !important;
+            content: none !important;
+        }
+
+        /* === CONTAINER & LAYOUT === */
+        .add-subscription-container {
+            min-height: 100vh;
+            background: #0a0a0f;
+            padding: 2rem 1rem;
+            display: flex;
+            align-items: center;
+            position: relative;
+            isolation: isolate;
+        }
+
+        /* Explicitly prevent any pseudo-elements or backgrounds */
+        .add-subscription-container::before,
+        .add-subscription-container::after,
+        .add-subscription-container .container::before,
+        .add-subscription-container .container::after {
+            display: none !important;
+            content: none !important;
+        }
+
+        /* Ensure Bootstrap container has no backgrounds */
+        .add-subscription-container .container {
+            background: transparent !important;
+            position: relative;
+        }
+
+        /* === MAIN CARD === */
+        .subscription-form-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Subtle hover effect - no heavy glow */
+        .subscription-form-card:hover {
+            border-color: rgba(99, 102, 241, 0.2);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(99, 102, 241, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        /* === HEADER === */
+        .form-header {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .icon-circle {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.75rem;
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .form-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9375rem;
+        }
+
+        /* === FORM BODY === */
+        .form-body {
+            padding: 2rem;
+        }
+
+        .form-group-modern {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label-modern {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-label-modern .required {
+            color: #ef4444;
+        }
+
+        .form-label-modern .helper-icon {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.75rem;
+            cursor: help;
+            transition: color 0.2s;
+        }
+
+        .form-label-modern .helper-icon:hover {
+            color: #6366f1;
+        }
+
+        /* === INPUT GROUP === */
+        .input-group-modern {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 1.125rem;
+            pointer-events: none;
+            z-index: 2;
+            transition: color 0.2s;
+        }
+
+        /* === TEXT INPUTS === */
+        .form-control-modern {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.875rem 1rem 0.875rem 2.75rem;
+            color: white;
+            font-size: 0.9375rem;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .form-control-modern::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Subtle hover - not jarring */
+        .form-control-modern:hover:not(:focus):not(:disabled) {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Clear but subtle focus state */
+        .form-control-modern:focus {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        }
+
+        .form-control-modern:focus + .input-icon,
+        .form-control-modern:focus ~ .input-icon {
+            color: #6366f1;
+        }
+
+        /* === NUMBER INPUT (Amount) - Hide native spinner, add custom controls === */
+        .currency-input-wrapper {
+            position: relative;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            font-size: 1rem;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .currency-input {
+            padding-left: 2.25rem !important;
+            padding-right: 1rem !important;
+        }
+
+        /* Hide default number input spinner */
+        .currency-input::-webkit-outer-spin-button,
+        .currency-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .currency-input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Custom number controls */
+        .number-controls {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            z-index: 3;
+        }
+
+        .number-btn {
+            width: 28px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .number-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.3);
+            color: #6366f1;
+        }
+
+        .number-btn:active {
+            background: rgba(99, 102, 241, 0.3);
+            transform: scale(0.95);
+        }
+
+        /* === ENHANCED SELECT DROPDOWNS === */
+        .form-select-modern {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.875rem 2.75rem 0.875rem 2.75rem;
+            color: white;
+            font-size: 0.9375rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            appearance: none;
+            cursor: pointer;
+            outline: none;
+            /* Custom dropdown arrow */
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba(255,255,255,0.4)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.875rem center;
+            background-size: 14px 14px;
+        }
+
+        /* Subtle hover */
+        .form-select-modern:hover:not(:focus):not(:disabled) {
+            background-color: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba(255,255,255,0.6)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        }
+
+        /* Clear focus state */
+        .form-select-modern:focus {
+            background-color: rgba(255, 255, 255, 0.06);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236366f1' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        }
+
+        .form-select-modern:focus + .input-icon,
+        .input-group-modern:focus-within .input-icon {
+            color: #6366f1;
+        }
+
+        /* Enhanced dropdown options - dark themed */
+        .form-select-modern option {
+            background: #16161f;
+            color: white;
+            padding: 0.75rem;
+            font-size: 0.9375rem;
+        }
+
+        .form-select-modern option:hover {
+            background: #1f1f2e;
+        }
+
+        .form-select-modern option:checked {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+
+        /* Placeholder option styling */
+        .form-select-modern option[value=""] {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* === DATE INPUT === */
+        .form-control-modern[type="date"] {
+            color-scheme: dark;
+        }
+
+        .form-control-modern[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+        .form-control-modern[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 0.8;
+        }
+
+        /* === VALIDATION STATES === */
+        .form-control-modern.is-valid,
+        .form-select-modern.is-valid {
+            border-color: #10b981;
+            background-color: rgba(16, 185, 129, 0.04);
+        }
+
+        .form-control-modern.is-invalid,
+        .form-select-modern.is-invalid {
+            border-color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.04);
+        }
+
+        /* === INPUT HINTS === */
+        .input-hint {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.45);
+            margin-top: 0.375rem;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .input-hint i {
+            font-size: 0.8125rem;
+            opacity: 0.7;
+        }
+
+        /* === IMPROVED FEEDBACK MESSAGES === */
+        .feedback-message {
+            font-size: 0.8125rem;
+            margin-top: 0.5rem;
+            display: none;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            animation: slideDown 0.2s ease;
+        }
+
+        .feedback-message.show {
+            display: flex;
+        }
+
+        .feedback-message.success {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid #10b981;
+        }
+
+        .feedback-message.error {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid #ef4444;
+        }
+
+        .feedback-message i {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        @@keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* === SUBMIT BUTTON === */
+        .btn-submit-modern {
+            width: 100%;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 1.5rem;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-submit-modern:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-submit-modern:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-submit-modern:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-submit-modern .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @@keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* === BACK LINK === */
+        .back-link-modern {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .back-link-modern:hover {
+            color: #6366f1;
+            transform: translateX(-2px);
+        }
+
+        /* === SUCCESS ANIMATION === */
+        .success-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 10, 15, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            z-index: 10000;
+            display: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .success-animation.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @@keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @@keyframes scaleIn {
+            from { transform: scale(0) rotate(-180deg); }
+            to { transform: scale(1) rotate(0); }
+        }
+
+        /* === RESPONSIVE === */
+        @@media (max-width: 768px) {
+            .add-subscription-container {
+                padding: 1rem 0.5rem;
+            }
+
+            .form-body {
+                padding: 1.5rem;
+            }
+
+            .form-header {
+                padding: 1.5rem;
+            }
+
+            .form-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .icon-circle {
+                width: 64px;
+                height: 64px;
+                font-size: 1.5rem;
+            }
+        }
+
+        /* === ACCESSIBILITY === */
+        /* Clear focus visible for keyboard navigation */
+        .form-control-modern:focus-visible,
+        .form-select-modern:focus-visible,
+        .btn-submit-modern:focus-visible,
+        .back-link-modern:focus-visible {
+            outline: 2px solid #6366f1;
+            outline-offset: 2px;
+        }
+
+        /* Screen reader only content */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* High contrast mode support */
+        @@media (prefers-contrast: high) {
+            .form-control-modern,
+            .form-select-modern {
+                border-width: 2px;
+            }
+
+            .form-control-modern:focus,
+            .form-select-modern:focus {
+                border-width: 3px;
+            }
+        }
+
+        /* Reduced motion support */
+        @@media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+}
+
+<div class="add-subscription-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                
+                <a asp-page="/Dashboard" class="back-link-modern" aria-label="Return to Dashboard">
+                    <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+
+                <div class="subscription-form-card">
+                    <div class="form-header">
+                        <div class="icon-circle" aria-hidden="true">
+                            <i class="bi bi-plus-lg"></i>
+                        </div>
+                        <h2 class="fw-bold text-white mb-2">Add New Subscription</h2>
+                        <p class="text-white-50 mb-0">Track and manage your recurring expenses</p>
+                    </div>
+
+                    <div class="form-body">
+                        <form method="post" id="subscription-form" novalidate aria-label="Add subscription form">
+                            
+                            <!-- Service Name -->
+                            <div class="form-group-modern">
+                                <label for="service-name-input" class="form-label-modern">
+                                    Service Name
+                                    <span class="required" aria-label="required">*</span>
+                                    <i class="bi bi-info-circle helper-icon" 
+                                       tabindex="0"
+                                       role="button"
+                                       aria-label="Help: Enter the name of the service you're subscribing to"
+                                       title="Enter the name of the service you're subscribing to"></i>
+                                </label>
+                                <div class="input-group-modern">
+                                    <i class="bi bi-tag input-icon" aria-hidden="true"></i>
+                                    <input asp-for="Subscription.ServiceName" 
+                                           class="form-control-modern" 
+                                           id="service-name-input"
+                                           placeholder="e.g., Netflix, Spotify, Adobe..." 
+                                           required 
+                                           minlength="2"
+                                           maxlength="50"
+                                           autofocus
+                                           aria-required="true"
+                                           aria-describedby="service-name-error service-name-success" />
+                                </div>
+                                <div class="feedback-message error" id="service-name-error" role="alert">
+                                    <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+                                    <span>Please enter a valid service name (2-50 characters)</span>
+                                </div>
+                                <div class="feedback-message success" id="service-name-success" role="status">
+                                    <i class="bi bi-check-circle" aria-hidden="true"></i>
+                                    <span>Looks good!</span>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <!-- Amount with Custom Controls -->
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <label for="price-input" class="form-label-modern">
+                                            Amount
+                                            <span class="required" aria-label="required">*</span>
+                                        </label>
+                                        <div class="currency-input-wrapper">
+                                            <span class="currency-symbol" aria-hidden="true">₱</span>
+                                            <input asp-for="Subscription.Price" 
+                                                   class="form-control-modern currency-input" 
+                                                   id="price-input"
+                                                   placeholder="0.00" 
+                                                   type="number" 
+                                                   step="0.01" 
+                                                   min="1" 
+                                                   max="999999" 
+                                                   required
+                                                   aria-required="true"
+                                                   aria-describedby="price-hint price-error"
+                                                   aria-label="Price in Philippine Peso" />
+                                            <!-- Custom Number Controls -->
+                                            <div class="number-controls">
+                                                <button type="button" 
+                                                        class="number-btn" 
+                                                        id="price-increment"
+                                                        aria-label="Increase amount"
+                                                        tabindex="-1">
+                                                    <i class="bi bi-chevron-up" aria-hidden="true"></i>
+                                                </button>
+                                                <button type="button" 
+                                                        class="number-btn" 
+                                                        id="price-decrement"
+                                                        aria-label="Decrease amount"
+                                                        tabindex="-1">
+                                                    <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="input-hint" id="price-hint">
+                                            <i class="bi bi-info-circle" aria-hidden="true"></i>
+                                            <span>Enter amount in Philippine Peso (PHP)</span>
+                                        </div>
+                                        <div class="feedback-message error" id="price-error" role="alert">
+                                            <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+                                            <span>Please enter a valid amount (₱1 - ₱999,999)</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Billing Cycle -->
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <label for="cycle-input" class="form-label-modern">
+                                            Billing Cycle
+                                            <span class="required" aria-label="required">*</span>
+                                        </label>
+                                        <div class="input-group-modern">
+                                            <i class="bi bi-arrow-repeat input-icon" aria-hidden="true"></i>
+                                            <select asp-for="Subscription.BillingCycle" 
+                                                    class="form-select-modern" 
+                                                    id="cycle-input"
+                                                    required
+                                                    aria-required="true"
+                                                    aria-describedby="cycle-error">
+                                                <option value="">Choose frequency...</option>
+                                                <option value="Daily">Daily</option>
+                                                <option value="Weekly">Weekly</option>
+                                                <option value="Monthly" selected>Monthly</option>
+                                                <option value="Quarterly">Quarterly</option>
+                                                <option value="Yearly">Yearly</option>
+                                            </select>
+                                        </div>
+                                        <div class="feedback-message error" id="cycle-error" role="alert">
+                                            <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+                                            <span>Please select a billing cycle</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <!-- Category -->
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <label for="category-input" class="form-label-modern">
+                                            Category
+                                            <span class="required" aria-label="required">*</span>
+                                        </label>
+                                        <div class="input-group-modern">
+                                            <i class="bi bi-grid input-icon" aria-hidden="true"></i>
+                                            <select asp-for="Subscription.Category" 
+                                                    class="form-select-modern" 
+                                                    id="category-input"
+                                                    required
+                                                    aria-required="true"
+                                                    aria-describedby="category-error">
+                                                <option value="">Select category...</option>
+                                                <option value="Entertainment">Entertainment</option>
+                                                <option value="Software">Software</option>
+                                                <option value="Music">Music</option>
+                                                <option value="Cloud Storage">Cloud Storage</option>
+                                                <option value="Productivity">Productivity</option>
+                                                <option value="Fitness">Fitness</option>
+                                                <option value="News">News</option>
+                                                <option value="Gaming">Gaming</option>
+                                                <option value="Education">Education</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="feedback-message error" id="category-error" role="alert">
+                                            <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+                                            <span>Please select a category</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Next Payment Date -->
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <label for="date-input" class="form-label-modern">
+                                            Next Payment
+                                            <span class="required" aria-label="required">*</span>
+                                        </label>
+                                        <div class="input-group-modern">
+                                            <i class="bi bi-calendar-event input-icon" aria-hidden="true"></i>
+                                            <input asp-for="Subscription.NextPaymentDate" 
+                                                   type="date" 
+                                                   class="form-control-modern" 
+                                                   id="date-input"
+                                                   required
+                                                   aria-required="true"
+                                                   aria-describedby="date-hint date-error" />
+                                        </div>
+                                        <div class="input-hint" id="date-hint">
+                                            <i class="bi bi-info-circle" aria-hidden="true"></i>
+                                            <span>When is your next payment due?</span>
+                                        </div>
+                                        <div class="feedback-message error" id="date-error" role="alert">
+                                            <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+                                            <span>Please select a valid future date</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" 
+                                    class="btn-submit-modern" 
+                                    id="submit-button"
+                                    aria-label="Save subscription">
+                                <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                                Save Subscription
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Animation -->
+<div class="success-animation" id="success-animation" role="alert" aria-live="polite">
+    <div class="success-icon">
+        <i class="bi bi-check-lg fs-1 text-white" aria-hidden="true"></i>
+    </div>
+    <h3 class="text-white fw-bold mb-2">Success!</h3>
+    <p class="text-white-50">Subscription added successfully</p>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        (function() {
+            'use strict';
+            
+            // === ELEMENTS ===
+            const form = document.getElementById('subscription-form');
+            const submitBtn = document.getElementById('submit-button');
+            const inputs = {
+                serviceName: document.getElementById('service-name-input'),
+                price: document.getElementById('price-input'),
+                cycle: document.getElementById('cycle-input'),
+                category: document.getElementById('category-input'),
+                date: document.getElementById('date-input')
+            };
+            
+            // Custom number controls
+            const priceIncrementBtn = document.getElementById('price-increment');
+            const priceDecrementBtn = document.getElementById('price-decrement');
+            
+            // === INITIALIZATION ===
+            const today = new Date().toISOString().split('T')[0];
+            inputs.date.setAttribute('min', today);
+            
+            // === CUSTOM NUMBER INPUT CONTROLS ===
+            function incrementPrice() {
+                const currentValue = parseFloat(inputs.price.value) || 0;
+                const step = parseFloat(inputs.price.step) || 1;
+                const max = parseFloat(inputs.price.max) || Infinity;
+                const newValue = Math.min(currentValue + step, max);
+                inputs.price.value = newValue.toFixed(2);
+                inputs.price.dispatchEvent(new Event('input', { bubbles: true }));
+                inputs.price.focus();
+            }
+            
+            function decrementPrice() {
+                const currentValue = parseFloat(inputs.price.value) || 0;
+                const step = parseFloat(inputs.price.step) || 1;
+                const min = parseFloat(inputs.price.min) || 0;
+                const newValue = Math.max(currentValue - step, min);
+                inputs.price.value = newValue.toFixed(2);
+                inputs.price.dispatchEvent(new Event('input', { bubbles: true }));
+                inputs.price.focus();
+            }
+            
+            // Attach number control listeners
+            priceIncrementBtn.addEventListener('click', incrementPrice);
+            priceDecrementBtn.addEventListener('click', decrementPrice);
+            
+            // Keyboard support for number controls
+            inputs.price.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    incrementPrice();
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    decrementPrice();
+                }
+            });
+            
+            // === VALIDATION ===
+            const validators = {
+                serviceName: (value) => {
+                    const trimmed = value.trim();
+                    return trimmed.length >= 2 && trimmed.length <= 50;
+                },
+                price: (value) => {
+                    const num = parseFloat(value);
+                    return !isNaN(num) && num >= 1 && num <= 999999;
+                },
+                cycle: (value) => value && value !== '',
+                category: (value) => value && value !== '',
+                date: (value) => {
+                    if (!value) return false;
+                    const selectedDate = new Date(value);
+                    const todayDate = new Date(today);
+                    return selectedDate >= todayDate;
+                }
+            };
+            
+            // Validates a single field and updates UI accordingly
+            // fieldName - The field to validate
+            // returns boolean - Whether the field is valid
+            function validateField(fieldName) {
+                const input = inputs[fieldName];
+                const value = input.value;
+                const isValid = validators[fieldName](value);
+                
+                // Get feedback elements
+                const fieldId = fieldName.replace(/([A-Z])/g, '-$1').toLowerCase();
+                const errorEl = document.getElementById(`${fieldId}-error`);
+                const successEl = document.getElementById(`${fieldId}-success`);
+                
+                if (isValid) {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                    input.setAttribute('aria-invalid', 'false');
+                    if (errorEl) errorEl.classList.remove('show');
+                    if (successEl) successEl.classList.add('show');
+                    return true;
+                } else {
+                    input.classList.remove('is-valid');
+                    input.classList.add('is-invalid');
+                    input.setAttribute('aria-invalid', 'true');
+                    if (errorEl) errorEl.classList.add('show');
+                    if (successEl) successEl.classList.remove('show');
+                    return false;
+                }
+            }
+            
+            // === EVENT LISTENERS ===
+            
+            // Validate on blur
+            Object.keys(inputs).forEach(key => {
+                inputs[key].addEventListener('blur', () => {
+                    if (inputs[key].value) {
+                        validateField(key);
+                    }
+                });
+                
+                // Re-validate on input if field has error
+                inputs[key].addEventListener('input', () => {
+                    if (inputs[key].classList.contains('is-invalid')) {
+                        validateField(key);
+                    }
+                });
+            });
+            
+            // === FORM SUBMISSION ===
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate all fields
+                let isValid = true;
+                Object.keys(inputs).forEach(key => {
+                    if (!validateField(key)) {
+                        isValid = false;
+                    }
+                });
+                
+                if (!isValid) {
+                    // Scroll to first error with smooth animation
+                    const firstInvalid = form.querySelector('.is-invalid');
+                    if (firstInvalid) {
+                        firstInvalid.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center' 
+                        });
+                        // Announce error to screen readers
+                        firstInvalid.focus();
+                    }
+                    return;
+                }
+                
+                // Show loading state
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner" role="status" aria-label="Saving"></span> Saving...';
+                
+                // Simulate async save (in production, this would be form.submit())
+                setTimeout(() => {
+                    // Show success animation
+                    const successAnim = document.getElementById('success-animation');
+                    successAnim.classList.add('show');
+                    
+                    // Redirect after animation
+                    setTimeout(() => {
+                        // In production: form.submit() or use the actual redirect
+                        window.location.href = '/Dashboard';
+                    }, 1500);
+                }, 1000);
+            });
+            
+            // === HELPER ICON ACCESSIBILITY ===
+            document.querySelectorAll('.helper-icon').forEach(icon => {
+                icon.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        // Show tooltip or announce hint
+                        const hint = this.getAttribute('title');
+                        if (hint) {
+                            alert(hint); // In production, use a proper tooltip
+                        }
+                    }
+                });
+            });
+            
+            // === AUTO-FOCUS ===
+            setTimeout(() => {
+                inputs.serviceName.focus();
+            }, 100);
+            
+        })();
+    </script>
+}

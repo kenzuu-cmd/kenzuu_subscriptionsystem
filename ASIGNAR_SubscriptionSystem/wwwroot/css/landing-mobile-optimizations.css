@@ -1,0 +1,645 @@
+/**
+ * Landing Page Mobile Optimizations
+ * Performance and UX enhancements for mobile devices
+ * Includes hero gradient centering for premium mobile branding
+ * @version 2.0.0
+ */
+
+/* ========================================
+   MOBILE HERO GRADIENT CENTERING
+   Centers background gradients behind hero content
+   for optimal focus and premium appearance
+   ======================================== */
+
+/* Tablet Landscape & Portrait (≤991px) */
+@media (max-width: 991.98px) {
+  /* Reposition gradient orbs to center behind hero content */
+  .gradient-orb-1 {
+    width: 450px;
+    height: 450px;
+    top: 15%;
+    right: 50%;
+    transform: translateX(50%);
+    filter: blur(100px);
+    opacity: 0.35;
+    animation: floatCentered 18s ease-in-out infinite;
+  }
+
+  .gradient-orb-2 {
+    width: 400px;
+    height: 400px;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    filter: blur(90px);
+    opacity: 0.3;
+    animation: floatCentered 20s ease-in-out infinite reverse;
+  }
+
+  .gradient-orb-3 {
+    width: 350px;
+    height: 350px;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    filter: blur(80px);
+    opacity: 0.25;
+    animation: floatCentered 22s ease-in-out infinite;
+  }
+
+  /* Centered gradient mesh for focused hero backdrop */
+  .gradient-mesh {
+    background: radial-gradient(
+        circle at 50% 30%,
+        rgba(99, 102, 241, 0.12) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 50% 60%,
+        rgba(236, 72, 153, 0.08) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 50% 45%,
+        rgba(139, 92, 246, 0.06) 0%,
+        transparent 60%
+      );
+  }
+
+  /* Centered animation for mobile gradients */
+  @keyframes floatCentered {
+    0%,
+    100% {
+      transform: translate(-50%, 0) scale(1);
+    }
+    33% {
+      transform: translate(-50%, -20px) scale(1.05);
+    }
+    66% {
+      transform: translate(-50%, 20px) scale(0.95);
+    }
+  }
+
+  /* Hero visual shapes centered on tablet */
+  .hero-visual .floating-shape {
+    filter: blur(70px);
+    opacity: 0.5;
+  }
+
+  .hero-visual .shape-1 {
+    width: 250px;
+    height: 250px;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .hero-visual .shape-2 {
+    width: 280px;
+    height: 280px;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Mobile Portrait (≤767px) - Tighter gradient focus */
+@media (max-width: 767.98px) {
+  /* Scale down and intensify center focus */
+  .gradient-orb-1 {
+    width: 350px;
+    height: 350px;
+    top: 12%;
+    right: 50%;
+    transform: translateX(50%);
+    filter: blur(90px);
+    opacity: 0.4;
+  }
+
+  .gradient-orb-2 {
+    width: 320px;
+    height: 320px;
+    top: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    filter: blur(80px);
+    opacity: 0.35;
+  }
+
+  .gradient-orb-3 {
+    width: 280px;
+    height: 280px;
+    top: 22%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    filter: blur(70px);
+    opacity: 0.3;
+  }
+
+  /* Enhanced center gradient with better contrast for readability */
+  .gradient-mesh {
+    background: radial-gradient(
+        ellipse 80% 60% at 50% 28%,
+        rgba(99, 102, 241, 0.14) 0%,
+        rgba(99, 102, 241, 0.08) 30%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 70% 50% at 50% 55%,
+        rgba(236, 72, 153, 0.1) 0%,
+        rgba(236, 72, 153, 0.05) 30%,
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 50% 40%,
+        rgba(139, 92, 246, 0.08) 0%,
+        transparent 50%
+      );
+  }
+
+  /* Backdrop filter for hero content container - enhances legibility */
+  .hero-content {
+    position: relative;
+    padding: 2rem 1.5rem;
+    border-radius: 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Ensure text maintains high contrast for accessibility (AA compliant) */
+  .hero-title {
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+  }
+
+  .hero-description {
+    color: #d1d5db;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+  }
+
+  .hero-badge {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.4);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+  }
+}
+
+/* Small Phones (≤575px) - Maximum focus on hero content */
+@media (max-width: 575.98px) {
+  /* Compact, centered gradients tightly frame content */
+  .gradient-orb-1 {
+    width: 280px;
+    height: 280px;
+    top: 10%;
+    filter: blur(75px);
+    opacity: 0.45;
+  }
+
+  .gradient-orb-2 {
+    width: 250px;
+    height: 250px;
+    top: 32%;
+    filter: blur(65px);
+    opacity: 0.4;
+  }
+
+  .gradient-orb-3 {
+    width: 220px;
+    height: 220px;
+    top: 20%;
+    filter: blur(60px);
+    opacity: 0.35;
+  }
+
+  /* Tighter gradient focus around content */
+  .gradient-mesh {
+    background: radial-gradient(
+        ellipse 90% 70% at 50% 25%,
+        rgba(99, 102, 241, 0.16) 0%,
+        rgba(99, 102, 241, 0.1) 25%,
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse 80% 60% at 50% 50%,
+        rgba(236, 72, 153, 0.12) 0%,
+        rgba(236, 72, 153, 0.06) 25%,
+        transparent 50%
+      );
+  }
+
+  /* Enhanced content backdrop for small screens */
+  .hero-content {
+    padding: 1.75rem 1.25rem;
+    border-radius: 1.25rem;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  /* Stronger text contrast on small screens */
+  .hero-title {
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
+  }
+
+  .hero-description {
+    color: #e5e7eb;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* Ultra-Small Devices (≤374px) - Minimal gradient, maximum content focus */
+@media (max-width: 374.98px) {
+  .gradient-orb-1,
+  .gradient-orb-2,
+  .gradient-orb-3 {
+    opacity: 0.35;
+  }
+
+  .gradient-orb-1 {
+    width: 240px;
+    height: 240px;
+    filter: blur(65px);
+  }
+
+  .gradient-orb-2 {
+    width: 220px;
+    height: 220px;
+    filter: blur(55px);
+  }
+
+  .gradient-orb-3 {
+    width: 200px;
+    height: 200px;
+    filter: blur(50px);
+  }
+
+  .hero-content {
+    padding: 1.5rem 1rem;
+    background: rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* ========================================
+   MOBILE PERFORMANCE OPTIMIZATIONS
+   ======================================== */
+
+/* Reduce paint area on mobile */
+@media (max-width: 767.98px) {
+  .gradient-orb {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  .floating-shape {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+}
+
+/* ========================================
+   TOUCH INTERACTIONS
+   ======================================== */
+
+/* Improved touch targets */
+@media (max-width: 991.98px) {
+  .btn,
+  .nav-link,
+  a[href^='#'] {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Remove hover states on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .feature-card:hover,
+    .testimonial-card:hover,
+    .stat-card:hover {
+      transform: none;
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: none;
+    }
+
+    .btn-hero:hover {
+      transform: none;
+    }
+
+    .feature-card:hover .feature-icon {
+      transform: none;
+    }
+  }
+
+  /* Active states for touch feedback */
+  .btn-hero:active {
+    transform: scale(0.98);
+  }
+
+  .feature-card:active,
+  .testimonial-card:active {
+    transform: scale(0.99);
+  }
+}
+
+/* ========================================
+   FOLDABLE DEVICES SUPPORT
+   ======================================== */
+
+/* Samsung Galaxy Fold (280px - 653px inner, 653px+ outer) */
+@media (min-width: 280px) and (max-width: 653px) {
+  .hero-title {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Galaxy Z Fold outer screen (portrait) */
+@media (min-width: 280px) and (max-width: 375px) and (orientation: portrait) {
+  .hero-section {
+    padding: 1.25rem 0 1.75rem;
+  }
+
+  .btn-hero {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+/* ========================================
+   LANDSCAPE MODE OPTIMIZATIONS
+   ======================================== */
+
+@media (max-width: 991.98px) and (orientation: landscape) {
+  .hero-section {
+    min-height: auto;
+    padding: 2rem 0;
+  }
+
+  .hero-visual {
+    height: 250px;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-cta {
+    margin-bottom: 1rem;
+  }
+
+  .hero-trust {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+/* ========================================
+   DESKTOP PRESERVATION
+   Ensure gradients remain wide and immersive on desktop
+   ======================================== */
+
+@media (min-width: 992px) {
+  /* Restore desktop-optimized gradient positioning */
+  .gradient-orb-1 {
+    width: 600px;
+    height: 600px;
+    top: -10%;
+    right: -10%;
+    transform: none;
+    filter: blur(80px);
+    opacity: 0.3;
+    animation: float 20s infinite;
+  }
+
+  .gradient-orb-2 {
+    width: 500px;
+    height: 500px;
+    bottom: -10%;
+    left: -10%;
+    transform: none;
+    filter: blur(80px);
+    opacity: 0.3;
+    animation: float 25s infinite reverse;
+  }
+
+  .gradient-orb-3 {
+    width: 400px;
+    height: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(80px);
+    opacity: 0.3;
+    animation: float 30s infinite;
+  }
+
+  /* Desktop gradient mesh - wide immersive backdrop */
+  .gradient-mesh {
+    background: radial-gradient(
+        circle at 20% 30%,
+        rgba(99, 102, 241, 0.08) 0%,
+        transparent 40%
+      ),
+      radial-gradient(
+        circle at 80% 70%,
+        rgba(236, 72, 153, 0.06) 0%,
+        transparent 40%
+      ),
+      radial-gradient(
+        circle at 50% 50%,
+        rgba(139, 92, 246, 0.04) 0%,
+        transparent 50%
+      );
+  }
+
+  /* No backdrop on desktop - clean presentation */
+  .hero-content {
+    padding: 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  /* Desktop text shadows - subtle */
+  .hero-title {
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-description {
+    color: #9ca3af;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  .hero-badge {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.3);
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+}
+
+/* ========================================
+   SAFE AREA INSETS (iPhone Notch/Dynamic Island)
+   ======================================== */
+
+@supports (padding: max(0px)) {
+  .navbar {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+
+  .landing-wrapper {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* ========================================
+   HIGH DPI DISPLAYS
+   ======================================== */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Crisper text rendering on retina displays */
+  .hero-title,
+  .section-title,
+  .feature-title {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ========================================
+   DARK MODE OPTIMIZATIONS
+   ======================================== */
+
+/* Reduce eye strain on OLED screens */
+@media (prefers-color-scheme: dark) {
+  .landing-wrapper {
+    background: #000000;
+  }
+
+  /* Pure black for OLED power savings */
+  .navbar {
+    background: rgba(0, 0, 0, 0.95) !important;
+  }
+}
+
+/* ========================================
+   REDUCED DATA MODE
+   ======================================== */
+
+@media (prefers-reduced-data: reduce) {
+  /* Disable animations on reduced data */
+  .gradient-orb,
+  .floating-shape,
+  .visual-glow {
+    animation: none !important;
+  }
+
+  /* Reduce blur effects */
+  .gradient-orb,
+  .floating-shape {
+    filter: blur(40px) !important;
+  }
+}
+
+/* ========================================
+   PRINT OPTIMIZATIONS
+   ======================================== */
+
+@media print {
+  .navbar,
+  .landing-background,
+  .gradient-orb,
+  .floating-shape,
+  .hero-visual {
+    display: none !important;
+  }
+
+  .landing-wrapper {
+    background: white;
+    color: black;
+  }
+
+  .hero-title,
+  .section-title {
+    color: black;
+  }
+
+  .text-gradient {
+    -webkit-text-fill-color: black;
+  }
+}
+
+/* ========================================
+   VIEWPORT HEIGHT FIX FOR MOBILE BROWSERS
+   ======================================== */
+
+/* Fix for mobile browsers with dynamic toolbars */
+@supports (-webkit-touch-callout: none) {
+  .hero-section {
+    /* Use fixed pixel height on iOS instead of vh */
+    min-height: calc(100vh - 80px);
+  }
+}
+
+/* ========================================
+   FONT SIZE ADJUSTMENTS FOR READABILITY
+   ======================================== */
+
+/* Ensure minimum font sizes on small screens */
+@media (max-width: 374.98px) {
+  body {
+    font-size: 14px;
+  }
+
+  .hero-badge,
+  .section-badge,
+  .trust-item,
+  .stat-label {
+    font-size: max(0.75rem, 12px);
+  }
+}
+
+/* ========================================
+   FOCUS MANAGEMENT FOR KEYBOARD NAVIGATION
+   ======================================== */
+
+/* Enhanced focus indicators for accessibility */
+@media (min-width: 768px) {
+  .btn-hero:focus-visible,
+  .feature-card:focus-visible,
+  .testimonial-card:focus-visible,
+  .nav-link:focus-visible {
+    outline: 3px solid #6366f1;
+    outline-offset: 4px;
+  }
+}
+
+/* Larger focus indicators on mobile for better visibility */
+@media (max-width: 767.98px) {
+  .btn-hero:focus-visible,
+  .nav-link:focus-visible {
+    outline: 4px solid #6366f1;
+    outline-offset: 2px;
+  }
+}

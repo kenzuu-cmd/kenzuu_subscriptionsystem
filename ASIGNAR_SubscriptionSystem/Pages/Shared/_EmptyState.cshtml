@@ -1,0 +1,43 @@
+@*
+    Empty State Component
+    Usage: @await Html.PartialAsync("_EmptyState", new { Title = "No Subscriptions", Message = "Get started...", Icon = "inbox", ActionText = "Add First Subscription", ActionLink = "/AddSubscription" })
+*@
+
+@{
+    var title = ViewData["Title"] as string ?? "No Items Found";
+    var message = ViewData["Message"] as string ?? "Get started by adding your first item.";
+    var icon = ViewData["Icon"] as string ?? "inbox";
+    var actionText = ViewData["ActionText"] as string;
+    var actionLink = ViewData["ActionLink"] as string;
+}
+
+<div class="empty-state fade-in" role="status" aria-live="polite">
+    <div class="empty-state-icon">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            @if (icon == "inbox")
+            {
+                <rect x="8" y="16" width="48" height="36" rx="4" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M8 28H20L24 36H40L44 28H56" stroke="currentColor" stroke-width="2" fill="none"/>
+                <circle cx="32" cy="36" r="2" fill="currentColor"/>
+            }
+            else if (icon == "search")
+            {
+                <circle cx="28" cy="28" r="16" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M40 40L52 52" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            }
+            else
+            {
+                <rect x="16" y="16" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2" fill="none"/>
+            }
+        </svg>
+    </div>
+    <h3 class="empty-state-title">@title</h3>
+    <p class="empty-state-message">@message</p>
+    @if (!string.IsNullOrEmpty(actionText) && !string.IsNullOrEmpty(actionLink))
+    {
+        <a href="@actionLink" class="btn btn-primary rounded-pill px-5 py-3 mt-3">
+            <i class="bi bi-plus-lg me-2" aria-hidden="true"></i>
+            @actionText
+        </a>
+    }
+</div>

@@ -1,0 +1,665 @@
+﻿@page
+@model ASIGNAR_SubscriptionSystem.Pages.SettingsModel
+@{
+    ViewData["Title"] = "Settings";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/settings-responsive.css">
+    <style>
+        /* Modern Settings Page Styles */
+        .settings-container {
+            min-height: 100vh;
+            padding: 3rem 0;
+        }
+        
+        .settings-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
+            margin-right: 2rem;
+        }
+        
+        .settings-section {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .settings-section:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.1);
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-title i {
+            color: #6366f1;
+            font-size: 1.5rem;
+        }
+        
+        .section-subtitle {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group-settings {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label-settings {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control-settings {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.875rem 1rem;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .form-control-settings:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+        
+        .form-control-settings[readonly] {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .form-select-settings {
+            background: rgba(255, 255, 255, 0.05) url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba(255,255,255,0.4)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e") right 0.75rem center/12px 12px no-repeat;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.875rem 2.5rem 0.875rem 1rem;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            appearance: none;
+            cursor: pointer;
+        }
+        
+        .form-select-settings:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+        
+        .form-select-settings option {
+            background: #1a1a2e;
+            color: white;
+        }
+        
+        .helper-text {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 0.375rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .helper-text i {
+            font-size: 0.875rem;
+        }
+        
+        .preference-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .preference-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .preference-content h6 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+        
+        .preference-content p {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin: 0;
+        }
+        
+        /* Modern Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 56px;
+            height: 28px;
+        }
+        
+        .toggle-switch input[type="checkbox"] {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            border-radius: 28px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background: white;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+        }
+        
+        input[type="checkbox"]:checked + .toggle-slider {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-color: #6366f1;
+        }
+        
+        input[type="checkbox"]:checked + .toggle-slider:before {
+            transform: translateX(28px);
+        }
+        
+        input[type="checkbox"]:focus + .toggle-slider {
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        
+        .btn-settings-primary {
+            padding: 0.875rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-settings-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.5);
+        }
+        
+        .btn-settings-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-settings-secondary {
+            padding: 0.875rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-settings-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Danger Zone */
+        .danger-zone {
+            background: rgba(239, 68, 68, 0.05);
+            border: 2px solid rgba(239, 68, 68, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .danger-zone-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .danger-zone-header i {
+            color: #ef4444;
+            font-size: 1.5rem;
+        }
+        
+        .danger-zone-header h5 {
+            color: #ef4444;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .danger-zone-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        
+        .danger-zone-text {
+            flex: 1;
+        }
+        
+        .danger-zone-text p {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .danger-zone-warning {
+            font-size: 0.875rem;
+            color: rgba(239, 68, 68, 0.8);
+            margin: 0;
+        }
+        
+        .btn-danger-settings {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            background: transparent;
+            border: 2px solid #ef4444;
+            border-radius: 10px;
+            color: #ef4444;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .btn-danger-settings:hover {
+            background: #ef4444;
+            color: white;
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+        }
+        
+        .save-notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(16, 185, 129, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 12px 40px rgba(16, 185, 129, 0.4);
+            z-index: 10000;
+            animation: slideInUp 0.3s ease;
+        }
+        
+        .save-notification.show {
+            display: flex;
+        }
+        
+        @@keyframes slideInUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @@media (max-width: 768px) {
+            .settings-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-avatar {
+                margin: 0 auto 1.5rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-settings-primary,
+            .btn-settings-secondary {
+                width: 100%;
+            }
+            
+            .danger-zone-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .btn-danger-settings {
+                width: 100%;
+            }
+        }
+    </style>
+}
+
+<div class="settings-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+
+                <!-- Header -->
+                <div class="settings-header d-flex align-items-center">
+                    <div class="profile-avatar">
+                        JD
+                    </div>
+                    <div>
+                        <h1 class="fw-bold text-white mb-2">Account Settings</h1>
+                        <p class="text-white-50 mb-0">Manage your profile, preferences, and account security</p>
+                    </div>
+                </div>
+
+                <form method="post" id="settings-form">
+
+                    <!-- General Information -->
+                    <div class="settings-section">
+                        <div class="section-title">
+                            <i class="bi bi-person-circle"></i>
+                            <span>General Information</span>
+                        </div>
+                        <p class="section-subtitle">Update your personal details and contact information</p>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-group-settings">
+                                    <label class="form-label-settings">
+                                        <i class="bi bi-person me-1"></i> Full Name
+                                    </label>
+                                    <input asp-for="FullName" class="form-control-settings" placeholder="Enter your full name" />
+                                    <div class="helper-text">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>Your name as it appears on your account</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-settings">
+                                    <label class="form-label-settings">
+                                        <i class="bi bi-envelope me-1"></i> Email Address
+                                    </label>
+                                    <input asp-for="Email" class="form-control-settings" placeholder="your.email@example.com" readonly />
+                                    <div class="helper-text">
+                                        <i class="bi bi-lock"></i>
+                                        <span>Contact support to change your email</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-settings">
+                            <label class="form-label-settings">
+                                <i class="bi bi-currency-exchange me-1"></i> Default Currency
+                            </label>
+                            <select asp-for="Currency" class="form-select-settings">
+                                <option value="PHP" selected>₱ PHP - Philippine Peso (Recommended)</option>
+                                <option value="USD">$ USD - United States Dollar</option>
+                                <option value="EUR">€ EUR - Euro</option>
+                                <option value="GBP">£ GBP - British Pound</option>
+                                <option value="JPY">¥ JPY - Japanese Yen</option>
+                            </select>
+                            <div class="helper-text">
+                                <i class="bi bi-info-circle"></i>
+                                <span>All monetary values will be displayed in this currency</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- App Preferences -->
+                    <div class="settings-section">
+                        <div class="section-title">
+                            <i class="bi bi-gear-fill"></i>
+                            <span>App Preferences</span>
+                        </div>
+                        <p class="section-subtitle">Customize your notification settings and app behavior</p>
+
+                        <div class="preference-item">
+                            <div class="preference-content">
+                                <h6>
+                                    <i class="bi bi-bell me-2"></i>Email Notifications
+                                </h6>
+                                <p>Receive email alerts when subscription payments are due</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" asp-for="EmailNotifications" />
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="preference-item">
+                            <div class="preference-content">
+                                <h6>
+                                    <i class="bi bi-file-earmark-bar-graph me-2"></i>Monthly Reports
+                                </h6>
+                                <p>Get a detailed spending summary delivered to your inbox every month</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked />
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="preference-item">
+                            <div class="preference-content">
+                                <h6>
+                                    <i class="bi bi-clock-history me-2"></i>Payment Reminders
+                                </h6>
+                                <p>Get reminders 3 days before subscription payments are due</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked />
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button type="button" class="btn-settings-secondary" onclick="window.location.href='/Dashboard'">
+                            <i class="bi bi-x-lg me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn-settings-primary" id="save-button">
+                            <i class="bi bi-check-lg me-2"></i>Save Changes
+                        </button>
+                    </div>
+
+                </form>
+
+                <!-- Danger Zone -->
+                <div class="danger-zone">
+                    <div class="danger-zone-header">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <h5>Danger Zone</h5>
+                    </div>
+                    <div class="danger-zone-content">
+                        <div class="danger-zone-text">
+                            <p>Permanently delete your account and all subscription data</p>
+                            <p class="danger-zone-warning">
+                                <i class="bi bi-shield-exclamation me-1"></i>
+                                <strong>Warning:</strong> This action cannot be undone. All your data will be lost forever.
+                            </p>
+                        </div>
+                        <button type="button" class="btn-danger-settings" id="delete-account-btn">
+                            <i class="bi bi-trash me-2"></i>Delete Account
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Save Notification -->
+<div class="save-notification" id="save-notification">
+    <i class="bi bi-check-circle-fill fs-4"></i>
+    <span>Settings saved successfully!</span>
+</div>
+
+@section Scripts {
+    <script>
+        (function() {
+            'use strict';
+            
+            const form = document.getElementById('settings-form');
+            const saveBtn = document.getElementById('save-button');
+            const saveNotification = document.getElementById('save-notification');
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Show loading state
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+                
+                // Simulate async save
+                setTimeout(() => {
+                    // Reset button
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '<i class="bi bi-check-lg me-2"></i>Save Changes';
+                    
+                    // Show success notification
+                    saveNotification.classList.add('show');
+                    
+                    // Hide notification after 3 seconds
+                    setTimeout(() => {
+                        saveNotification.classList.remove('show');
+                    }, 3000);
+                    
+                    // In production, submit the form for real
+                    // form.submit();
+                }, 1000);
+            });
+            
+            // Delete account functionality
+            const deleteBtn = document.getElementById('delete-account-btn');
+            deleteBtn.addEventListener('click', function() {
+                const confirmed = confirm(
+                    '⚠️ DANGER: Delete Account\n\n' +
+                    'This will PERMANENTLY DELETE:\n' +
+                    '• Your entire profile\n' +
+                    '• All subscription data\n' +
+                    '• Payment history\n' +
+                    '• App preferences\n\n' +
+                    'This action CANNOT be undone!\n\n' +
+                    'Are you absolutely sure you want to continue?'
+                );
+                
+                if (confirmed) {
+                    const doubleCheck = confirm(
+                        '⚠️ FINAL WARNING\n\n' +
+                        'Your account will be deleted in 5 seconds.\n\n' +
+                        'Click OK to proceed with deletion.\n' +
+                        'Click Cancel to abort.'
+                    );
+                    
+                    if (doubleCheck) {
+                        // Show loading state
+                        deleteBtn.disabled = true;
+                        deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Deleting...';
+                        
+                        // Simulate API call
+                        setTimeout(() => {
+                            // Clear all data
+                            localStorage.clear();
+                            sessionStorage.clear();
+                            
+                            // Show farewell message
+                            alert('Your account has been deleted. Goodbye! 👋');
+                            
+                            // Redirect to home
+                            window.location.href = '/Home';
+                        }, 2000);
+                    }
+                }
+            });
+            
+            // Mark form as modified
+            let isModified = false;
+            form.querySelectorAll('input, select, textarea').forEach(input => {
+                input.addEventListener('change', () => {
+                    isModified = true;
+                });
+            });
+            
+            // Warn before leaving if modified
+            window.addEventListener('beforeunload', (e) => {
+                if (isModified) {
+                    e.preventDefault();
+                    e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+                    return e.returnValue;
+                }
+            });
+            
+            // Reset modified flag on save
+            form.addEventListener('submit', () => {
+                isModified = false;
+            });
+            
+        })();
+    </script>
+}

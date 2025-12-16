@@ -1,0 +1,450 @@
+/**
+ * Reports Page Mobile Responsive Styles
+ * Additional responsive improvements for Reports & Analytics page
+ * Includes mobile/tablet hero gradient centering
+ */
+
+/* ========================================
+   DESKTOP PRESERVATION
+   Clean, transparent header on desktop
+   ======================================== */
+
+@media (min-width: 992px) {
+  .dashboard-header {
+    padding: 0;
+    margin-bottom: 2rem;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .dashboard-title {
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .dashboard-subtitle {
+    color: #9ca3af;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Tablets & Foldables Landscape */
+@media (max-width: 991.98px) {
+  /* Use dashboard-header-section class for gradient centering */
+  .dashboard-header {
+    position: relative;
+    padding: 2rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 1.5rem;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .dashboard-title {
+    font-size: 2rem;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  }
+
+  .dashboard-subtitle {
+    font-size: 0.9375rem;
+    color: #d1d5db;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .filter-section {
+    margin-bottom: 2rem;
+  }
+
+  .chart-card {
+    padding: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .chart-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .chart-header h5 {
+    font-size: 1.125rem;
+  }
+
+  canvas {
+    max-height: 300px;
+  }
+
+  .insights-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Tablets Portrait & Large Phones */
+@media (max-width: 767.98px) {
+  .dashboard-header {
+    margin-bottom: 1.75rem;
+    padding: 1.75rem 1.25rem;
+    border-radius: 1.25rem;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .dashboard-header .row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .dashboard-header .col-lg-8,
+  .dashboard-header .col-lg-4 {
+    width: 100%;
+    text-align: center;
+  }
+
+  .dashboard-header .text-lg-end {
+    text-align: center !important;
+  }
+
+  .dashboard-header .btn {
+    width: 100%;
+    min-height: 48px;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .dashboard-header .me-2 {
+    margin-right: 0 !important;
+  }
+
+  .dashboard-title {
+    font-size: 1.75rem;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
+  }
+
+  .dashboard-subtitle {
+    font-size: 0.875rem;
+    color: #e5e7eb;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+  }
+
+  .filter-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-section .row {
+    flex-direction: column;
+  }
+
+  .filter-section .col-md-6 {
+    width: 100%;
+  }
+
+  .form-label {
+    font-size: 0.875rem;
+  }
+
+  .filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .filter-chip {
+    flex: 0 1 calc(50% - 0.25rem);
+    min-width: 0;
+    padding: 0.75rem 1rem;
+    min-height: 44px;
+    font-size: 0.875rem;
+    justify-content: center;
+    touch-action: manipulation;
+  }
+
+  .filter-chip.active {
+    font-weight: 600;
+  }
+
+  .chart-card {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .chart-header {
+    margin-bottom: 1.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .chart-header h5 {
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+
+  .chart-header .text-muted {
+    font-size: 0.8125rem;
+  }
+
+  .chart-container {
+    margin: 0 -0.5rem;
+  }
+
+  canvas {
+    max-height: 250px !important;
+  }
+
+  .insights-card {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+
+  .insights-list {
+    gap: 0.875rem;
+  }
+
+  .insight-item {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .insight-item i {
+    font-size: 1.25rem;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .insight-item strong {
+    font-size: 0.9375rem;
+  }
+
+  .insight-item p {
+    font-size: 0.8125rem;
+  }
+
+  .top-subscriptions-list {
+    gap: 0.75rem;
+  }
+
+  .subscription-item {
+    padding: 0.875rem;
+    border-radius: 12px;
+  }
+
+  .subscription-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .subscription-name {
+    font-size: 0.9375rem;
+  }
+
+  .subscription-price {
+    font-size: 0.875rem;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 575.98px) {
+  .dashboard-header {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem 1rem;
+    border-radius: 1rem;
+    background: rgba(0, 0, 0, 0.35);
+  }
+
+  .dashboard-title {
+    font-size: 1.5rem;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
+  }
+
+  .dashboard-subtitle {
+    font-size: 0.8125rem;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
+  }
+
+  .dashboard-header .btn {
+    font-size: 0.9375rem;
+    padding: 0.875rem 1.25rem;
+  }
+
+  .filter-section {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-label {
+    font-size: 0.8125rem;
+  }
+
+  .filter-chip {
+    flex: 0 1 100%;
+    padding: 0.8125rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  .chart-card {
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .chart-header h5 {
+    font-size: 0.9375rem;
+  }
+
+  .chart-header .text-muted {
+    font-size: 0.75rem;
+  }
+
+  canvas {
+    max-height: 220px !important;
+  }
+
+  .insights-card {
+    padding: 1rem;
+  }
+
+  .insights-list {
+    gap: 0.75rem;
+  }
+
+  .insight-item {
+    padding: 0.875rem;
+  }
+
+  .insight-item i {
+    font-size: 1.125rem;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .insight-item strong {
+    font-size: 0.875rem;
+  }
+
+  .insight-item p {
+    font-size: 0.75rem;
+  }
+
+  .subscription-item {
+    padding: 0.75rem;
+  }
+
+  .subscription-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.875rem;
+  }
+
+  .subscription-name {
+    font-size: 0.875rem;
+  }
+
+  .subscription-price {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Ultra-Small Devices */
+@media (max-width: 374.98px) {
+  .dashboard-title {
+    font-size: 1.375rem;
+  }
+
+  .chart-card {
+    padding: 1rem;
+  }
+
+  .chart-header h5 {
+    font-size: 0.875rem;
+  }
+
+  canvas {
+    max-height: 200px !important;
+  }
+
+  .insight-item {
+    padding: 0.75rem;
+  }
+
+  .insight-item i {
+    min-width: 28px;
+    min-height: 28px;
+    font-size: 1rem;
+  }
+
+  .subscription-item {
+    padding: 0.625rem;
+  }
+}
+
+/* Touch Targets */
+@media (max-width: 991.98px) {
+  .filter-chip,
+  .chart-header button,
+  .insight-item,
+  .subscription-item,
+  button,
+  .btn {
+    touch-action: manipulation;
+  }
+
+  .filter-chip:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Landscape Mode */
+@media (max-width: 991.98px) and (orientation: landscape) {
+  .dashboard-container {
+    padding: 1.5rem 0;
+  }
+
+  .chart-card {
+    margin-bottom: 1.5rem;
+  }
+
+  canvas {
+    max-height: 200px !important;
+  }
+
+  .filter-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+  }
+
+  .filter-chip {
+    flex: 0 0 auto;
+    min-width: 120px;
+  }
+}
+
+/* Safe Area Support */
+@media (max-width: 767.98px) {
+  .dashboard-container .container-fluid {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}
+
+/* Remove Hover Effects on Touch Devices */
+@media (hover: none) and (pointer: coarse) {
+  .filter-chip:hover {
+    transform: none;
+  }
+
+  .chart-card:hover {
+    transform: none;
+  }
+
+  .insight-item:hover,
+  .subscription-item:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.03);
+  }
+}

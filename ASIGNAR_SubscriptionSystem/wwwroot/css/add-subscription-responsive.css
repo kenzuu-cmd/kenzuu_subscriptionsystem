@@ -1,0 +1,559 @@
+/**
+ * Add Subscription Page Mobile Responsive Styles
+ * Comprehensive responsive improvements for all device sizes
+ */
+
+/* Large Tablets & Small Laptops */
+@media (max-width: 1199.98px) {
+  .add-subscription-container {
+    padding: 2rem 1rem;
+  }
+
+  .subscription-form-card {
+    max-width: 680px;
+  }
+
+  .form-header {
+    padding: 2rem;
+  }
+
+  .form-body {
+    padding: 2rem;
+  }
+
+  .form-footer {
+    padding: 1.75rem 2rem;
+  }
+
+  .icon-wrapper {
+    width: 56px;
+    height: 56px;
+    font-size: 1.75rem;
+    margin-right: 1.25rem;
+  }
+}
+
+/* Tablets & Foldables Landscape */
+@media (max-width: 991.98px) {
+  .add-subscription-container {
+    padding: 1.5rem 1rem;
+    align-items: flex-start;
+  }
+
+  .subscription-form-card {
+    max-width: 620px;
+    margin: 1rem 0;
+  }
+
+  .form-header {
+    padding: 1.75rem;
+  }
+
+  .form-header h2 {
+    font-size: 1.75rem;
+  }
+
+  .form-header p {
+    font-size: 0.9375rem;
+  }
+
+  .icon-wrapper {
+    width: 52px;
+    height: 52px;
+    font-size: 1.5rem;
+    margin-right: 1rem;
+  }
+
+  .form-body {
+    padding: 1.75rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-label {
+    font-size: 0.9375rem;
+  }
+
+  .form-control,
+  .form-select {
+    padding: 0.875rem;
+    font-size: 1rem;
+  }
+
+  .currency-select-wrapper {
+    gap: 0.75rem;
+  }
+
+  .quick-fill-card {
+    padding: 1rem;
+  }
+
+  .form-footer {
+    padding: 1.5rem 1.75rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-submit-subscription {
+    min-width: 160px;
+  }
+}
+
+/* Tablets Portrait & Large Phones */
+@media (max-width: 767.98px) {
+  .add-subscription-container {
+    padding: 1rem 0.75rem;
+  }
+
+  .subscription-form-card {
+    border-radius: 16px;
+    margin: 0;
+  }
+
+  .form-header {
+    padding: 1.5rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .icon-wrapper {
+    width: 48px;
+    height: 48px;
+    font-size: 1.375rem;
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .form-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .form-header p {
+    font-size: 0.875rem;
+  }
+
+  .form-body {
+    padding: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-label {
+    font-size: 0.875rem;
+  }
+
+  .form-label .required {
+    font-size: 1rem;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: 1rem;
+    padding: 0.875rem;
+    min-height: 48px;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  }
+
+  .currency-select-wrapper {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-control[type='number'],
+  .form-select.currency-select {
+    width: 100%;
+  }
+
+  .input-icon {
+    font-size: 1.125rem;
+  }
+
+  .form-text {
+    font-size: 0.8125rem;
+  }
+
+  .quick-fill-section {
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .quick-fill-header {
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .quick-fill-header h4 {
+    font-size: 0.9375rem;
+  }
+
+  .quick-fill-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .quick-fill-card {
+    padding: 0.875rem;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .quick-fill-card .icon {
+    font-size: 1.25rem;
+  }
+
+  .quick-fill-card .name {
+    font-size: 0.875rem;
+  }
+
+  .quick-fill-card .price {
+    font-size: 0.8125rem;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .category-option {
+    padding: 0.875rem;
+    min-height: 48px;
+  }
+
+  .category-option i {
+    font-size: 1.125rem;
+  }
+
+  .category-option span {
+    font-size: 0.8125rem;
+  }
+
+  .billing-cycle-options {
+    gap: 0.5rem;
+  }
+
+  .cycle-option {
+    padding: 0.875rem;
+    min-height: 48px;
+  }
+
+  .cycle-option .label {
+    font-size: 0.9375rem;
+  }
+
+  .cycle-option .description {
+    font-size: 0.75rem;
+  }
+
+  .form-footer {
+    padding: 1.25rem 1.5rem;
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .btn-cancel,
+  .btn-submit-subscription {
+    width: 100%;
+    min-height: 48px;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 0.875rem 1.5rem;
+    min-width: unset;
+  }
+
+  .success-toast {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    width: auto;
+    border-radius: 12px;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 575.98px) {
+  .add-subscription-container {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .subscription-form-card {
+    border-radius: 12px;
+  }
+
+  .form-header {
+    padding: 1.25rem;
+  }
+
+  .icon-wrapper {
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .form-header h2 {
+    font-size: 1.375rem;
+  }
+
+  .form-header p {
+    font-size: 0.8125rem;
+  }
+
+  .form-body {
+    padding: 1.25rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-label {
+    font-size: 0.8125rem;
+    margin-bottom: 0.375rem;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: 0.9375rem;
+    padding: 0.8125rem;
+  }
+
+  .input-icon {
+    font-size: 1rem;
+    left: 0.8125rem;
+  }
+
+  .form-control.has-icon {
+    padding-left: 2.375rem;
+  }
+
+  .form-text {
+    font-size: 0.75rem;
+  }
+
+  .quick-fill-section {
+    margin-top: 1.25rem;
+  }
+
+  .quick-fill-header h4 {
+    font-size: 0.875rem;
+  }
+
+  .quick-fill-cards {
+    grid-template-columns: 1fr;
+    gap: 0.625rem;
+  }
+
+  .quick-fill-card {
+    padding: 0.8125rem;
+  }
+
+  .quick-fill-card .icon {
+    font-size: 1.125rem;
+    margin-right: 0.625rem;
+  }
+
+  .quick-fill-card .name {
+    font-size: 0.8125rem;
+  }
+
+  .quick-fill-card .price {
+    font-size: 0.75rem;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .category-option {
+    padding: 0.8125rem;
+  }
+
+  .category-option i {
+    font-size: 1rem;
+    margin-right: 0.625rem;
+  }
+
+  .billing-cycle-options {
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .cycle-option {
+    padding: 0.8125rem;
+  }
+
+  .cycle-option .label {
+    font-size: 0.875rem;
+  }
+
+  .cycle-option .description {
+    font-size: 0.6875rem;
+  }
+
+  .form-footer {
+    padding: 1rem 1.25rem;
+  }
+
+  .btn-cancel,
+  .btn-submit-subscription {
+    font-size: 0.9375rem;
+    padding: 0.8125rem 1.25rem;
+  }
+}
+
+/* Ultra-Small Devices */
+@media (max-width: 374.98px) {
+  .form-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .form-body {
+    padding: 1rem;
+  }
+
+  .form-label {
+    font-size: 0.75rem;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: 0.875rem;
+    padding: 0.75rem;
+  }
+
+  .quick-fill-card {
+    padding: 0.75rem;
+  }
+
+  .quick-fill-card .icon {
+    font-size: 1rem;
+  }
+
+  .quick-fill-card .name {
+    font-size: 0.75rem;
+  }
+
+  .quick-fill-card .price {
+    font-size: 0.6875rem;
+  }
+
+  .category-option {
+    padding: 0.75rem;
+  }
+
+  .category-option span {
+    font-size: 0.75rem;
+  }
+
+  .cycle-option {
+    padding: 0.75rem;
+  }
+
+  .form-footer {
+    padding: 0.875rem 1rem;
+  }
+}
+
+/* Touch Targets & Interactions */
+@media (max-width: 991.98px) {
+  button,
+  .btn,
+  input,
+  select,
+  .quick-fill-card,
+  .category-option,
+  .cycle-option,
+  input[type='submit'] {
+    touch-action: manipulation;
+  }
+
+  .quick-fill-card:active {
+    transform: scale(0.98);
+  }
+
+  .category-option:active,
+  .cycle-option:active {
+    transform: scale(0.98);
+  }
+
+  /* Increase tap area for radio buttons */
+  .category-option input[type='radio'],
+  .cycle-option input[type='radio'] {
+    min-width: 22px;
+    min-height: 22px;
+    cursor: pointer;
+  }
+}
+
+/* Landscape Mode */
+@media (max-width: 991.98px) and (orientation: landscape) {
+  .add-subscription-container {
+    padding: 1rem;
+    min-height: auto;
+  }
+
+  .subscription-form-card {
+    margin: 0.5rem 0;
+  }
+
+  .form-header {
+    padding: 1.25rem 1.75rem;
+  }
+
+  .form-body {
+    padding: 1.25rem 1.75rem;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .quick-fill-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .billing-cycle-options {
+    flex-direction: row;
+  }
+}
+
+/* Safe Area Support for Notched Devices */
+@media (max-width: 767.98px) {
+  .add-subscription-container {
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .form-body {
+    padding-left: max(1.5rem, env(safe-area-inset-left));
+    padding-right: max(1.5rem, env(safe-area-inset-right));
+  }
+}
+
+/* Remove Hover Effects on Touch Devices */
+@media (hover: none) and (pointer: coarse) {
+  .subscription-form-card:hover {
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .quick-fill-card:hover,
+  .category-option:hover,
+  .cycle-option:hover {
+    transform: none;
+  }
+}
