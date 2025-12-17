@@ -117,6 +117,7 @@
   z-index: 1050;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transform: translateY(-8px) scale(0.98);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
@@ -139,6 +140,7 @@
 .notification-dropdown.show {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
   transform: translateY(0) scale(1);
 }
 

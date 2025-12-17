@@ -88,9 +88,17 @@
                         <a class="nav-link nav-link-clean @(currentPage == "/Dashboard" ? "active" : "")" 
                            asp-area="" 
                            asp-page="/Dashboard"
-                           aria-label="Dashboard">
+                           aria-label="Dashboard Overview">
                             <i class="bi bi-speedometer2"></i>
                             <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-clean @(currentPage?.Contains("/Subscriptions/") == true ? "active" : "")" 
+                           asp-page="/Subscriptions/Index"
+                           aria-label="All Subscriptions">
+                            <i class="bi bi-list-ul"></i>
+                            <span>Subscriptions</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -232,6 +240,10 @@
         justify-content: center;
         transition: all 0.25s ease;
         border: none;
+        background: transparent;
+        cursor: pointer;
+        position: relative;
+        z-index: 1;
     }
     
     .notification-btn:hover {

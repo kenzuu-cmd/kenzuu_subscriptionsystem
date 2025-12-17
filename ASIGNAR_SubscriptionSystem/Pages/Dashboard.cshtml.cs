@@ -1,45 +1,102 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using SubscriptionSystem.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using ASIGNAR_SubscriptionSystem.Data;
 
 namespace SubscriptionSystem.Pages
 {
     /// <summary>
-    /// Dashboard page - Main application interface for managing subscriptions
+    /// Dashboard page - Analytics overview and quick insights
     /// </summary>
     public class DashboardModel : PageModel
     {
-        // Data properties for the dashboard view
-        public List<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+        private readonly SubscriptionContext _context;
+        private readonly ILogger<DashboardModel> _logger;
+
+        public DashboardModel(SubscriptionContext context, ILogger<DashboardModel> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
+
+        // Summary metrics
         public decimal TotalMonthly { get; set; }
         public decimal YearlyProjected { get; set; }
+        public int ActiveCount { get; set; }
         public int DueSoonCount { get; set; }
 
-        /// <summary>
-        /// Handles GET requests - loads subscription data and calculates metrics
-        /// </summary>
-        public void OnGet()
+        // Top subscriptions for quick view
+        public IList<Subscription> TopSubscriptions { get; set; } = new List<Subscription>();
+        
+        // Upcoming payments
+        public IList<Subscription> UpcomingPayments { get; set; } = new List<Subscription>();
+        
+        // Database status
+        public bool IsDatabaseAvailable { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
+
+        public async Task OnGetAsync()
         {
-            // Load mock subscription data
-            // In production, this would fetch from a database
-            Subscriptions = new List<Subscription>
+            try
             {
-                new() { ServiceName = "Netflix 4K", Price = 599m, BillingCycle = "Monthly", Category = "Entertainment", NextPaymentDate = DateTime.Today.AddDays(2) },
-                new() { ServiceName = "Spotify Duo", Price = 299m, BillingCycle = "Monthly", Category = "Entertainment", NextPaymentDate = DateTime.Today.AddDays(15) },
-                new() { ServiceName = "Adobe Cloud", Price = 2799m, BillingCycle = "Monthly", Category = "Work", NextPaymentDate = DateTime.Today.AddDays(20) },
-                new() { ServiceName = "Amazon Prime", Price = 6990m, BillingCycle = "Yearly", Category = "Utility", NextPaymentDate = DateTime.Today.AddMonths(4) },
-            };
+                // Check database connectivity
+                if (!await _context.Database.CanConnectAsync())
+                {
+                    IsDatabaseAvailable = false;
+                    ErrorMessage = "Database connection is not available. Please ensure your SQL Server is running and the connection string is configured correctly.";
+                    _logger.LogWarning("Dashboard: Database connection failed");
+                    return;
+                }
 
-            // Calculate total monthly recurring costs
-            TotalMonthly = Subscriptions.Where(x => x.BillingCycle == "Monthly").Sum(x => x.Price);
+                IsDatabaseAvailable = true;
 
-            // Calculate yearly projection: (Monthly * 12) + Yearly subscriptions
-            YearlyProjected = (TotalMonthly * 12) + Subscriptions.Where(x => x.BillingCycle == "Yearly").Sum(x => x.Price);
+                // Load all subscriptions from database
+                var allSubscriptions = await _context.Subscriptions
+                    .OrderBy(s => s.NextPaymentDate)
+                    .ToListAsync();
 
-            // Count subscriptions due in the next 5 days
-            DueSoonCount = Subscriptions.Count(x => (x.NextPaymentDate - DateTime.Today).TotalDays <= 5);
+                if (allSubscriptions.Count == 0)
+                {
+                    _logger.LogInformation("Dashboard: No subscriptions found in database");
+                    return;
+                }
+
+                // Calculate metrics from live data
+                var monthlySubscriptions = allSubscriptions.Where(x => x.BillingCycle == "Monthly");
+                TotalMonthly = monthlySubscriptions.Sum(x => x.Price);
+
+                var yearlySubscriptions = allSubscriptions.Where(x => x.BillingCycle == "Yearly");
+                YearlyProjected = (TotalMonthly * 12) + yearlySubscriptions.Sum(x => x.Price);
+
+                ActiveCount = allSubscriptions.Count;
+
+                // Count subscriptions due in next 5 days
+                DueSoonCount = allSubscriptions.Count(x =>
+                    (x.NextPaymentDate - DateTime.Today).TotalDays >= 0 &&
+                    (x.NextPaymentDate - DateTime.Today).TotalDays <= 5);
+
+                // Get top 5 most expensive subscriptions
+                TopSubscriptions = allSubscriptions
+                    .OrderByDescending(s => s.Price)
+                    .Take(5)
+                    .ToList();
+
+                // Get upcoming payments (next 7 days)
+                UpcomingPayments = allSubscriptions
+                    .Where(s => (s.NextPaymentDate - DateTime.Today).TotalDays >= 0 &&
+                               (s.NextPaymentDate - DateTime.Today).TotalDays <= 7)
+                    .OrderBy(s => s.NextPaymentDate)
+                    .Take(5)
+                    .ToList();
+
+                _logger.LogInformation($"Dashboard loaded successfully with {allSubscriptions.Count} subscriptions");
+            }
+            catch (Exception ex)
+            {
+                IsDatabaseAvailable = false;
+                ErrorMessage = "An error occurred while loading dashboard data. Please try again later.";
+                _logger.LogError(ex, "Error loading Dashboard data");
+            }
         }
     }
 }

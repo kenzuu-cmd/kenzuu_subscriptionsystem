@@ -1,0 +1,213 @@
+@page
+@model ASIGNAR_SubscriptionSystem.Pages.Subscriptions.IndexModel
+
+@{
+    ViewData["Title"] = "All Subscriptions";
+    ViewData["PageTitle"] = "All Subscriptions";
+    ViewData["PageSubtitle"] = "Manage and track all your recurring subscriptions";
+    ViewData["PrimaryActionText"] = "Add Subscription";
+    ViewData["PrimaryActionUrl"] = "/Subscriptions/Create";
+    ViewData["PrimaryActionIcon"] = "bi-plus-lg";
+
+    string GetColorClass(string name)
+    {
+        var len = name.Length;
+        if (len % 4 == 0) return "bg-indigo-subtle";
+        if (len % 4 == 1) return "bg-rose-subtle";
+        if (len % 4 == 2) return "bg-emerald-subtle";
+        return "bg-amber-subtle";
+    }
+
+    string GetTimeRemaining(DateTime date)
+    {
+        var days = (date - DateTime.Today).TotalDays;
+        if (days < 0) return "Overdue";
+        if (days == 0) return "Today";
+        if (days == 1) return "Tomorrow";
+        return $"In {Math.Round(days)} days";
+    }
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/app-dashboard.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/dashboard-hero-mobile.css" asp-append-version="true" />
+}
+
+<div class="dashboard-container">
+    <div class="container-fluid px-4 py-4">
+        
+        @await Html.PartialAsync("_PageHeader")
+
+        @if (!Model.IsDatabaseAvailable)
+        {
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="table-card">
+                        <div class="empty-state py-5">
+                            <div class="text-center">
+                                <i class="bi bi-exclamation-triangle display-1 text-warning mb-3"></i>
+                                <h3 class="text-white mb-2">Database Not Available</h3>
+                                <p class="text-muted mb-4">@Model.ErrorMessage</p>
+                                <a asp-page="/Dashboard" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left me-2"></i>
+                                    Back to Dashboard
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (Model.Subscriptions.Count == 0)
+        {
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="table-card">
+                        <div class="empty-state py-5">
+                            <div class="text-center">
+                                <i class="bi bi-inbox display-1 text-muted mb-3"></i>
+                                <h3 class="text-white mb-2">No Subscriptions Yet</h3>
+                                <p class="text-muted mb-4">Start tracking your subscriptions by adding your first one.</p>
+                                <a asp-page="Create" class="btn btn-primary">
+                                    <i class="bi bi-plus-lg me-2"></i>
+                                    Add Your First Subscription
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="stats-summary-compact mb-4">
+                <div class="row g-3">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-badge stat-badge-primary">
+                            <i class="bi bi-wallet2 me-2"></i>
+                            <span class="stat-badge-label">Monthly:</span>
+                            <span class="stat-badge-value">₱@Model.TotalMonthly.ToString("N2")</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-badge stat-badge-success">
+                            <i class="bi bi-layers me-2"></i>
+                            <span class="stat-badge-label">Active:</span>
+                            <span class="stat-badge-value">@Model.ActiveCount</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-badge stat-badge-info">
+                            <i class="bi bi-graph-up me-2"></i>
+                            <span class="stat-badge-label">Yearly:</span>
+                            <span class="stat-badge-value">₱@Model.YearlyProjected.ToString("N2")</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-badge stat-badge-warning">
+                            <i class="bi bi-bell me-2"></i>
+                            <span class="stat-badge-label">Due Soon:</span>
+                            <span class="stat-badge-value">@Model.DueSoonCount</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="row g-4">
+                    <div class="col-lg-12">
+                        <div class="table-card">
+                            <div class="table-card-header">
+                                <h5 class="table-title mb-0">All Subscriptions</h5>
+                                <div class="table-actions">
+                                    <button class="btn btn-sm btn-outline-light" title="Sort by date">
+                                        <i class="bi bi-calendar3"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-light" title="Sort by price">
+                                        <i class="bi bi-currency-dollar"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-light" title="Sort by name">
+                                        <i class="bi bi-sort-alpha-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="subscription-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Service</th>
+                                            <th>Cost</th>
+                                            <th>Cycle</th>
+                                            <th>Next Payment</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Subscriptions)
+                                        {
+                                            var isUrgent = (item.NextPaymentDate - DateTime.Today).TotalDays >= 0 && (item.NextPaymentDate - DateTime.Today).TotalDays <= 3;
+                                            var colorClass = GetColorClass(item.ServiceName);
+                                            var initial = item.ServiceName.Length > 0 ? item.ServiceName.Substring(0, 1).ToUpper() : "?";
+
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-3">
+                                                        <div class="service-avatar @colorClass">@initial</div>
+                                                        <div>
+                                                            <div class="fw-bold text-white">@item.ServiceName</div>
+                                                            <small class="text-muted">@item.Category</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="fw-semibold text-white font-monospace">₱@item.Price.ToString("N2")</span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-secondary">@item.BillingCycle</span>
+                                                </td>
+                                                <td>
+                                                    @if (isUrgent)
+                                                    {
+                                                        <div class="text-danger fw-bold">@GetTimeRemaining(item.NextPaymentDate)</div>
+                                                        <small class="text-muted">@item.NextPaymentDate.ToString("MMM dd, yyyy")</small>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="text-white">@GetTimeRemaining(item.NextPaymentDate)</div>
+                                                        <small class="text-muted">@item.NextPaymentDate.ToString("MMM dd, yyyy")</small>
+                                                    }
+                                                </td>
+                                                <td class="text-end">
+                                                    <div class="btn-group" role="group">
+                                                        <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-light" title="View Details">
+                                                            <i class="bi bi-eye"></i>
+                                                        </a>
+                                                        <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning" title="Edit">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </a>
+                                                        <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Delete">
+                                                            <i class="bi bi-trash"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-card-footer">
+                                <span class="text-muted">Showing @Model.Subscriptions.Count subscription(s)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/dashboard-premium.js" asp-append-version="true"></script>
+}
+

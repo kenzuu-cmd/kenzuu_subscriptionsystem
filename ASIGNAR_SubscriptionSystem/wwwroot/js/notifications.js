@@ -1,43 +1,530 @@
 /**
- * Notification Center - Enhanced for Modern SaaS UX
- * Features: Priority sorting, accessibility, animations, keyboard navigation
- * @version 3.0.0
+ * Notification Center - Database-Driven Version
+ * Loads all notifications from live database via API endpoint
+ * Features: Real-time updates, accessibility, animations, keyboard navigation
+ * @version 4.0.0 - 100% Database-Driven
  */
 
 ;(function (window) {
   'use strict'
 
-  const NOTIFICATIONS_KEY = 'subscriptionSystem_notifications'
-  const MAX_NOTIFICATIONS = 50
+  const API_ENDPOINT = '/Api/Notifications'
+  const REFRESH_INTERVAL = 60000 // Refresh every 60 seconds
 
   const NotificationCenter = {
     notifications: [],
     unreadCount: 0,
     isOpen: false,
     focusedIndex: -1,
+    refreshTimer: null,
 
     /**
      * Initialize notification center
      */
     init: function () {
-      this.load()
-      this.checkUpcomingPayments()
-      this.render()
+      this.loadFromDatabase()
       this.setupEventListeners()
+      this.startAutoRefresh()
 
-      // Check for new notifications every 5 minutes
-      setInterval(() => {
-        this.checkUpcomingPayments()
-      }, 5 * 60 * 1000)
-
-      // Listen for subscription changes
-      window.addEventListener('subscriptionAdded', () =>
-        this.checkUpcomingPayments()
-      )
-      window.addEventListener('subscriptionUpdated', () =>
-        this.checkUpcomingPayments()
-      )
+      console.log('NotificationCenter: Initialized with database integration')
     },
+
+    /**
+     * Load notifications from database via API
+     */
+    loadFromDatabase: async function () {
+      try {
+        const response = await fetch(API_ENDPOINT, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          credentials: 'same-origin'
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        }
+
+        const data = await response.json()
+
+        if (data.success) {
+          this.notifications = data.notifications || []
+          this.unreadCount = data.unreadCount || 0
+          this.render()
+          
+          console.log(
+            `NotificationCenter: Loaded ${this.notifications.length} notifications (${this.unreadCount} unread) from database`
+          )
+        } else {
+          console.error('NotificationCenter: API returned error:', data.error)
+          this.showDatabaseError(data.error)
+        }
+      } catch (error) {
+        console.error('NotificationCenter: Failed to load notifications:', error)
+        this.showDatabaseError('Unable to connect to notification service')
+      }
+    },
+
+    /**
+     * Start automatic refresh timer
+     */
+    startAutoRefresh: function () {
+      // Clear existing timer
+      if (this.refreshTimer) {
+        clearInterval(this.refreshTimer)
+      }
+
+      // Refresh notifications periodically
+      this.refreshTimer = setInterval(() => {
+        this.loadFromDatabase()
+      }, REFRESH_INTERVAL)
+    },
+
+    /**
+     * Stop automatic refresh
+     */
+    stopAutoRefresh: function () {
+      if (this.refreshTimer) {
+        clearInterval(this.refreshTimer)
+        this.refreshTimer = null
+      }
+    },
+
+    /**
+     * Setup event listeners
+     */
+    setupEventListeners: function () {
+      const button = document.getElementById('notification-button')
+      const dropdown = document.getElementById('notification-dropdown')
+
+      if (button) {
+        button.addEventListener('click', (e) => {
+          e.stopPropagation()
+          this.toggle()
+        })
+
+        button.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            this.toggle()
+          }
+        })
+      }
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (this.isOpen && !e.target.closest('.notification-container')) {
+          this.close()
+        }
+      })
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (!this.isOpen) return
+
+        if (e.key === 'Escape') {
+          this.close()
+          button?.focus()
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault()
+          this.navigateDown()
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault()
+          this.navigateUp()
+        }
+      })
+
+      // Delegated event handling for notification actions
+      if (dropdown) {
+        dropdown.addEventListener('click', (e) => {
+          const action = e.target.closest('[data-action]')?.dataset.action
+          const id = e.target.closest('[data-id]')?.dataset.id
+
+          if (action === 'mark-read' && id) {
+            this.markAsRead(parseInt(id))
+          } else if (action === 'delete' && id) {
+            this.remove(parseInt(id))
+          } else if (action === 'mark-all-read') {
+            this.markAllAsRead()
+          } else if (action === 'clear-all') {
+            this.clearAll()
+          }
+        })
+      }
+    },
+
+    /**
+     * Toggle dropdown
+     */
+    toggle: function () {
+      if (this.isOpen) {
+        this.close()
+      } else {
+        this.open()
+      }
+    },
+
+    /**
+     * Open dropdown
+     */
+    open: function () {
+      const dropdown = document.getElementById('notification-dropdown')
+      const button = document.getElementById('notification-button')
+
+      if (!dropdown || !button) return
+
+      dropdown.classList.add('show')
+      button.setAttribute('aria-expanded', 'true')
+      this.isOpen = true
+
+      // Refresh when opening
+      this.loadFromDatabase()
+    },
+
+    /**
+     * Close dropdown
+     */
+    close: function () {
+      const dropdown = document.getElementById('notification-dropdown')
+      const button = document.getElementById('notification-button')
+
+      if (!dropdown || !button) return
+
+      dropdown.classList.remove('show')
+      button.setAttribute('aria-expanded', 'false')
+      this.isOpen = false
+      this.focusedIndex = -1
+    },
+
+    /**
+     * Navigate to next item
+     */
+    navigateDown: function () {
+      const items = document.querySelectorAll('.notification-item')
+      if (items.length === 0) return
+
+      this.focusedIndex = (this.focusedIndex + 1) % items.length
+      items[this.focusedIndex]?.focus()
+    },
+
+    /**
+     * Navigate to previous item
+     */
+    navigateUp: function () {
+      const items = document.querySelectorAll('.notification-item')
+      if (items.length === 0) return
+
+      this.focusedIndex =
+        this.focusedIndex <= 0 ? items.length - 1 : this.focusedIndex - 1
+      items[this.focusedIndex]?.focus()
+    },
+
+    /**
+     * Mark notification as read (via API)
+     */
+    markAsRead: async function (id) {
+      try {
+        const response = await fetch(`${API_ENDPOINT}?handler=MarkRead`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': this.getAntiForgeryToken()
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify({ id: id })
+        })
+
+        const data = await response.json()
+
+        if (data.success) {
+          await this.loadFromDatabase()
+        } else {
+          console.error('Failed to mark notification as read:', data.error)
+        }
+      } catch (error) {
+        console.error('Error marking notification as read:', error)
+      }
+    },
+
+    /**
+     * Mark all as read (via API)
+     */
+    markAllAsRead: async function () {
+      try {
+        const response = await fetch(`${API_ENDPOINT}?handler=MarkAllRead`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': this.getAntiForgeryToken()
+          },
+          credentials: 'same-origin'
+        })
+
+        const data = await response.json()
+
+        if (data.success) {
+          await this.loadFromDatabase()
+        } else {
+          console.error('Failed to mark all as read:', data.error)
+        }
+      } catch (error) {
+        console.error('Error marking all as read:', error)
+      }
+    },
+
+    /**
+     * Remove notification (via API)
+     */
+    remove: async function (id) {
+      try {
+        const response = await fetch(`${API_ENDPOINT}?id=${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': this.getAntiForgeryToken()
+          },
+          credentials: 'same-origin'
+        })
+
+        const data = await response.json()
+
+        if (data.success) {
+          await this.loadFromDatabase()
+        } else {
+          console.error('Failed to delete notification:', data.error)
+        }
+      } catch (error) {
+        console.error('Error deleting notification:', error)
+      }
+    },
+
+    /**
+     * Clear all notifications (via API)
+     */
+    clearAll: async function () {
+      if (!confirm('Clear all notifications? This action cannot be undone.')) {
+        return
+      }
+
+      try {
+        const response = await fetch(`${API_ENDPOINT}?handler=ClearAll`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': this.getAntiForgeryToken()
+          },
+          credentials: 'same-origin'
+        })
+
+        const data = await response.json()
+
+        if (data.success) {
+          await this.loadFromDatabase()
+        } else {
+          console.error('Failed to clear notifications:', data.error)
+        }
+      } catch (error) {
+        console.error('Error clearing notifications:', error)
+      }
+    },
+
+    /**
+     * Get anti-forgery token for POST/DELETE requests
+     */
+    getAntiForgeryToken: function () {
+      const tokenElement = document.querySelector(
+        'input[name="__RequestVerificationToken"]'
+      )
+      return tokenElement ? tokenElement.value : ''
+    },
+
+    /**
+     * Show database error state
+     */
+    showDatabaseError: function (errorMessage) {
+      this.notifications = []
+      this.unreadCount = 0
+      this.render()
+
+      const dropdown = document.getElementById('notification-dropdown')
+      if (dropdown) {
+        dropdown.innerHTML = `
+                    <div class="notification-empty">
+                        <div class="notification-empty-icon text-warning">
+                            <i class="bi bi-exclamation-triangle"></i>
+                        </div>
+                        <p>Unable to load notifications</p>
+                        <small>${this.escapeHtml(errorMessage)}</small>
+                        <button class="btn btn-sm btn-primary mt-3" onclick="window.NotificationCenter.loadFromDatabase()">
+                            <i class="bi bi-arrow-clockwise me-1"></i> Retry
+                        </button>
+                    </div>
+                `
+      }
+    },
+
+    /**
+     * Render notification center
+     */
+    render: function () {
+      this.renderBadge()
+      this.renderDropdown()
+    },
+
+    /**
+     * Render notification badge
+     */
+    renderBadge: function () {
+      const badge = document.getElementById('notification-badge')
+      if (!badge) return
+
+      if (this.unreadCount > 0) {
+        badge.textContent = this.unreadCount > 99 ? '99+' : this.unreadCount
+        badge.classList.add('show')
+        badge.setAttribute(
+          'aria-label',
+          `${this.unreadCount} unread notifications`
+        )
+      } else {
+        badge.classList.remove('show')
+      }
+    },
+
+    /**
+     * Render dropdown content
+     */
+    renderDropdown: function () {
+      const dropdown = document.getElementById('notification-dropdown')
+      if (!dropdown) return
+
+      if (this.notifications.length === 0) {
+        dropdown.innerHTML = `
+                    <div class="notification-empty">
+                        <div class="notification-empty-icon">
+                            <i class="bi bi-bell-slash"></i>
+                        </div>
+                        <p>No notifications</p>
+                        <small>You'll receive alerts about upcoming payments here</small>
+                    </div>
+                `
+        return
+      }
+
+      const html = `
+                <div class="notification-header">
+                    <h6>Notifications</h6>
+                    <div class="notification-actions">
+                        ${
+                          this.unreadCount > 0
+                            ? `<button class="btn-text" data-action="mark-all-read" aria-label="Mark all as read">Mark all read</button>`
+                            : ''
+                        }
+                        <button class="btn-text text-danger" data-action="clear-all" aria-label="Clear all notifications">Clear all</button>
+                    </div>
+                </div>
+                <div class="notification-list" role="list">
+                    ${this.notifications
+                      .map((n) => this.renderNotificationItem(n))
+                      .join('')}
+                </div>
+            `
+
+      dropdown.innerHTML = html
+    },
+
+    /**
+     * Render single notification item
+     */
+    renderNotificationItem: function (notification) {
+      const iconTypeMap = {
+        error: 'icon-error',
+        warning: 'icon-warning',
+        success: 'icon-success',
+        info: 'icon-info',
+      }
+
+      const iconClass = iconTypeMap[notification.type] || 'icon-info'
+      const priorityClass = notification.priority
+        ? `priority-${notification.priority}`
+        : ''
+
+      return `
+                <div class="notification-item ${
+                  notification.isRead ? '' : 'unread'
+                } ${priorityClass}" 
+                     data-id="${notification.id}"
+                     role="listitem"
+                     tabindex="0"
+                     aria-label="${this.escapeHtml(notification.title)}: ${this.escapeHtml(
+        notification.message
+      )}">
+                    <div class="notification-icon ${iconClass}">
+                        <i class="bi ${
+                          notification.icon || 'bi-bell-fill'
+                        }"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${this.escapeHtml(
+                          notification.title || 'Notification'
+                        )}</div>
+                        <div class="notification-message">${this.escapeHtml(
+                          notification.message
+                        )}</div>
+                        <div class="notification-time">${this.escapeHtml(
+                          notification.timeAgo
+                        )}</div>
+                    </div>
+                    <div class="notification-controls">
+                        ${
+                          !notification.isRead
+                            ? `
+                        <button class="btn-icon" 
+                                data-action="mark-read" 
+                                data-id="${notification.id}" 
+                                title="Mark as read"
+                                aria-label="Mark as read">
+                            <i class="bi bi-check2"></i>
+                        </button>`
+                            : ''
+                        }
+                        <button class="btn-icon" 
+                                data-action="delete" 
+                                data-id="${notification.id}" 
+                                title="Delete"
+                                aria-label="Delete notification">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            `
+    },
+
+    /**
+     * Escape HTML to prevent XSS
+     */
+    escapeHtml: function (text) {
+      const div = document.createElement('div')
+      div.textContent = text
+      return div.innerHTML
+    },
+  }
+
+  // Initialize on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    NotificationCenter.init()
+  })
+
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', () => {
+    NotificationCenter.stopAutoRefresh()
+  })
+
+  // Export to window
+  window.NotificationCenter = NotificationCenter
+})(window)
+
 
     /**
      * Setup event listeners

@@ -1,0 +1,47 @@
+@*
+    Shared Page Header Component
+    Provides consistent header styling across Dashboard, Index, and Reports pages
+    
+    Parameters:
+    - Title: Main page heading
+    - Subtitle: Description below title
+    - PrimaryActionText: Text for primary button (optional)
+    - PrimaryActionUrl: URL for primary button
+    - PrimaryActionIcon: Bootstrap icon class for button
+    - SecondaryActionText: Text for secondary button (optional)
+    - SecondaryActionUrl: URL for secondary button
+    - SecondaryActionIcon: Bootstrap icon class for secondary button
+*@
+
+@{
+    var title = ViewData["PageTitle"]?.ToString() ?? ViewData["Title"]?.ToString() ?? "Dashboard";
+    var subtitle = ViewData["PageSubtitle"]?.ToString() ?? "";
+    var primaryText = ViewData["PrimaryActionText"]?.ToString();
+    var primaryUrl = ViewData["PrimaryActionUrl"]?.ToString();
+    var primaryIcon = ViewData["PrimaryActionIcon"]?.ToString() ?? "bi-plus-lg";
+}
+
+<div class="dashboard-header-section">
+    <div class="row align-items-center g-3">
+        <div class="col-lg-8 col-md-7">
+            <div class="page-title-group">
+                <h1 class="page-title">@title</h1>
+                @if (!string.IsNullOrEmpty(subtitle))
+                {
+                    <p class="page-subtitle">@subtitle</p>
+                }
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-5 text-md-end">
+            <div class="page-actions d-flex gap-2 justify-content-md-end">
+                @if (!string.IsNullOrEmpty(primaryUrl) && !string.IsNullOrEmpty(primaryText))
+                {
+                    <a href="@primaryUrl" class="btn btn-primary btn-action btn-lg px-4">
+                        <i class="@primaryIcon"></i>
+                        <span>@primaryText</span>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

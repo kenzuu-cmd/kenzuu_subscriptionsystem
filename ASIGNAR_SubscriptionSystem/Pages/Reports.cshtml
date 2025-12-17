@@ -1,7 +1,12 @@
-﻿@page
+@page
 @model ReportsModel
 @{
     ViewData["Title"] = "Reports & Analytics";
+    ViewData["PageTitle"] = "Reports & Analytics";
+    ViewData["PageSubtitle"] = "Real-time insights from your subscription database";
+    ViewData["PrimaryActionText"] = "View Subscriptions";
+    ViewData["PrimaryActionUrl"] = "/Subscriptions/Index";
+    ViewData["PrimaryActionIcon"] = "bi-list-ul";
 }
 
 @section Styles {
@@ -10,249 +15,522 @@
     <link rel="stylesheet" href="~/css/dashboard-hero-mobile.css" asp-append-version="true" />
 }
 
-@* ============================================
-   REPORTS PAGE GRADIENT CENTERING
-   ============================================
-   
-   Uses same mobile/tablet gradient centering as Dashboard:
-   - Centered gradient behind page header on mobile/tablet
-   - Premium backdrop-filter for content focus
-   - Clean, transparent presentation on desktop
-   - AA accessible contrast maintained across all breakpoints
-*@
-
-<!-- Premium Reports Page with Animated Charts -->
 <div class="dashboard-container">
     <div class="container-fluid px-4 py-4">
         
-        <!-- Page Header -->
-        <div class="dashboard-header mb-4">
-            <div class="row align-items-center">
-                <div class="col-lg-8">
-                    <h1 class="dashboard-title mb-2">Reports & Analytics</h1>
-                    <p class="dashboard-subtitle mb-0">Track your subscription spending and discover insights</p>
-                </div>
-                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                    <button class="btn btn-outline-light me-2" onclick="exportDataToCSV()">
-                        <i class="bi bi-download"></i> Export CSV
-                    </button>
-                    <a href="/Index" class="btn btn-primary">
-                        <i class="bi bi-grid"></i> Dashboard
-                    </a>
-                </div>
-            </div>
-        </div>
+        @await Html.PartialAsync("_PageHeader")
 
-        <!-- Date Range Selector -->
-        <div class="filter-section mb-4">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <label class="form-label small text-muted mb-2">Date Range</label>
-                    <div class="filter-chips">
-                        <button class="filter-chip" data-date-range="last3months">Last 3 Months</button>
-                        <button class="filter-chip active" data-date-range="last6months">Last 6 Months</button>
-                        <button class="filter-chip" data-date-range="last12months">Last Year</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Charts Grid -->
-        <div class="row g-4 mb-4">
-            <!-- Spending Trend Chart -->
-            <div class="col-12">
-                <div class="chart-card">
-                    <div class="chart-card-header">
-                        <h5 class="chart-title mb-0">Spending Trend</h5>
-                        <button class="btn btn-sm btn-outline-light" data-export-chart="spendingTrend">
-                            <i class="bi bi-download"></i> Export
-                        </button>
-                    </div>
-                    <div class="chart-body">
-                        <canvas id="spending-trend-chart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row g-4 mb-4">
-            <!-- Category Breakdown -->
-            <div class="col-lg-6">
-                <div class="chart-card">
-                    <div class="chart-card-header">
-                        <h5 class="chart-title mb-0">Spend by Category</h5>
-                        <button class="btn btn-sm btn-outline-light" data-export-chart="categoryPie">
-                            <i class="bi bi-download"></i> Export
-                        </button>
-                    </div>
-                    <div class="chart-body">
-                        <canvas id="category-pie-chart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Top Subscriptions -->
-            <div class="col-lg-6">
-                <div class="chart-card">
-                    <div class="chart-card-header">
-                        <h5 class="chart-title mb-0">Top 5 Subscriptions</h5>
-                        <button class="btn btn-sm btn-outline-light" data-export-chart="topSubs">
-                            <i class="bi bi-download"></i> Export
-                        </button>
-                    </div>
-                    <div class="chart-body">
-                        <canvas id="top-subs-chart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- AI Insights -->
-        <div class="row g-4 mb-4">
-            <div class="col-12">
-                <div class="insights-card">
-                    <h5 class="insights-title mb-4">
-                        <i class="bi bi-lightbulb text-warning me-2"></i>
-                        AI-Powered Insights
-                    </h5>
-
-                    <div class="row g-4">
-                        <div class="col-lg-4">
-                            <div class="insight-item insight-success">
-                                <div class="insight-icon">
-                                    <i class="bi bi-piggy-bank"></i>
-                                </div>
-                                <div class="insight-content">
-                                    <h6 class="insight-heading">Savings Opportunity</h6>
-                                    <p class="insight-description">
-                                        You're paying for both <strong>Netflix</strong> and <strong>Hulu</strong>. 
-                                        Cancelling the one you use less could save you 
-                                        <span class="text-success fw-bold">₱7,200/year</span>.
-                                    </p>
-                                    <button class="btn btn-sm btn-success mt-2">View Details</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <div class="insight-item insight-info">
-                                <div class="insight-icon">
-                                    <i class="bi bi-graph-up-arrow"></i>
-                                </div>
-                                <div class="insight-content">
-                                    <h6 class="insight-heading">Spending Trend</h6>
-                                    <p class="insight-description">
-                                        Your subscriptions increased by <span class="text-danger fw-bold">12%</span> this month 
-                                        due to the new Adobe Creative Cloud plan.
-                                    </p>
-                                    <button class="btn btn-sm btn-info mt-2">Analyze</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <div class="insight-item insight-warning">
-                                <div class="insight-icon">
-                                    <i class="bi bi-calendar-check"></i>
-                                </div>
-                                <div class="insight-content">
-                                    <h6 class="insight-heading">Renewal Alert</h6>
-                                    <p class="insight-description">
-                                        3 annual subscriptions (<strong>GitHub Pro, Figma, Notion</strong>) 
-                                        are expiring next month totaling <span class="text-warning fw-bold">₱9,000</span>.
-                                    </p>
-                                    <button class="btn btn-sm btn-warning mt-2">Set Reminders</button>
-                                </div>
+        @if (!Model.IsDatabaseAvailable)
+        {
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="table-card">
+                        <div class="empty-state py-5">
+                            <div class="text-center">
+                                <i class="bi bi-exclamation-triangle display-1 text-warning mb-3" aria-hidden="true"></i>
+                                <h3 class="text-white mb-2">Database Not Available</h3>
+                                <p class="text-muted mb-4">@Model.ErrorMessage</p>
+                                <a asp-page="/Dashboard" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                                    Back to Dashboard
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Detailed Data Table -->
-        <div class="row g-4">
-            <div class="col-12">
-                <div class="table-card">
-                    <div class="table-card-header">
-                        <h5 class="table-title mb-0">Subscription Details</h5>
-                        <div class="search-wrapper">
-                            <i class="bi bi-search search-icon" aria-hidden="true"></i>
-                            <input type="search" 
-                                   id="subscription-search-reports" 
-                                   class="form-control search-input" 
-                                   placeholder="Search transactions..." 
-                                   aria-label="Search subscription transactions"
-                                   autocomplete="off" />
-                        </div>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="subscription-table">
-                            <thead>
-                                <tr>
-                                    <th>Service</th>
-                                    <th>Monthly Cost</th>
-                                    <th>Annual Cost</th>
-                                    <th>Category</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span class="fw-bold text-white">Netflix Premium</span></td>
-                                    <td><span class="font-monospace">₱599.00</span></td>
-                                    <td><span class="font-monospace">₱7,188.00</span></td>
-                                    <td><span class="badge badge-secondary">Streaming</span></td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fw-bold text-white">Adobe Creative Cloud</span></td>
-                                    <td><span class="font-monospace">₱2,799.00</span></td>
-                                    <td><span class="font-monospace">₱33,588.00</span></td>
-                                    <td><span class="badge badge-secondary">Design</span></td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fw-bold text-white">Spotify Family</span></td>
-                                    <td><span class="font-monospace">₱299.00</span></td>
-                                    <td><span class="font-monospace">₱3,588.00</span></td>
-                                    <td><span class="badge badge-secondary">Music</span></td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fw-bold text-white">GitHub Pro</span></td>
-                                    <td><span class="font-monospace">₱200.00</span></td>
-                                    <td><span class="font-monospace">₱2,400.00</span></td>
-                                    <td><span class="badge badge-secondary">Development</span></td>
-                                    <td><span class="badge badge-info">Trial</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fw-bold text-white">Figma Professional</span></td>
-                                    <td><span class="font-monospace">₱750.00</span></td>
-                                    <td><span class="font-monospace">₱9,000.00</span></td>
-                                    <td><span class="badge badge-secondary">Design</span></td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="table-card-footer">
-                        <span class="text-muted">Showing 1-5 of 5 subscriptions</span>
-                        <div class="pagination-controls">
-                            <button class="btn btn-sm btn-outline-light" disabled><i class="bi bi-chevron-left"></i></button>
-                            <button class="btn btn-sm btn-primary">1</button>
-                            <button class="btn btn-sm btn-outline-light" disabled><i class="bi bi-chevron-right"></i></button>
+        }
+        else if (Model.AllSubscriptions.Count == 0)
+        {
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="table-card">
+                        <div class="empty-state py-5">
+                            <div class="text-center">
+                                <i class="bi bi-graph-up-arrow display-1 text-primary mb-4" aria-hidden="true" style="opacity: 0.5;"></i>
+                                <h3 class="text-white mb-3">No Subscription Data Available</h3>
+                                <p class="text-muted mb-4">Start tracking subscriptions to see detailed analytics, spending trends, and insights.</p>
+                                <a asp-page="/Subscriptions/Create" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-plus-lg me-2" aria-hidden="true"></i>
+                                    Add Your First Subscription
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <div class="filter-section mb-4">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-2">Date Range</label>
+                        <div class="filter-chips" role="group" aria-label="Date range filter">
+                            <button class="filter-chip" data-date-range="last3months" aria-pressed="false">Last 3 Months</button>
+                            <button class="filter-chip active" data-date-range="last6months" aria-pressed="true">Last 6 Months</button>
+                            <button class="filter-chip" data-date-range="last12months" aria-pressed="false">Last Year</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-12">
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <h5 class="chart-title mb-0">
+                                <i class="bi bi-graph-up me-2 text-primary" aria-hidden="true"></i>
+                                Spending Overview
+                            </h5>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <span class="badge badge-info">Monthly: ₱@Model.TotalMonthlySpend.ToString("N2")</span>
+                                <span class="badge badge-primary">Yearly: ₱@Model.TotalYearlySpend.ToString("N2")</span>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="spending-trend-chart" role="img" aria-label="Line chart showing monthly spending trends"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-lg-6">
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <h5 class="chart-title mb-0">
+                                <i class="bi bi-pie-chart me-2 text-success" aria-hidden="true"></i>
+                                Spend by Category
+                            </h5>
+                            <span class="badge badge-secondary">@Model.CategorySpending.Count Categories</span>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="category-pie-chart" role="img" aria-label="Pie chart showing spending distribution by category"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <h5 class="chart-title mb-0">
+                                <i class="bi bi-bar-chart me-2 text-warning" aria-hidden="true"></i>
+                                Top 5 Subscriptions
+                            </h5>
+                            <span class="badge badge-secondary">By Monthly Cost</span>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="top-subs-chart" role="img" aria-label="Bar chart showing top 5 subscriptions by cost"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-12">
+                    <div class="insights-card">
+                        <h5 class="insights-title mb-4">
+                            <i class="bi bi-lightbulb text-warning me-2" aria-hidden="true"></i>
+                            Real-Time Spending Insights
+                        </h5>
+
+                        <div class="row g-4">
+                            <div class="col-lg-4">
+                                <div class="insight-item insight-info">
+                                    <div class="insight-icon" aria-hidden="true">
+                                        <i class="bi bi-calculator"></i>
+                                    </div>
+                                    <div class="insight-content">
+                                        <h6 class="insight-heading">Average Monthly Cost</h6>
+                                        <p class="insight-description">
+                                            You spend an average of <span class="text-info fw-bold">₱@Model.AverageMonthlyCost.ToString("N2")</span> per subscription.
+                                            @if (Model.ActiveSubscriptionCount > 1)
+                                            {
+                                                <text>Across @Model.ActiveSubscriptionCount active subscriptions.</text>
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if (Model.CategorySpending.Any())
+                            {
+                                var topCategory = Model.CategorySpending.OrderByDescending(c => c.Value).First();
+                                <div class="col-lg-4">
+                                    <div class="insight-item insight-warning">
+                                        <div class="insight-icon" aria-hidden="true">
+                                            <i class="bi bi-tag"></i>
+                                        </div>
+                                        <div class="insight-content">
+                                            <h6 class="insight-heading">Top Spending Category</h6>
+                                            <p class="insight-description">
+                                                <strong>@topCategory.Key</strong> is your highest spending category at 
+                                                <span class="text-warning fw-bold">₱@topCategory.Value.ToString("N2")/month</span>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="col-lg-4">
+                                <div class="insight-item insight-success">
+                                    <div class="insight-icon" aria-hidden="true">
+                                        <i class="bi bi-check-circle"></i>
+                                    </div>
+                                    <div class="insight-content">
+                                        <h6 class="insight-heading">Total Active Services</h6>
+                                        <p class="insight-description">
+                                            You're currently tracking <span class="text-success fw-bold">@Model.ActiveSubscriptionCount</span> 
+                                            subscription@(Model.ActiveSubscriptionCount != 1 ? "s" : "").
+                                            Annual projection: <span class="fw-bold">₱@Model.TotalYearlySpend.ToString("N2")</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="table-card">
+                        <div class="table-card-header">
+                            <h5 class="table-title mb-0">
+                                <i class="bi bi-table me-2" aria-hidden="true"></i>
+                                Subscription Details
+                            </h5>
+                            <div class="search-wrapper">
+                                <i class="bi bi-search search-icon" aria-hidden="true"></i>
+                                <input type="search" 
+                                       id="subscription-search-reports" 
+                                       class="form-control search-input" 
+                                       placeholder="Search subscriptions..." 
+                                       aria-label="Search subscriptions by service name or category"
+                                       autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="subscription-table" role="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Service</th>
+                                        <th scope="col">Monthly Cost</th>
+                                        <th scope="col">Annual Cost</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Next Payment</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reports-table-body">
+                                    @foreach (var subscription in Model.AllSubscriptions)
+                                    {
+                                        var monthlyCost = subscription.BillingCycle == "Monthly" 
+                                            ? subscription.Price 
+                                            : subscription.Price / 12;
+                                        var annualCost = subscription.BillingCycle == "Yearly" 
+                                            ? subscription.Price 
+                                            : subscription.Price * 12;
+
+                                        <tr class="subscription-row" 
+                                            data-service="@subscription.ServiceName.ToLower()" 
+                                            data-category="@subscription.Category.ToLower()">
+                                            <td>
+                                                <a asp-page="/Subscriptions/Details" 
+                                                   asp-route-id="@subscription.Id" 
+                                                   class="fw-bold text-white text-decoration-none subscription-link">
+                                                    @subscription.ServiceName
+                                                </a>
+                                            </td>
+                                            <td><span class="font-monospace">₱@monthlyCost.ToString("N2")</span></td>
+                                            <td><span class="font-monospace">₱@annualCost.ToString("N2")</span></td>
+                                            <td><span class="badge badge-secondary">@subscription.Category</span></td>
+                                            <td><span class="text-muted">@subscription.NextPaymentDate.ToString("MMM dd, yyyy")</span></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="table-card-footer">
+                            <span class="text-muted" id="table-footer-text">Showing <span id="visible-count">@Model.AllSubscriptions.Count</span> of @Model.AllSubscriptions.Count subscription(s)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="~/js/reports-premium.js" asp-append-version="true"></script>
+    
+    @if (Model.IsDatabaseAvailable && Model.AllSubscriptions.Count > 0)
+    {
+        <script>
+            const analyticsData = {
+                categorySpending: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CategorySpending)),
+                categoryCount: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CategoryCounts)),
+                topSubscriptions: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                    Model.TopSubscriptions.Select(s => new { 
+                        name = s.ServiceName, 
+                        price = s.BillingCycle == "Monthly" ? s.Price : s.Price / 12,
+                        cycle = s.BillingCycle
+                    })
+                )),
+                monthlyTrends: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                    Model.MonthlyTrends.Select(t => new {
+                        month = t.MonthShort,
+                        amount = t.Amount
+                    })
+                )),
+                totalMonthly: @Model.TotalMonthlySpend,
+                totalYearly: @Model.TotalYearlySpend,
+                totalSubscriptions: @Model.AllSubscriptions.Count
+            };
+
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeCharts();
+                initializeSearch();
+            });
+
+            function initializeCharts() {
+                const trendCanvas = document.getElementById('spending-trend-chart');
+                if (trendCanvas && analyticsData.monthlyTrends) {
+                    const labels = analyticsData.monthlyTrends.map(t => t.month);
+                    const data = analyticsData.monthlyTrends.map(t => t.amount);
+                    
+                    new Chart(trendCanvas, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Monthly Spending (₱)',
+                                data: data,
+                                borderColor: 'rgba(99, 102, 241, 1)',
+                                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                                fill: true,
+                                tension: 0.4,
+                                pointBackgroundColor: 'rgba(99, 102, 241, 1)',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 2,
+                                pointRadius: 4,
+                                pointHoverRadius: 6
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { 
+                                    labels: { color: '#ffffff', font: { size: 12, weight: '500' } }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return 'Spending: ₱' + context.parsed.y.toFixed(2);
+                                        }
+                                    },
+                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                    titleColor: '#fff',
+                                    bodyColor: '#fff',
+                                    padding: 12,
+                                    borderColor: 'rgba(99, 102, 241, 0.5)',
+                                    borderWidth: 1
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    ticks: { color: '#9ca3af', font: { size: 11 } },
+                                    grid: { color: 'rgba(255,255,255,0.05)' }
+                                },
+                                y: {
+                                    ticks: { 
+                                        color: '#9ca3af',
+                                        font: { size: 11 },
+                                        callback: function(value) {
+                                            return '₱' + value.toFixed(0);
+                                        }
+                                    },
+                                    grid: { color: 'rgba(255,255,255,0.05)' }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                const categoryCanvas = document.getElementById('category-pie-chart');
+                if (categoryCanvas && analyticsData.categorySpending) {
+                    const categoryLabels = Object.keys(analyticsData.categorySpending);
+                    const categoryValues = Object.values(analyticsData.categorySpending);
+                    
+                    new Chart(categoryCanvas, {
+                        type: 'doughnut',
+                        data: {
+                            labels: categoryLabels,
+                            datasets: [{
+                                data: categoryValues,
+                                backgroundColor: [
+                                    'rgba(99, 102, 241, 0.8)',
+                                    'rgba(139, 92, 246, 0.8)',
+                                    'rgba(236, 72, 153, 0.8)',
+                                    'rgba(251, 146, 60, 0.8)',
+                                    'rgba(34, 197, 94, 0.8)',
+                                    'rgba(59, 130, 246, 0.8)'
+                                ],
+                                borderColor: '#1a1a1a',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: { color: '#ffffff', padding: 15, font: { size: 12 } }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const label = context.label || '';
+                                            const value = context.parsed || 0;
+                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                            const percentage = ((value / total) * 100).toFixed(1);
+                                            return label + ': ₱' + value.toFixed(2) + '/mo (' + percentage + '%)';
+                                        }
+                                    },
+                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                    padding: 12
+                                }
+                            }
+                        }
+                    });
+                }
+
+                const topSubsCanvas = document.getElementById('top-subs-chart');
+                if (topSubsCanvas && analyticsData.topSubscriptions) {
+                    const topLabels = analyticsData.topSubscriptions.map(s => s.name);
+                    const topValues = analyticsData.topSubscriptions.map(s => s.price);
+                    
+                    new Chart(topSubsCanvas, {
+                        type: 'bar',
+                        data: {
+                            labels: topLabels,
+                            datasets: [{
+                                label: 'Monthly Cost (₱)',
+                                data: topValues,
+                                backgroundColor: 'rgba(99, 102, 241, 0.8)',
+                                borderColor: 'rgba(99, 102, 241, 1)',
+                                borderWidth: 1,
+                                borderRadius: 6
+                            }]
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const sub = analyticsData.topSubscriptions[context.dataIndex];
+                                            return '₱' + context.parsed.x.toFixed(2) + '/month (' + sub.cycle + ')';
+                                        }
+                                    },
+                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                    padding: 12
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    ticks: { 
+                                        color: '#9ca3af',
+                                        font: { size: 11 },
+                                        callback: function(value) {
+                                            return '₱' + value;
+                                        }
+                                    },
+                                    grid: { color: 'rgba(255,255,255,0.05)' }
+                                },
+                                y: {
+                                    ticks: { color: '#ffffff', font: { size: 11 } },
+                                    grid: { display: false }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            function initializeSearch() {
+                const searchInput = document.getElementById('subscription-search-reports');
+                const tableRows = document.querySelectorAll('.subscription-row');
+                const totalCount = tableRows.length;
+                
+                if (searchInput) {
+                    searchInput.addEventListener('input', function(e) {
+                        const searchTerm = e.target.value.toLowerCase().trim();
+                        let visibleCount = 0;
+                        
+                        tableRows.forEach(row => {
+                            const service = row.dataset.service || '';
+                            const category = row.dataset.category || '';
+                            const matches = service.includes(searchTerm) || category.includes(searchTerm);
+                            
+                            if (matches) {
+                                row.style.display = '';
+                                visibleCount++;
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        });
+                        
+                        document.getElementById('visible-count').textContent = visibleCount;
+                        document.getElementById('table-footer-text').innerHTML = 
+                            `Showing <span id="visible-count">${visibleCount}</span> of ${totalCount} subscription(s)`;
+                    });
+                }
+            }
+
+            console.log('Reports: All charts loaded with real database data');
+        </script>
+    }
+    else
+    {
+        <script>
+            console.log('Reports: No data available - displaying empty state');
+        </script>
+    }
 }
+
+<style>
+    .empty-state {
+        background: transparent;
+        padding: 4rem 2rem;
+    }
+    
+    .subscription-link:hover {
+        text-decoration: underline !important;
+        color: #6366f1 !important;
+    }
+    
+    .chart-card {
+        min-height: 400px;
+    }
+    
+    .chart-body canvas {
+        max-height: 350px;
+    }
+    
+    .filter-chip:focus {
+        outline: 2px solid #6366f1;
+        outline-offset: 2px;
+    }
+    
+    .search-input:focus {
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+    }
+</style>

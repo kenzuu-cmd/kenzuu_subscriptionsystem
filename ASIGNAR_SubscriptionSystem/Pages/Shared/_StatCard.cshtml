@@ -1,0 +1,43 @@
+@*
+    Shared Stat Card Component
+    Displays metric cards with consistent styling
+    
+    Parameters:
+    - Value: Main metric value
+    - Label: Metric label/title
+    - Icon: Bootstrap icon class
+    - IconColor: Color variant (primary, success, info, warning, danger)
+    - MetaIcon: Optional icon for metadata
+    - MetaText: Optional metadata text below value
+*@
+
+@{
+    var value = ViewData["StatValue"]?.ToString() ?? "0";
+    var label = ViewData["StatLabel"]?.ToString() ?? "Metric";
+    var icon = ViewData["StatIcon"]?.ToString() ?? "bi-graph-up";
+    var iconColor = ViewData["StatIconColor"]?.ToString() ?? "primary";
+    var metaIcon = ViewData["StatMetaIcon"]?.ToString();
+    var metaText = ViewData["StatMetaText"]?.ToString();
+}
+
+<div class="stat-card stat-card-hover h-100">
+    <div class="stat-card-body">
+        <div class="stat-icon-wrapper stat-icon-@iconColor">
+            <i class="@icon"></i>
+        </div>
+        <div class="stat-content">
+            <div class="stat-label">@label</div>
+            <div class="stat-value">@value</div>
+            @if (!string.IsNullOrEmpty(metaText))
+            {
+                <div class="stat-meta">
+                    @if (!string.IsNullOrEmpty(metaIcon))
+                    {
+                        <i class="@metaIcon"></i>
+                    }
+                    <span>@metaText</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>

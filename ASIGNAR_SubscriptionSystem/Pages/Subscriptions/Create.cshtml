@@ -1,14 +1,15 @@
-﻿@page
-@model ASIGNAR_SubscriptionSystem.Pages.AddSubscriptionModel
+@page
+@model ASIGNAR_SubscriptionSystem.Pages.Subscriptions.CreateModel
+
 @{
-    ViewData["Title"] = "Add New Subscription";
+    ViewData["Title"] = "Create New Subscription";
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/add-subscription-responsive.css">
     <style>
         /* ============================================
-           PREMIUM ADD SUBSCRIPTION PAGE STYLES
+           PREMIUM CREATE SUBSCRIPTION PAGE STYLES
            - Enterprise-grade dark theme
            - Consistent, accessible form controls
            - Custom dropdown and number input styling
@@ -32,6 +33,22 @@
         main::after {
             display: none !important;
             content: none !important;
+        }
+
+        /* === SKIP LINK (Accessibility) === */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #6366f1;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
         }
 
         /* === CONTAINER & LAYOUT === */
@@ -353,17 +370,44 @@
             opacity: 0.8;
         }
 
-        /* === VALIDATION STATES === */
-        .form-control-modern.is-valid,
-        .form-select-modern.is-valid {
+        /* === VALIDATION STATES - Progressive Only === */
+        /* Only show validation states when explicitly triggered (after blur or submit) */
+        .form-control-modern.is-valid:not(.pristine),
+        .form-select-modern.is-valid:not(.pristine) {
             border-color: #10b981;
             background-color: rgba(16, 185, 129, 0.04);
         }
 
-        .form-control-modern.is-invalid,
-        .form-select-modern.is-invalid {
+        .form-control-modern.is-invalid:not(.pristine),
+        .form-select-modern.is-invalid:not(.pristine) {
             border-color: #ef4444;
             background-color: rgba(239, 68, 68, 0.04);
+        }
+
+        /* Success icon */
+        .input-group-modern.has-success::after {
+            content: "\f26b";
+            font-family: "bootstrap-icons";
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #10b981;
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        /* Error icon */
+        .input-group-modern.has-error::after {
+            content: "\f33a";
+            font-family: "bootstrap-icons";
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ef4444;
+            font-size: 1rem;
+            pointer-events: none;
         }
 
         /* === INPUT HINTS === */
@@ -382,47 +426,58 @@
         }
 
         /* === IMPROVED FEEDBACK MESSAGES === */
-        .feedback-message {
+        .text-danger {
             font-size: 0.8125rem;
             margin-top: 0.5rem;
-            display: none;
-            align-items: flex-start;
-            gap: 0.5rem;
-            padding: 0.5rem 0.75rem;
-            border-radius: 6px;
-            animation: slideDown 0.2s ease;
-        }
-
-        .feedback-message.show {
-            display: flex;
-        }
-
-        .feedback-message.success {
-            color: #10b981;
-            background: rgba(16, 185, 129, 0.1);
-            border-left: 3px solid #10b981;
-        }
-
-        .feedback-message.error {
+            display: none; /* Hidden by default */
             color: #ef4444;
             background: rgba(239, 68, 68, 0.1);
             border-left: 3px solid #ef4444;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            gap: 0.375rem;
         }
 
-        .feedback-message i {
+        .text-danger.show {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .text-danger::before {
+            content: "\f33a";
+            font-family: "bootstrap-icons";
             flex-shrink: 0;
-            margin-top: 2px;
+            margin-top: 0.125rem;
         }
 
-        @@keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-4px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .validation-summary-errors {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-left: 4px solid #ef4444;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .validation-summary-errors::before {
+            content: "\f33a";
+            font-family: "bootstrap-icons";
+            color: #ef4444;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 1.25rem;
+            color: #ef4444;
+            flex: 1;
+        }
+
+        .validation-summary-errors li {
+            margin-bottom: 0.25rem;
         }
 
         /* === SUBMIT BUTTON === */
@@ -459,80 +514,33 @@
             cursor: not-allowed;
         }
 
-        .btn-submit-modern .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-        }
-
-        @@keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* === BACK LINK === */
+        /* === BACK LINK - Enhanced Visibility === */
         .back-link-modern {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-size: 0.9375rem;
+            font-weight: 600;
             margin-bottom: 1.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.2s ease;
         }
 
         .back-link-modern:hover {
             color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.2);
             transform: translateX(-2px);
         }
 
-        /* === SUCCESS ANIMATION === */
-        .success-animation {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(10, 10, 15, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 3rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            z-index: 10000;
-            display: none;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .success-animation.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .success-icon {
-            width: 72px;
-            height: 72px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @@keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @@keyframes scaleIn {
-            from { transform: scale(0) rotate(-180deg); }
-            to { transform: scale(1) rotate(0); }
+        .back-link-modern:focus-visible {
+            outline: 2px solid #6366f1;
+            outline-offset: 2px;
         }
 
         /* === RESPONSIVE === */
@@ -542,11 +550,11 @@
             }
 
             .form-body {
-                padding: 1.5rem;
+                padding: 1.5rem 1rem;
             }
 
             .form-header {
-                padding: 1.5rem;
+                padding: 1.5rem 1rem;
             }
 
             .form-header h2 {
@@ -558,16 +566,37 @@
                 height: 64px;
                 font-size: 1.5rem;
             }
+
+            .form-group-modern {
+                margin-bottom: 1.75rem;
+            }
+
+            .back-link-modern {
+                font-size: 0.875rem;
+                padding: 0.5rem;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .form-body {
+                padding: 1.25rem 0.875rem;
+            }
+
+            .form-control-modern,
+            .form-select-modern {
+                font-size: 1rem; /* Prevent zoom on iOS */
+            }
         }
 
         /* === ACCESSIBILITY === */
-        /* Clear focus visible for keyboard navigation */
+        /* Clear focus visible for keyboard navigation - WCAG 2.4.7 */
         .form-control-modern:focus-visible,
         .form-select-modern:focus-visible,
         .btn-submit-modern:focus-visible,
-        .back-link-modern:focus-visible {
-            outline: 2px solid #6366f1;
-            outline-offset: 2px;
+        .back-link-modern:focus-visible,
+        .number-btn:focus-visible {
+            outline: 3px solid #6366f1;
+            outline-offset: 3px;
         }
 
         /* Screen reader only content */
@@ -583,7 +612,16 @@
             border: 0;
         }
 
-        /* High contrast mode support */
+        /* ARIA live region for announcements */
+        .sr-announcements {
+            position: absolute;
+            left: -10000px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        /* High contrast mode support - WCAG 1.4.11 */
         @@media (prefers-contrast: high) {
             .form-control-modern,
             .form-select-modern {
@@ -593,10 +631,15 @@
             .form-control-modern:focus,
             .form-select-modern:focus {
                 border-width: 3px;
+                outline-width: 4px;
+            }
+
+            .text-danger {
+                border-left-width: 5px;
             }
         }
 
-        /* Reduced motion support */
+        /* Reduced motion support - WCAG 2.3.3 */
         @@media (prefers-reduced-motion: reduce) {
             * {
                 animation-duration: 0.01ms !important;
@@ -604,17 +647,28 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        /* Improved color contrast - WCAG 1.4.3 (AA) */
+        .input-hint {
+            color: rgba(255, 255, 255, 0.65); /* Improved from 0.45 */
+        }
+
+        .form-label-modern {
+            color: rgba(255, 255, 255, 0.95); /* Improved from 0.85 */
+        }
     </style>
 }
+
+<a href="#main-form" class="skip-link">Skip to form</a>
 
 <div class="add-subscription-container">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8">
                 
-                <a asp-page="/Dashboard" class="back-link-modern" aria-label="Return to Dashboard">
+                <a asp-page="Index" class="back-link-modern" aria-label="Return to Subscriptions List">
                     <i class="bi bi-arrow-left" aria-hidden="true"></i>
-                    <span>Back to Dashboard</span>
+                    <span>Back to List</span>
                 </a>
 
                 <div class="subscription-form-card">
@@ -622,60 +676,56 @@
                         <div class="icon-circle" aria-hidden="true">
                             <i class="bi bi-plus-lg"></i>
                         </div>
-                        <h2 class="fw-bold text-white mb-2">Add New Subscription</h2>
+                        <h2 class="fw-bold text-white mb-2">Create New Subscription</h2>
                         <p class="text-white-50 mb-0">Track and manage your recurring expenses</p>
                     </div>
 
                     <div class="form-body">
-                        <form method="post" id="subscription-form" data-validate="true" novalidate aria-label="Add subscription form">
+                        <!-- ARIA live region for screen reader announcements -->
+                        <div class="sr-announcements" role="status" aria-live="polite" aria-atomic="true" id="form-announcements"></div>
+
+                        <form method="post" id="subscription-form" aria-label="Create subscription form" novalidate>
+                            <div asp-validation-summary="ModelOnly" class="validation-summary-errors" role="alert"></div>
                             
                             <!-- Service Name -->
                             <div class="form-group-modern">
-                                <label for="service-name-input" class="form-label-modern">
+                                <label asp-for="Subscription.ServiceName" class="form-label-modern">
                                     Service Name
                                     <span class="required" aria-label="required">*</span>
-                                    <i class="bi bi-info-circle helper-icon" 
-                                       tabindex="0"
-                                       role="button"
-                                       aria-label="Help: Enter the name of the service you're subscribing to"
-                                       title="Enter the name of the service you're subscribing to"></i>
                                 </label>
                                 <div class="input-group-modern">
                                     <i class="bi bi-tag input-icon" aria-hidden="true"></i>
                                     <input asp-for="Subscription.ServiceName" 
                                            class="form-control-modern" 
-                                           id="service-name-input"
                                            placeholder="e.g., Netflix, Spotify, Adobe..." 
-                                           required 
-                                           minlength="2"
-                                           maxlength="50"
                                            autofocus
-                                           aria-required="true" />
+                                           aria-required="true"
+                                           aria-describedby="servicename-error"
+                                           maxlength="100" />
                                 </div>
-                                <!-- Feedback container will be dynamically inserted here by JS -->
+                                <span asp-validation-for="Subscription.ServiceName" class="text-danger" id="servicename-error" role="alert"></span>
                             </div>
 
                             <div class="row g-3">
                                 <!-- Amount with Custom Controls -->
                                 <div class="col-md-6">
                                     <div class="form-group-modern">
-                                        <label for="price-input" class="form-label-modern">
+                                        <label asp-for="Subscription.Price" class="form-label-modern">
                                             Amount
                                             <span class="required" aria-label="required">*</span>
                                         </label>
                                         <div class="currency-input-wrapper">
-                                            <span class="currency-symbol" aria-hidden="true">₱</span>
+                                            <span class="currency-symbol" aria-hidden="true">?</span>
                                             <input asp-for="Subscription.Price" 
                                                    class="form-control-modern currency-input" 
-                                                   id="price-input"
-                                                   placeholder="0.00" 
+                                                   placeholder="" 
                                                    type="number" 
                                                    step="0.01" 
-                                                   min="1" 
-                                                   max="999999" 
-                                                   required
+                                                   min="0.01" 
+                                                   max="999999.99" 
                                                    aria-required="true"
-                                                   aria-label="Price in Philippine Peso" />
+                                                   aria-label="Amount in Philippine Peso"
+                                                   aria-describedby="price-hint price-error" />
                                             <!-- Custom Number Controls -->
                                             <div class="number-controls">
                                                 <button type="button" 
@@ -696,16 +746,16 @@
                                         </div>
                                         <div class="input-hint" id="price-hint">
                                             <i class="bi bi-info-circle" aria-hidden="true"></i>
-                                            <span>Enter amount in Philippine Peso (PHP)</span>
+                                            <span>Enter amount in Philippine Peso (?). Minimum ?0.01</span>
                                         </div>
-                                        <!-- Feedback container will be dynamically inserted here by JS -->
+                                        <span asp-validation-for="Subscription.Price" class="text-danger" id="price-error" role="alert"></span>
                                     </div>
                                 </div>
 
                                 <!-- Billing Cycle -->
                                 <div class="col-md-6">
                                     <div class="form-group-modern">
-                                        <label for="cycle-input" class="form-label-modern">
+                                        <label asp-for="Subscription.BillingCycle" class="form-label-modern">
                                             Billing Cycle
                                             <span class="required" aria-label="required">*</span>
                                         </label>
@@ -713,18 +763,17 @@
                                             <i class="bi bi-arrow-repeat input-icon" aria-hidden="true"></i>
                                             <select asp-for="Subscription.BillingCycle" 
                                                     class="form-select-modern" 
-                                                    id="cycle-input"
-                                                    required
-                                                    aria-required="true">
-                                                <option value="">Choose frequency...</option>
+                                                    aria-required="true"
+                                                    aria-describedby="billingcycle-error">
+                                                <option value="" disabled selected>Choose frequency...</option>
                                                 <option value="Daily">Daily</option>
                                                 <option value="Weekly">Weekly</option>
-                                                <option value="Monthly" selected>Monthly</option>
+                                                <option value="Monthly">Monthly</option>
                                                 <option value="Quarterly">Quarterly</option>
                                                 <option value="Yearly">Yearly</option>
                                             </select>
                                         </div>
-                                        <!-- Feedback container will be dynamically inserted here by JS -->
+                                        <span asp-validation-for="Subscription.BillingCycle" class="text-danger" id="billingcycle-error" role="alert"></span>
                                     </div>
                                 </div>
                             </div>
@@ -733,7 +782,7 @@
                                 <!-- Category -->
                                 <div class="col-md-6">
                                     <div class="form-group-modern">
-                                        <label for="category-input" class="form-label-modern">
+                                        <label asp-for="Subscription.Category" class="form-label-modern">
                                             Category
                                             <span class="required" aria-label="required">*</span>
                                         </label>
@@ -741,10 +790,9 @@
                                             <i class="bi bi-grid input-icon" aria-hidden="true"></i>
                                             <select asp-for="Subscription.Category" 
                                                     class="form-select-modern" 
-                                                    id="category-input"
-                                                    required
-                                                    aria-required="true">
-                                                <option value="">Select category...</option>
+                                                    aria-required="true"
+                                                    aria-describedby="category-error">
+                                                <option value="" disabled selected>Select category...</option>
                                                 <option value="Entertainment">Entertainment</option>
                                                 <option value="Software">Software</option>
                                                 <option value="Music">Music</option>
@@ -757,14 +805,14 @@
                                                 <option value="Other">Other</option>
                                             </select>
                                         </div>
-                                        <!-- Feedback container will be dynamically inserted here by JS -->
+                                        <span asp-validation-for="Subscription.Category" class="text-danger" id="category-error" role="alert"></span>
                                     </div>
                                 </div>
 
                                 <!-- Next Payment Date -->
                                 <div class="col-md-6">
                                     <div class="form-group-modern">
-                                        <label for="date-input" class="form-label-modern">
+                                        <label asp-for="Subscription.NextPaymentDate" class="form-label-modern">
                                             Next Payment
                                             <span class="required" aria-label="required">*</span>
                                         </label>
@@ -773,15 +821,14 @@
                                             <input asp-for="Subscription.NextPaymentDate" 
                                                    type="date" 
                                                    class="form-control-modern" 
-                                                   id="date-input"
-                                                   required
-                                                   aria-required="true" />
+                                                   aria-required="true"
+                                                   aria-describedby="nextpaymentdate-hint nextpaymentdate-error" />
                                         </div>
-                                        <div class="input-hint" id="date-hint">
+                                        <div class="input-hint" id="nextpaymentdate-hint">
                                             <i class="bi bi-info-circle" aria-hidden="true"></i>
                                             <span>When is your next payment due?</span>
                                         </div>
-                                        <!-- Feedback container will be dynamically inserted here by JS -->
+                                        <span asp-validation-for="Subscription.NextPaymentDate" class="text-danger" id="nextpaymentdate-error" role="alert"></span>
                                     </div>
                                 </div>
                             </div>
@@ -791,7 +838,7 @@
                                     id="submit-button"
                                     aria-label="Save subscription">
                                 <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
-                                Save Subscription
+                                Create Subscription
                             </button>
                         </form>
                     </div>
@@ -802,15 +849,6 @@
     </div>
 </div>
 
-<!-- Success Animation -->
-<div class="success-animation" id="success-animation" role="alert" aria-live="polite">
-    <div class="success-icon">
-        <i class="bi bi-check-lg fs-1 text-white" aria-hidden="true"></i>
-    </div>
-    <h3 class="text-white fw-bold mb-2">Success!</h3>
-    <p class="text-white-50">Subscription added successfully</p>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
@@ -819,190 +857,210 @@
             
             // === ELEMENTS ===
             const form = document.getElementById('subscription-form');
-            const submitBtn = document.getElementById('submit-button');
-            const inputs = {
-                serviceName: document.getElementById('service-name-input'),
-                price: document.getElementById('price-input'),
-                cycle: document.getElementById('cycle-input'),
-                category: document.getElementById('category-input'),
-                date: document.getElementById('date-input')
-            };
-            
-            // Custom number controls
+            const priceInput = document.getElementById('Subscription_Price');
             const priceIncrementBtn = document.getElementById('price-increment');
             const priceDecrementBtn = document.getElementById('price-decrement');
+            const dateInput = document.getElementById('Subscription_NextPaymentDate');
+            const submitButton = document.getElementById('submit-button');
+            const announcements = document.getElementById('form-announcements');
+            
+            // All form inputs for validation
+            const allInputs = form.querySelectorAll('input[aria-required="true"], select[aria-required="true"]');
+            
+            // Track which fields have been touched
+            const touchedFields = new Set();
             
             // === INITIALIZATION ===
             const today = new Date().toISOString().split('T')[0];
-            inputs.date.setAttribute('min', today);
+            if (dateInput) {
+                dateInput.setAttribute('min', today);
+                // Set default value to today
+                if (!dateInput.value) {
+                    dateInput.value = today;
+                }
+            }
+            
+            // Hide all validation messages on load
+            document.querySelectorAll('.text-danger').forEach(el => {
+                el.classList.remove('show');
+            });
+            
+            // === PROGRESSIVE VALIDATION ===
+            // Only show validation after field has been touched (blur event)
+            allInputs.forEach(input => {
+                // Mark field as touched on blur
+                input.addEventListener('blur', function() {
+                    touchedFields.add(this.id);
+                    validateField(this);
+                });
+                
+                // Real-time validation only for touched fields
+                input.addEventListener('input', function() {
+                    if (touchedFields.has(this.id)) {
+                        validateField(this);
+                    }
+                });
+            });
+            
+            function validateField(field) {
+                const errorSpan = document.getElementById(field.getAttribute('aria-describedby')?.split(' ').find(id => id.includes('error')));
+                if (!errorSpan) return;
+                
+                let isValid = field.checkValidity();
+                let errorMessage = '';
+                
+                // Custom validation for specific fields
+                if (field.id === 'Subscription_Price') {
+                    const value = parseFloat(field.value);
+                    if (!value || value <= 0) {
+                        isValid = false;
+                        errorMessage = 'Amount must be at least ?0.01';
+                    }
+                } else if (field.id === 'Subscription_ServiceName') {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        errorMessage = 'Service name is required';
+                    } else if (field.value.trim().length < 2) {
+                        isValid = false;
+                        errorMessage = 'Service name must be at least 2 characters';
+                    }
+                } else if (field.tagName === 'SELECT' && !field.value) {
+                    isValid = false;
+                    errorMessage = 'Please select an option';
+                } else if (field.type === 'date' && !field.value) {
+                    isValid = false;
+                    errorMessage = 'Next payment date is required';
+                }
+                
+                // Update visual state
+                const inputGroup = field.closest('.input-group-modern') || field.closest('.currency-input-wrapper');
+                
+                if (isValid) {
+                    field.classList.remove('is-invalid');
+                    field.classList.add('is-valid');
+                    errorSpan.classList.remove('show');
+                    if (inputGroup) {
+                        inputGroup.classList.remove('has-error');
+                        inputGroup.classList.add('has-success');
+                    }
+                } else {
+                    field.classList.remove('is-valid');
+                    field.classList.add('is-invalid');
+                    if (errorMessage && touchedFields.has(field.id)) {
+                        errorSpan.textContent = errorMessage;
+                        errorSpan.classList.add('show');
+                    }
+                    if (inputGroup) {
+                        inputGroup.classList.remove('has-success');
+                        inputGroup.classList.add('has-error');
+                    }
+                }
+                
+                // Announce to screen readers
+                if (!isValid && errorMessage && touchedFields.has(field.id)) {
+                    announce(errorMessage);
+                }
+                
+                return isValid;
+            }
+            
+            // === FORM SUBMISSION VALIDATION ===
+            form.addEventListener('submit', function(e) {
+                // Mark all fields as touched
+                allInputs.forEach(input => {
+                    touchedFields.add(input.id);
+                    validateField(input);
+                });
+                
+                // Check if form is valid
+                const isFormValid = Array.from(allInputs).every(input => validateField(input));
+                
+                if (!isFormValid) {
+                    e.preventDefault();
+                    
+                    // Find first invalid field
+                    const firstInvalid = Array.from(allInputs).find(input => !input.checkValidity() || !validateField(input));
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                        announce('Please fix the errors in the form before submitting');
+                    }
+                } else {
+                    // Disable submit button to prevent double submission
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = '<i class="bi bi-hourglass-split me-2" aria-hidden="true"></i>Creating...';
+                    announce('Creating subscription...');
+                }
+            });
             
             // === CUSTOM NUMBER INPUT CONTROLS ===
             function incrementPrice() {
-                const currentValue = parseFloat(inputs.price.value) || 0;
-                const step = parseFloat(inputs.price.step) || 1;
-                const max = parseFloat(inputs.price.max) || Infinity;
+                if (!priceInput) return;
+                const currentValue = parseFloat(priceInput.value) || 0;
+                const step = parseFloat(priceInput.step) || 0.01;
+                const max = parseFloat(priceInput.max) || 999999.99;
                 const newValue = Math.min(currentValue + step, max);
-                inputs.price.value = newValue.toFixed(2);
-                inputs.price.dispatchEvent(new Event('input', { bubbles: true }));
-                inputs.price.focus();
+                priceInput.value = newValue.toFixed(2);
+                priceInput.dispatchEvent(new Event('input', { bubbles: true }));
+                priceInput.focus();
+                
+                // Mark as touched and validate
+                touchedFields.add(priceInput.id);
+                validateField(priceInput);
             }
             
             function decrementPrice() {
-                const currentValue = parseFloat(inputs.price.value) || 0;
-                const step = parseFloat(inputs.price.step) || 1;
-                const min = parseFloat(inputs.price.min) || 0;
+                if (!priceInput) return;
+                const currentValue = parseFloat(priceInput.value) || 0;
+                const step = parseFloat(priceInput.step) || 0.01;
+                const min = parseFloat(priceInput.min) || 0.01;
                 const newValue = Math.max(currentValue - step, min);
-                inputs.price.value = newValue.toFixed(2);
-                inputs.price.dispatchEvent(new Event('input', { bubbles: true }));
-                inputs.price.focus();
+                priceInput.value = newValue.toFixed(2);
+                priceInput.dispatchEvent(new Event('input', { bubbles: true }));
+                priceInput.focus();
+                
+                // Mark as touched and validate
+                touchedFields.add(priceInput.id);
+                validateField(priceInput);
             }
             
             // Attach number control listeners
-            priceIncrementBtn.addEventListener('click', incrementPrice);
-            priceDecrementBtn.addEventListener('click', decrementPrice);
+            if (priceIncrementBtn) {
+                priceIncrementBtn.addEventListener('click', incrementPrice);
+            }
+            if (priceDecrementBtn) {
+                priceDecrementBtn.addEventListener('click', decrementPrice);
+            }
             
             // Keyboard support for number controls
-            inputs.price.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    incrementPrice();
-                } else if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    decrementPrice();
-                }
-            });
+            if (priceInput) {
+                priceInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        incrementPrice();
+                    } else if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        decrementPrice();
+                    }
+                });
+            }
             
-            // === VALIDATION ===
-            const validators = {
-                serviceName: (value) => {
-                    const trimmed = value.trim();
-                    return trimmed.length >= 2 && trimmed.length <= 50;
-                },
-                price: (value) => {
-                    const num = parseFloat(value);
-                    return !isNaN(num) && num >= 1 && num <= 999999;
-                },
-                cycle: (value) => value && value !== '',
-                category: (value) => value && value !== '',
-                date: (value) => {
-                    if (!value) return false;
-                    const selectedDate = new Date(value);
-                    const todayDate = new Date(today);
-                    return selectedDate >= todayDate;
-                }
-            };
-            
-            // Validates a single field and updates UI accordingly
-            // fieldName - The field to validate
-            // returns boolean - Whether the field is valid
-            function validateField(fieldName) {
-                const input = inputs[fieldName];
-                const value = input.value;
-                const isValid = validators[fieldName](value);
-                
-                // Get feedback elements
-                const fieldId = fieldName.replace(/([A-Z])/g, '-$1').toLowerCase();
-                const errorEl = document.getElementById(`${fieldId}-error`);
-                const successEl = document.getElementById(`${fieldId}-success`);
-                
-                if (isValid) {
-                    input.classList.remove('is-invalid');
-                    input.classList.add('is-valid');
-                    input.setAttribute('aria-invalid', 'false');
-                    if (errorEl) errorEl.classList.remove('show');
-                    if (successEl) successEl.classList.add('show');
-                    return true;
-                } else {
-                    input.classList.remove('is-valid');
-                    input.classList.add('is-invalid');
-                    input.setAttribute('aria-invalid', 'true');
-                    if (errorEl) errorEl.classList.add('show');
-                    if (successEl) successEl.classList.remove('show');
-                    return false;
+            // === ACCESSIBILITY ANNOUNCEMENTS ===
+            function announce(message) {
+                if (announcements) {
+                    announcements.textContent = message;
+                    // Clear after 3 seconds
+                    setTimeout(() => {
+                        announcements.textContent = '';
+                    }, 3000);
                 }
             }
             
-            // === EVENT LISTENERS ===
-            
-            // Validate on blur
-            Object.keys(inputs).forEach(key => {
-                inputs[key].addEventListener('blur', () => {
-                    if (inputs[key].value) {
-                        validateField(key);
-                    }
-                });
-                
-                // Re-validate on input if field has error
-                inputs[key].addEventListener('input', () => {
-                    if (inputs[key].classList.contains('is-invalid')) {
-                        validateField(key);
-                    }
-                });
-            });
-            
-            // === FORM SUBMISSION ===
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Validate all fields
-                let isValid = true;
-                Object.keys(inputs).forEach(key => {
-                    if (!validateField(key)) {
-                        isValid = false;
-                    }
-                });
-                
-                if (!isValid) {
-                    // Scroll to first error with smooth animation
-                    const firstInvalid = form.querySelector('.is-invalid');
-                    if (firstInvalid) {
-                        firstInvalid.scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'center' 
-                        });
-                        // Announce error to screen readers
-                        firstInvalid.focus();
-                    }
-                    return;
-                }
-                
-                // Show loading state
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span class="spinner" role="status" aria-label="Saving"></span> Saving...';
-                
-                // Simulate async save (in production, this would be form.submit())
-                setTimeout(() => {
-                    // Show success animation
-                    const successAnim = document.getElementById('success-animation');
-                    successAnim.classList.add('show');
-                    
-                    // Redirect after animation
-                    setTimeout(() => {
-                        // In production: form.submit() or use the actual redirect
-                        window.location.href = '/Dashboard';
-                    }, 1500);
-                }, 1000);
-            });
-            
-            // === HELPER ICON ACCESSIBILITY ===
-            document.querySelectorAll('.helper-icon').forEach(icon => {
-                icon.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        // Show tooltip or announce hint
-                        const hint = this.getAttribute('title');
-                        if (hint) {
-                            alert(hint); // In production, use a proper tooltip
-                        }
-                    }
-                });
-            });
-            
-            // === AUTO-FOCUS ===
+            // === INITIALIZATION ANNOUNCEMENT ===
             setTimeout(() => {
-                inputs.serviceName.focus();
-            }, 100);
+                announce('Create subscription form loaded. Fill in all required fields marked with asterisk.');
+            }, 500);
             
         })();
     </script>
 }
+

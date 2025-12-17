@@ -1,6 +1,7 @@
 ﻿@page
 @model SubscriptionSystem.Pages.IndexModel
 @{
-    // Redirect /Index to /Dashboard to avoid confusion
-    Response.Redirect("/Dashboard", permanent: true);
+    ViewData["Title"] = "Loading...";
 }
+
+@* Server-side redirect handled in PageModel *@
