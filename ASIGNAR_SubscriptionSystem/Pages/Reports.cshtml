@@ -84,8 +84,8 @@
                                 Spending Overview
                             </h5>
                             <div class="d-flex gap-2 flex-wrap">
-                                <span class="badge badge-info">Monthly: ₱@Model.TotalMonthlySpend.ToString("N2")</span>
-                                <span class="badge badge-primary">Yearly: ₱@Model.TotalYearlySpend.ToString("N2")</span>
+                                <span class="badge badge-info">Monthly: <span data-currency>₱</span>@Model.TotalMonthlySpend.ToString("N2")</span>
+                                <span class="badge badge-primary">Yearly: <span data-currency>₱</span>@Model.TotalYearlySpend.ToString("N2")</span>
                             </div>
                         </div>
                         <div class="chart-body">
@@ -144,7 +144,7 @@
                                     <div class="insight-content">
                                         <h6 class="insight-heading">Average Monthly Cost</h6>
                                         <p class="insight-description">
-                                            You spend an average of <span class="text-info fw-bold">₱@Model.AverageMonthlyCost.ToString("N2")</span> per subscription.
+                                            You spend an average of <span class="text-info fw-bold"><span data-currency>₱</span>@Model.AverageMonthlyCost.ToString("N2")</span> per subscription.
                                             @if (Model.ActiveSubscriptionCount > 1)
                                             {
                                                 <text>Across @Model.ActiveSubscriptionCount active subscriptions.</text>
@@ -166,7 +166,7 @@
                                             <h6 class="insight-heading">Top Spending Category</h6>
                                             <p class="insight-description">
                                                 <strong>@topCategory.Key</strong> is your highest spending category at 
-                                                <span class="text-warning fw-bold">₱@topCategory.Value.ToString("N2")/month</span>.
+                                                <span class="text-warning fw-bold"><span data-currency>₱</span>@topCategory.Value.ToString("N2")/month</span>.
                                             </p>
                                         </div>
                                     </div>
@@ -183,7 +183,7 @@
                                         <p class="insight-description">
                                             You're currently tracking <span class="text-success fw-bold">@Model.ActiveSubscriptionCount</span> 
                                             subscription@(Model.ActiveSubscriptionCount != 1 ? "s" : "").
-                                            Annual projection: <span class="fw-bold">₱@Model.TotalYearlySpend.ToString("N2")</span>
+                                            Annual projection: <span class="fw-bold"><span data-currency>₱</span>@Model.TotalYearlySpend.ToString("N2")</span>
                                         </p>
                                     </div>
                                 </div>
@@ -243,8 +243,8 @@
                                                     @subscription.ServiceName
                                                 </a>
                                             </td>
-                                            <td><span class="font-monospace">₱@monthlyCost.ToString("N2")</span></td>
-                                            <td><span class="font-monospace">₱@annualCost.ToString("N2")</span></td>
+                                            <td><span class="font-monospace"><span data-currency>₱</span>@monthlyCost.ToString("N2")</span></td>
+                                            <td><span class="font-monospace"><span data-currency>₱</span>@annualCost.ToString("N2")</span></td>
                                             <td><span class="badge badge-secondary">@subscription.Category</span></td>
                                             <td><span class="text-muted">@subscription.NextPaymentDate.ToString("MMM dd, yyyy")</span></td>
                                         </tr>
@@ -264,6 +264,7 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/currency-manager.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
     @if (Model.IsDatabaseAvailable && Model.AllSubscriptions.Count > 0)

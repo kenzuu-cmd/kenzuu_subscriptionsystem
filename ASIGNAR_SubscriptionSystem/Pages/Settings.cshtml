@@ -560,6 +560,7 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/currency-manager.js" asp-append-version="true"></script>
     <script>
         (function() {
             'use strict';
@@ -567,6 +568,13 @@
             const form = document.getElementById('settings-form');
             const saveBtn = document.getElementById('save-button');
             const saveNotification = document.getElementById('save-notification');
+            const currencySelect = document.querySelector('select[name="Currency"]');
+            
+            // Load saved currency preference on page load
+            if (window.CurrencyManager && currencySelect) {
+                const savedCurrency = window.CurrencyManager.getCurrency();
+                currencySelect.value = savedCurrency;
+            }
             
             // Form submission
             form.addEventListener('submit', function(e) {
@@ -575,6 +583,13 @@
                 // Show loading state
                 saveBtn.disabled = true;
                 saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+                
+                // Save currency preference
+                if (window.CurrencyManager && currencySelect) {
+                    const selectedCurrency = currencySelect.value;
+                    window.CurrencyManager.saveCurrency(selectedCurrency);
+                    console.log('Currency preference saved:', selectedCurrency);
+                }
                 
                 // Simulate async save
                 setTimeout(() => {

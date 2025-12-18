@@ -86,7 +86,7 @@
                         <div class="stat-badge stat-badge-primary">
                             <i class="bi bi-wallet2 me-2"></i>
                             <span class="stat-badge-label">Monthly:</span>
-                            <span class="stat-badge-value">₱@Model.TotalMonthly.ToString("N2")</span>
+                            <span class="stat-badge-value"><span data-currency>₱</span>@Model.TotalMonthly.ToString("N2")</span>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
@@ -100,7 +100,7 @@
                         <div class="stat-badge stat-badge-info">
                             <i class="bi bi-graph-up me-2"></i>
                             <span class="stat-badge-label">Yearly:</span>
-                            <span class="stat-badge-value">₱@Model.YearlyProjected.ToString("N2")</span>
+                            <span class="stat-badge-value"><span data-currency>₱</span>@Model.YearlyProjected.ToString("N2")</span>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
@@ -120,13 +120,13 @@
                             <div class="table-card-header">
                                 <h5 class="table-title mb-0">All Subscriptions</h5>
                                 <div class="table-actions">
-                                    <button class="btn btn-sm btn-outline-light" title="Sort by date">
+                                    <button class="btn btn-sm btn-outline-light" data-sort="date" title="Sort by date">
                                         <i class="bi bi-calendar3"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-outline-light" title="Sort by price">
+                                    <button class="btn btn-sm btn-outline-light" data-sort="price" title="Sort by price">
                                         <i class="bi bi-currency-dollar"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-outline-light" title="Sort by name">
+                                    <button class="btn btn-sm btn-outline-light" data-sort="name" title="Sort by name">
                                         <i class="bi bi-sort-alpha-down"></i>
                                     </button>
                                 </div>
@@ -161,7 +161,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <span class="fw-semibold text-white font-monospace">₱@item.Price.ToString("N2")</span>
+                                                    <span class="fw-semibold text-white font-monospace"><span data-currency>₱</span>@item.Price.ToString("N2")</span>
                                                 </td>
                                                 <td>
                                                     <span class="badge badge-secondary">@item.BillingCycle</span>
@@ -208,6 +208,7 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/currency-manager.js" asp-append-version="true"></script>
     <script src="~/js/dashboard-premium.js" asp-append-version="true"></script>
 }
 

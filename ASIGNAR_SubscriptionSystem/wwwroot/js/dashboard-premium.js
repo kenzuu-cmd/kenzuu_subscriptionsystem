@@ -38,29 +38,36 @@
   })
 
   function initializeSubscriptions() {
-    const rows = document.querySelectorAll('#subscriptions-table tbody tr')
+    const rows = document.querySelectorAll('#subscriptions-table tbody tr, .subscription-table tbody tr')
     state.subscriptions = Array.from(rows).map((row) => {
       const nameEl = row.querySelector('.fw-bold.text-white')
-      const priceEl = row.querySelector('[data-label="Price"]')
-      const cycleEl = row.querySelector('[data-label="Billing Cycle"]')
-      const dateEl = row.querySelector('[data-label="Next Payment"]')
+      const priceEl = row.querySelector('.fw-semibold.text-white.font-monospace, [data-label="Price"]')
+      const cycleEl = row.querySelector('.badge.badge-secondary, [data-label="Billing Cycle"]')
+      const dateEl = row.querySelector('[data-label="Next Payment"]') || row.cells[3]
+
+      // Extract date from the row - get the actual date string from small.text-muted
+      let dateString = ''
+      let dateValue = null
+      if (dateEl) {
+        const dateSmall = dateEl.querySelector('small.text-muted')
+        if (dateSmall) {
+          dateString = dateSmall.textContent.trim()
+          // Parse date in format "MMM dd, yyyy" e.g., "Dec 25, 2025"
+          dateValue = new Date(dateString)
+        }
+      }
 
       return {
         element: row,
         name: nameEl ? nameEl.textContent.trim() : '',
         price: priceEl
-          ? parseFloat(priceEl.textContent.replace('$', '').replace(',', ''))
+          ? parseFloat(priceEl.textContent.replace(/[₱$€£¥,]/g, '').trim())
           : 0,
         cycle: cycleEl ? cycleEl.textContent.trim() : '',
-        date: dateEl
-          ? dateEl.querySelector('.text-white, .text-danger')
-            ? dateEl
-                .querySelector('.text-white, .text-danger')
-                .textContent.trim()
-            : ''
-          : '',
-        category: row.querySelector('.small.text-muted')
-          ? row.querySelector('.small.text-muted').textContent.trim()
+        date: dateString,
+        dateValue: dateValue,
+        category: row.querySelector('small.text-muted')
+          ? row.querySelector('small.text-muted').textContent.trim()
           : '',
         status: getSubscriptionStatus(row),
       }
@@ -205,9 +212,27 @@
         sortSubscriptions(sortType)
         animateTableRows()
 
-        // Update button UI
+        // Update button UI - show active state and direction
         sortButtons.forEach((btn) => btn.classList.remove('active'))
         this.classList.add('active')
+        
+        // Update icon to show sort direction
+        const icon = this.querySelector('i')
+        if (icon) {
+          if (sortType === 'name') {
+            icon.className = state.sortDirection === 'asc' 
+              ? 'bi bi-sort-alpha-down' 
+              : 'bi bi-sort-alpha-up'
+          } else if (sortType === 'date') {
+            icon.className = state.sortDirection === 'asc' 
+              ? 'bi bi-calendar3' 
+              : 'bi bi-calendar3'
+          } else if (sortType === 'price') {
+            icon.className = state.sortDirection === 'asc'
+              ? 'bi bi-currency-dollar'
+              : 'bi bi-currency-dollar'
+          }
+        }
       })
     })
   }
@@ -218,24 +243,39 @@
 
       switch (sortType) {
         case 'name':
-          comparison = a.name.localeCompare(b.name)
+          // Alphabetical sort (case-insensitive)
+          comparison = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
           break
         case 'price':
+          // Numerical sort for amounts
           comparison = a.price - b.price
           break
         case 'date':
-          comparison = a.date.localeCompare(b.date)
+          // Date sort using parsed Date objects
+          if (a.dateValue && b.dateValue) {
+            comparison = a.dateValue.getTime() - b.dateValue.getTime()
+          } else if (a.dateValue) {
+            comparison = -1 // a has date, b doesn't - a comes first
+          } else if (b.dateValue) {
+            comparison = 1 // b has date, a doesn't - b comes first
+          } else {
+            comparison = 0 // neither has date
+          }
           break
+        default:
+          comparison = 0
       }
 
       return state.sortDirection === 'desc' ? -comparison : comparison
     })
 
     // Reorder DOM elements
-    const tbody = document.querySelector('#subscriptions-table tbody')
-    state.filteredSubscriptions.forEach((sub) => {
-      tbody.appendChild(sub.element)
-    })
+    const tbody = document.querySelector('#subscriptions-table tbody, .subscription-table tbody')
+    if (tbody) {
+      state.filteredSubscriptions.forEach((sub) => {
+        tbody.appendChild(sub.element)
+      })
+    }
   }
 
   // ========================================

@@ -366,7 +366,7 @@
                                             <span class="required">*</span>
                                         </label>
                                         <div class="currency-input-wrapper">
-                                            <span class="currency-symbol">?</span>
+                                            <span class="currency-symbol" data-currency aria-hidden="true">₱</span>
                                             <input asp-for="Subscription.Price" 
                                                    class="form-control-modern currency-input" 
                                                    type="number" 
@@ -375,7 +375,7 @@
                                         </div>
                                         <div class="input-hint">
                                             <i class="bi bi-info-circle"></i>
-                                            <span>Enter amount in Philippine Peso</span>
+                                            <span>Enter amount in <span data-currency-name>Philippine Peso</span></span>
                                         </div>
                                         <span asp-validation-for="Subscription.Price" class="text-danger"></span>
                                     </div>
@@ -460,6 +460,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/currency-manager.js" asp-append-version="true"></script>
     <script>
         (function() {
             'use strict';
@@ -470,6 +471,25 @@
                 submitButton.disabled = true;
                 submitButton.innerHTML = '<i class="bi bi-hourglass-split"></i>Saving...';
             });
+            
+            // === CURRENCY DISPLAY UPDATE ===
+            // Update currency name displays when currency changes
+            if (window.CurrencyManager) {
+                // Initial update
+                const updateCurrencyNames = () => {
+                    document.querySelectorAll('[data-currency-name]').forEach(el => {
+                        el.textContent = window.CurrencyManager.getName();
+                    });
+                };
+                
+                // Update on load
+                setTimeout(updateCurrencyNames, 100);
+                
+                // Update when currency changes
+                window.CurrencyManager.onChange(() => {
+                    updateCurrencyNames();
+                });
+            }
         })();
     </script>
 }

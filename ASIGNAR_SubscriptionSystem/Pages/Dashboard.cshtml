@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="stat-content">
                                     <div class="stat-label">Monthly Burn</div>
-                                    <div class="stat-value">₱@Model.TotalMonthly.ToString("N2")</div>
+                                    <div class="stat-value"><span data-currency>₱</span>@Model.TotalMonthly.ToString("N2")</div>
                                     <div class="stat-meta">
                                         <i class="bi bi-arrow-repeat"></i>
                                         <span>Recurring every 30 days</span>
@@ -109,7 +109,7 @@
                                 </div>
                                 <div class="stat-content">
                                     <div class="stat-label">Yearly Projection</div>
-                                    <div class="stat-value">₱@Model.YearlyProjected.ToString("N2")</div>
+                                    <div class="stat-value"><span data-currency>₱</span>@Model.YearlyProjected.ToString("N2")</div>
                                     <div class="stat-meta">
                                         <i class="bi bi-calendar-check"></i>
                                         <span>Est. Annual Run Rate</span>
@@ -203,7 +203,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <span class="fw-semibold text-white font-monospace">₱@item.Price.ToString("N2")</span>
+                                                    <span class="fw-semibold text-white font-monospace"><span data-currency>₱</span>@item.Price.ToString("N2")</span>
                                                 </td>
                                                 <td>
                                                     <span class="badge badge-secondary">@item.BillingCycle</span>
@@ -287,7 +287,7 @@
                                             <span class="reminder-title">@payment.ServiceName</span>
                                             <span class="badge @badgeClass">@GetTimeRemaining(payment.NextPaymentDate)</span>
                                         </div>
-                                        <p class="reminder-text">₱@payment.Price.ToString("N2") - @payment.BillingCycle</p>
+                                        <p class="reminder-text"><span data-currency>₱</span>@payment.Price.ToString("N2") - @payment.BillingCycle</p>
                                         <div class="reminder-actions">
                                             <a asp-page="/Subscriptions/Details" asp-route-id="@payment.Id" 
                                                class="btn btn-sm btn-outline-light">View</a>
@@ -316,6 +316,7 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/currency-manager.js" asp-append-version="true"></script>
     @* Temporarily disabled for debugging *@
     @* <script src="~/js/dashboard-premium.js" asp-append-version="true"></script> *@
 }

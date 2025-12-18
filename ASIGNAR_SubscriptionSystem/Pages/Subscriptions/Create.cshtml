@@ -715,7 +715,7 @@
                                             <span class="required" aria-label="required">*</span>
                                         </label>
                                         <div class="currency-input-wrapper">
-                                            <span class="currency-symbol" aria-hidden="true">?</span>
+                                            <span class="currency-symbol" data-currency aria-hidden="true">₱</span>
                                             <input asp-for="Subscription.Price" 
                                                    class="form-control-modern currency-input" 
                                                    placeholder="" 
@@ -725,7 +725,8 @@
                                                    max="999999.99" 
                                                    aria-required="true"
                                                    aria-label="Amount in Philippine Peso"
-                                                   aria-describedby="price-hint price-error" />
+                                                   aria-describedby="price-hint price-error"
+                                                   data-currency-input />
                                             <!-- Custom Number Controls -->
                                             <div class="number-controls">
                                                 <button type="button" 
@@ -746,7 +747,7 @@
                                         </div>
                                         <div class="input-hint" id="price-hint">
                                             <i class="bi bi-info-circle" aria-hidden="true"></i>
-                                            <span>Enter amount in Philippine Peso (?). Minimum ?0.01</span>
+                                            <span>Enter amount in <span data-currency-name>Philippine Peso</span> (<span data-currency>₱</span>). Minimum <span data-currency>₱</span>0.01</span>
                                         </div>
                                         <span asp-validation-for="Subscription.Price" class="text-danger" id="price-error" role="alert"></span>
                                     </div>
@@ -851,6 +852,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/currency-manager.js" asp-append-version="true"></script>
     <script>
         (function() {
             'use strict';
@@ -914,7 +916,8 @@
                     const value = parseFloat(field.value);
                     if (!value || value <= 0) {
                         isValid = false;
-                        errorMessage = 'Amount must be at least ?0.01';
+                        const symbol = window.CurrencyManager ? window.CurrencyManager.getSymbol() : '₱';
+                        errorMessage = `Amount must be at least ${symbol}0.01`;
                     }
                 } else if (field.id === 'Subscription_ServiceName') {
                     if (!field.value.trim()) {
@@ -1053,6 +1056,25 @@
                         announcements.textContent = '';
                     }, 3000);
                 }
+            }
+            
+            // === CURRENCY DISPLAY UPDATE ===
+            // Update currency name displays when currency changes
+            if (window.CurrencyManager) {
+                // Initial update
+                const updateCurrencyNames = () => {
+                    document.querySelectorAll('[data-currency-name]').forEach(el => {
+                        el.textContent = window.CurrencyManager.getName();
+                    });
+                };
+                
+                // Update on load
+                setTimeout(updateCurrencyNames, 100);
+                
+                // Update when currency changes
+                window.CurrencyManager.onChange(() => {
+                    updateCurrencyNames();
+                });
             }
             
             // === INITIALIZATION ANNOUNCEMENT ===
