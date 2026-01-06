@@ -3,7 +3,7 @@
  * Handles: Scroll animations, counters, pricing toggle, and micro-interactions
  * 
  * @version 2.2.0
- * @author SubscriptionSystem Team
+ * @author SubWise Team
  */
 
 (function() {

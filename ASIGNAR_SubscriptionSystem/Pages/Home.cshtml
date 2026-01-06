@@ -1,7 +1,7 @@
 @page
 @model ASIGNAR_SubscriptionSystem.Pages.HomeModel
 @{
-    ViewData["Title"] = "Never Lose Money on Forgotten Subscriptions | SubscriptionSystem";
+    ViewData["Title"] = "Never Lose Money on Forgotten Subscriptions | SubWise";
     ViewData["Description"] = "Track free trials, manage recurring payments, and get smart reminders. Join 50,000+ users saving an average of $273/year.";
 }
 
@@ -9,6 +9,7 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/landing-premium.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/landing-mobile-optimizations.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pricing.css" asp-append-version="true" />
 }
 
 @* ============================================
@@ -67,25 +68,25 @@
                 <div class="col-lg-6">
                     <div class="hero-content">
                         <!-- Trust Badge -->
-                        <div class="hero-badge" data-aos="fade-up">
+                        <div class="hero-badge fade-in-on-scroll">
                             <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
                             <span>Free Forever · No Credit Card</span>
                         </div>
                         
                         <!-- Headline -->
-                        <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
+                        <h1 class="hero-title fade-in-on-scroll" data-delay="100">
                             Never Lose Money on
                             <span class="text-gradient">Forgotten Subscriptions</span>
                         </h1>
                         
                         <!-- Supporting Copy -->
-                        <p class="hero-description" data-aos="fade-up" data-aos-delay="200">
+                        <p class="hero-description fade-in-on-scroll" data-delay="200">
                             Track free trials, manage recurring payments, and get smart reminders. 
                             Join <strong>50,000+ users</strong> saving an average of <strong>$273/year</strong>.
                         </p>
 
                         <!-- CTA Buttons -->
-                        <div class="hero-cta" data-aos="fade-up" data-aos-delay="300">
+                        <div class="hero-cta fade-in-on-scroll" data-delay="300">
                             <a href="/Dashboard" class="btn btn-primary btn-hero" aria-label="Get started with your free account">
                                 <span>Get Started Free</span>
                                 <i class="bi bi-arrow-right" aria-hidden="true"></i>
@@ -97,7 +98,7 @@
                         </div>
 
                         <!-- Trust Indicators -->
-                        <div class="hero-trust" data-aos="fade-up" data-aos-delay="400">
+                        <div class="hero-trust fade-in-on-scroll" data-delay="400">
                             <div class="trust-item">
                                 <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
                                 <span>No credit card</span>
@@ -116,7 +117,7 @@
                 
                 <div class="col-lg-6">
                     <!-- Animated Visual Element -->
-                    <div class="hero-visual" data-aos="fade-left" data-aos-delay="200">
+                    <div class="hero-visual fade-in-on-scroll from-right" data-delay="200">
                         <div class="visual-container" aria-hidden="true">
                             <div class="floating-shape shape-1"></div>
                             <div class="floating-shape shape-2"></div>
@@ -132,7 +133,7 @@
     <!-- Social Proof Stats -->
     <section class="stats-section" id="stats">
         <div class="container">
-            <div class="stats-grid" data-aos="fade-up">
+            <div class="stats-grid fade-in-on-scroll">
                 <div class="stat-card">
                     <div class="stat-value"><span class="counter" data-target="50">0</span>K+</div>
                     <div class="stat-label">Active Users</div>
@@ -157,7 +158,7 @@
     <section class="features-section" id="features">
         <div class="container">
             <!-- Section Header -->
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header fade-in-on-scroll">
                 <div class="section-badge">
                     <i class="bi bi-stars" aria-hidden="true"></i>
                     <span>Features</span>
@@ -170,7 +171,7 @@
 
             <!-- Feature Cards Grid -->
             <div class="features-grid">
-                <article class="feature-card" data-aos="fade-up" data-aos-delay="100" tabindex="0">
+                <article class="feature-card fade-in-on-scroll" data-delay="100" tabindex="0">
                     <div class="feature-icon">
                         <i class="bi bi-bell-fill" aria-hidden="true"></i>
                     </div>
@@ -180,7 +181,7 @@
                     </p>
                 </article>
 
-                <article class="feature-card" data-aos="fade-up" data-aos-delay="200" tabindex="0">
+                <article class="feature-card fade-in-on-scroll" data-delay="200" tabindex="0">
                     <div class="feature-icon">
                         <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
                     </div>
@@ -190,7 +191,7 @@
                     </p>
                 </article>
 
-                <article class="feature-card" data-aos="fade-up" data-aos-delay="300" tabindex="0">
+                <article class="feature-card fade-in-on-scroll" data-delay="300" tabindex="0">
                     <div class="feature-icon">
                         <i class="bi bi-shield-check" aria-hidden="true"></i>
                     </div>
@@ -200,7 +201,7 @@
                     </p>
                 </article>
 
-                <article class="feature-card" data-aos="fade-up" data-aos-delay="400" tabindex="0">
+                <article class="feature-card fade-in-on-scroll" data-delay="400" tabindex="0">
                     <div class="feature-icon">
                         <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
                     </div>
@@ -213,10 +214,233 @@
         </div>
     </section>
 
+    <!-- Pricing Section -->
+    <section class="pricing-section" id="pricing">
+        <div class="container">
+            <!-- Section Header -->
+            <div class="section-header pricing-header fade-in-on-scroll">
+                <div class="section-badge">
+                    <i class="bi bi-tag-fill" aria-hidden="true"></i>
+                    <span>Pricing</span>
+                </div>
+                <h2 class="section-title">Choose the Plan That's Right for You</h2>
+                <p class="section-description">
+                    Start free, upgrade as you grow. No hidden fees, cancel anytime.
+                </p>
+
+                <!-- Billing Toggle -->
+                <div class="billing-toggle" role="group" aria-label="Billing period selection">
+                    <label for="monthly-toggle" id="monthly-label" class="active">Monthly</label>
+                    <button 
+                        class="billing-switch" 
+                        id="billing-toggle-btn"
+                        role="switch" 
+                        aria-checked="false"
+                        aria-labelledby="monthly-label yearly-label"
+                        onclick="toggleBilling()">
+                        <span class="sr-only">Switch to yearly billing</span>
+                    </button>
+                    <label for="yearly-toggle" id="yearly-label">
+                        Yearly
+                        <span class="discount-badge" aria-label="Save 20% with yearly billing">Save 20%</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Pricing Cards Grid -->
+            <div class="pricing-grid">
+                
+                <!-- Free Plan -->
+                <article class="pricing-card fade-in-on-scroll" data-delay="100" tabindex="0">
+                    <div class="pricing-header-inner">
+                        <h3 class="pricing-plan-name">Free</h3>
+                        <p class="pricing-description">Perfect for getting started and trying out the platform</p>
+                        
+                        <div class="pricing-amount">
+                            <span class="pricing-currency">$</span>
+                            <span class="pricing-value" data-monthly="0" data-yearly="0">0</span>
+                        </div>
+                        <p class="pricing-period">per month</p>
+                        <p class="pricing-note">Forever free</p>
+                    </div>
+
+                    <div class="pricing-features">
+                        <ul>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Up to 10 subscriptions</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Basic reminders</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Monthly spending reports</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Mobile app access</span>
+                            </li>
+                            <li class="disabled">
+                                <i class="bi bi-x-circle" aria-hidden="true"></i>
+                                <span>Advanced analytics</span>
+                            </li>
+                            <li class="disabled">
+                                <i class="bi bi-x-circle" aria-hidden="true"></i>
+                                <span>Custom categories</span>
+                            </li>
+                            <li class="disabled">
+                                <i class="bi bi-x-circle" aria-hidden="true"></i>
+                                <span>Priority support</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pricing-cta">
+                        <a href="/Dashboard" class="btn-pricing btn-pricing-outline" aria-label="Get started with Free plan">
+                            <span>Get Started</span>
+                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Pro Plan (Featured) -->
+                <article class="pricing-card featured fade-in-on-scroll" data-delay="200" tabindex="0">
+                    <div class="popular-badge" aria-label="Most popular plan">
+                        <i class="bi bi-star-fill" aria-hidden="true"></i>
+                        <span>Most Popular</span>
+                    </div>
+
+                    <div class="pricing-header-inner">
+                        <h3 class="pricing-plan-name">Pro</h3>
+                        <p class="pricing-description">Everything you need to master your subscriptions</p>
+                        
+                        <div class="pricing-amount">
+                            <span class="pricing-currency">$</span>
+                            <span class="pricing-value" data-monthly="9" data-yearly="7">9</span>
+                        </div>
+                        <p class="pricing-period">per month</p>
+                        <p class="pricing-note billing-note-yearly" style="display: none;">Billed $84/year</p>
+                        <p class="pricing-note billing-note-monthly">Billed monthly</p>
+                    </div>
+
+                    <div class="pricing-features">
+                        <ul>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span><strong>Unlimited subscriptions</strong></span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Smart reminders & notifications</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Advanced analytics & insights</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Custom categories & tags</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Budget tracking & alerts</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Export to CSV/PDF</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Priority email support</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pricing-cta">
+                        <a href="/Dashboard" class="btn-pricing btn-pricing-primary" aria-label="Upgrade to Pro plan">
+                            <span>Upgrade to Pro</span>
+                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Enterprise Plan -->
+                <article class="pricing-card fade-in-on-scroll" data-delay="300" tabindex="0">
+                    <div class="pricing-header-inner">
+                        <h3 class="pricing-plan-name">Enterprise</h3>
+                        <p class="pricing-description">Advanced features for teams and businesses</p>
+                        
+                        <div class="pricing-amount">
+                            <span class="pricing-currency">$</span>
+                            <span class="pricing-value" data-monthly="29" data-yearly="24">29</span>
+                        </div>
+                        <p class="pricing-period">per month</p>
+                        <p class="pricing-note billing-note-yearly" style="display: none;">Billed $288/year</p>
+                        <p class="pricing-note billing-note-monthly">Billed monthly</p>
+                    </div>
+
+                    <div class="pricing-features">
+                        <ul>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span><strong>Everything in Pro, plus:</strong></span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Team collaboration (up to 10 users)</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Centralized billing dashboard</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Custom integrations & API access</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Advanced security & compliance</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>Dedicated account manager</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                <span>24/7 priority support</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pricing-cta">
+                        <a href="/Dashboard" class="btn-pricing btn-pricing-secondary" aria-label="Contact sales for Enterprise plan">
+                            <span>Contact Sales</span>
+                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- Pricing Footer -->
+            <div class="pricing-footer fade-in-on-scroll" data-delay="400">
+                <p class="pricing-footer-text">
+                    All plans include 256-bit SSL encryption and GDPR compliance
+                </p>
+                <p class="pricing-footer-text">
+                    Questions? Check out our <a href="#" class="pricing-footer-link">pricing FAQ</a> or 
+                    <a href="#" class="pricing-footer-link">contact support</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
     <!-- Trusted By Section -->
     <section class="trusted-section" id="trusted">
         <div class="container">
-            <div class="trusted-content" data-aos="fade-up">
+            <div class="trusted-content fade-in-on-scroll">
                 <h3 class="trusted-title">Trusted by Teams Using</h3>
                 <div class="trusted-logos">
                     <div class="logo-item"><i class="bi bi-spotify"></i><span>Spotify</span></div>
@@ -233,7 +457,7 @@
     <section class="testimonials-section" id="testimonials">
         <div class="container">
             <!-- Section Header -->
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header fade-in-on-scroll">
                 <div class="section-badge">
                     <i class="bi bi-chat-quote-fill" aria-hidden="true"></i>
                     <span>Testimonials</span>
@@ -246,7 +470,7 @@
 
             <!-- Testimonial Cards -->
             <div class="testimonials-grid">
-                <article class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                <article class="testimonial-card fade-in-on-scroll" data-delay="100">
                     <div class="testimonial-stars">
                         <i class="bi bi-star-fill"></i>
                         <i class="bi bi-star-fill"></i>
@@ -266,7 +490,7 @@
                     </div>
                 </article>
 
-                <article class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                <article class="testimonial-card fade-in-on-scroll" data-delay="200">
                     <div class="testimonial-stars">
                         <i class="bi bi-star-fill"></i>
                         <i class="bi bi-star-fill"></i>
@@ -286,7 +510,7 @@
                     </div>
                 </article>
 
-                <article class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+                <article class="testimonial-card fade-in-on-scroll" data-delay="300">
                     <div class="testimonial-stars">
                         <i class="bi bi-star-fill"></i>
                         <i class="bi bi-star-fill"></i>
@@ -312,13 +536,13 @@
     <!-- Final CTA Section -->
     <section class="cta-final-section" id="cta-final">
         <div class="container">
-            <div class="cta-final-card" data-aos="zoom-in">
+            <div class="cta-final-card fade-in-on-scroll scale">
                 <div class="cta-final-content">
                     <h2 class="cta-final-title">Ready to Take Control?</h2>
                     <p class="cta-final-description">
                         Join 50,000+ users saving money on subscriptions
                     </p>
-                    <a href="/Dashboard" class="btn btn-primary btn-hero" aria-label="Start using SubscriptionSystem for free">
+                    <a href="/Dashboard" class="btn btn-primary btn-hero" aria-label="Start using SubWise for free">
                         <span>Get Started Free</span>
                         <i class="bi bi-arrow-right" aria-hidden="true"></i>
                     </a>
@@ -333,20 +557,26 @@
 </div>
 
 @section Scripts {
-    <!-- AOS Animation Library -->
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
     <!-- Landing Page Scripts -->
     <script src="~/js/landing.js" asp-append-version="true"></script>
+    <script src="~/js/pricing.js" asp-append-version="true"></script>
+    <script src="~/js/scroll-animations.js" asp-append-version="true"></script>
     
     <script>
-        // Initialize AOS (Animate On Scroll)
-        AOS.init({
-            duration: 800,
-            easing: 'ease-out-cubic',
-            once: true,
-            offset: 100
+        // Scroll to top on page load/refresh
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        };
+        
+        // Ensure page starts at top
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                window.scrollTo(0, 0);
+            }, 0);
         });
     </script>
 }

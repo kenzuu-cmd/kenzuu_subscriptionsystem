@@ -70,7 +70,7 @@
                             <path d="M40 25V40L50 50" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
                         </svg>
                     </div>
-                    <h2 class="onboarding-title">Welcome to SubscriptionSystem!</h2>
+                    <h2 class="onboarding-title">Welcome to SubWise!</h2>
                     <p class="onboarding-description">
                         Take control of your recurring expenses. Track, manage, and optimize all your subscriptions in one beautiful dashboard.
                     </p>
@@ -215,7 +215,7 @@
                     </div>
                     <h2 class="onboarding-title">You're All Set!</h2>
                     <p class="onboarding-description">
-                        Congratulations! You're ready to take control of your subscriptions. Here are some tips to get the most out of SubscriptionSystem:
+                        Congratulations! You're ready to take control of your subscriptions. Here are some tips to get the most out of SubWise:
                     </p>
                     <ul class="tips-list">
                         <li><i class="bi bi-check-circle text-success me-2"></i> Use filters to organize subscriptions by status</li>

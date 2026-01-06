@@ -45,10 +45,10 @@
             const ics = [
                 'BEGIN:VCALENDAR',
                 'VERSION:2.0',
-                'PRODID:-//Subscription System//EN',
+                'PRODID:-//SubWise//EN',
                 'CALSCALE:GREGORIAN',
                 'BEGIN:VEVENT',
-                `UID:subscription-${subscription.id}@subscriptionsystem.app`,
+                `UID:subscription-${subscription.id}@subwise.app`,
                 `DTSTAMP:${dtstamp}`,
                 `DTSTART:${dtstart}`,
                 `SUMMARY:${subscription.serviceName} Payment - $${subscription.price}`,
@@ -242,7 +242,7 @@
                 <div class="modal-content glass-card">
                     <div class="modal-header">
                         <h5 class="modal-title">Import Preview</h5>
-                        <button class="btn-close modal-close" data-action="close" aria-label="Close">×</button>
+                        <button class="btn-close modal-close" data-action="close" aria-label="Close">ï¿½</button>
                     </div>
                     <div class="modal-body">
                         <p class="mb-3">Found ${subscriptions.length} subscriptions. Review before importing:</p>
