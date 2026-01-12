@@ -3,13 +3,9 @@
    Professional, modern design with sticky behavior
    ======================================== *@
 
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-
 @{
     var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
-    var hideNav = ViewData["HideNav"] as bool? ?? false;
-    var isAuthenticated = SignInManager.IsSignedIn(User);
+    var isLandingPage = currentPage == "/Home";
 }
 
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top" 
@@ -38,9 +34,39 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarContent">
-            @if (isAuthenticated)
+            @if (isLandingPage)
             {
-                <!-- Authenticated User Navigation -->
+                <!-- Landing Page Navigation -->
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item px-2">
+                        <a class="nav-link text-white fw-medium position-relative" 
+                           href="#features"
+                           style="transition: all 0.3s ease; padding: 0.5rem 0.75rem;">
+                            Features
+                        </a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link text-white fw-medium position-relative" 
+                           href="#pricing"
+                           style="transition: all 0.3s ease; padding: 0.5rem 0.75rem;">
+                            Pricing
+                        </a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link text-white fw-medium position-relative" 
+                           href="#testimonials"
+                           style="transition: all 0.3s ease; padding: 0.5rem 0.75rem;">
+                            Testimonials
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+                    @await Html.PartialAsync("_LoginPartial")
+                </ul>
+            }
+            else
+            {
+                <!-- App Navigation - Clean & Focused -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
                     <li class="nav-item">
                         <a class="nav-link nav-link-clean @(currentPage == "/Home" ? "active" : "")" 
@@ -82,6 +108,7 @@
                     }
                 </ul>
                 
+                <!-- Right Side Actions - Consolidated -->
                 @if (!hideNav)
                 {
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
@@ -106,45 +133,24 @@
                             <!-- Populated by notifications.js -->
                         </div>
                     </li>
-                    @await Html.PartialAsync("_LoginPartial")
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-icon @(currentPage == \"/Settings\" ? \"active\" : \"\")\" 
+                           asp-area=\"\" 
+                           asp-page=\"/Settings\"
+                           aria-label=\"Settings\"
+                           title=\"Settings\">
+                            <i class=\"bi bi-gear\"></i>
+                        </a>
+                    </li>
+                    @await Html.PartialAsync(\"_LoginPartial\")
                 </ul>
                 }
                 else
                 {
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-                    @await Html.PartialAsync("_LoginPartial")
+                <ul class=\"navbar-nav ms-auto align-items-lg-center gap-2\">
+                    @await Html.PartialAsync(\"_LoginPartial\")
                 </ul>
                 }
-            }
-            else
-            {
-                <!-- Public Navigation for Non-Authenticated Users -->
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item px-2">
-                        <a class="nav-link text-white fw-medium position-relative" 
-                           href="#features"
-                           style="transition: all 0.3s ease; padding: 0.5rem 0.75rem;">
-                            Features
-                        </a>
-                    </li>
-                    <li class="nav-item px-2">
-                        <a class="nav-link text-white fw-medium position-relative" 
-                           href="#pricing"
-                           style="transition: all 0.3s ease; padding: 0.5rem 0.75rem;">
-                            Pricing
-                        </a>
-                    </li>
-                    <li class="nav-item px-2">
-                        <a class="nav-link text-white fw-medium position-relative" 
-                           href="#testimonials"
-                           style="transition: all 0.3s ease; padding: 0.5rem 0.75rem;">
-                            Testimonials
-                        </a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-                    @await Html.PartialAsync("_LoginPartial")
-                </ul>
             }
         </div>
     </div>

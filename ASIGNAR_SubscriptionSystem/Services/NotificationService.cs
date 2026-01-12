@@ -101,7 +101,7 @@ namespace ASIGNAR_SubscriptionSystem.Services
                             Type = "error",
                             Icon = "bi-calendar-x",
                             Title = "Payment Due Today",
-                            Message = $"{subscription.ServiceName} payment of ?{subscription.Price:N2} is due today",
+                            Message = $"{subscription.ServiceName} payment of ₱{subscription.Price:N2} is due today",
                             SubscriptionId = subscription.Id,
                             Priority = "high",
                             IsRead = false
@@ -115,7 +115,7 @@ namespace ASIGNAR_SubscriptionSystem.Services
                             Type = "warning",
                             Icon = "bi-calendar-event",
                             Title = "Payment Tomorrow",
-                            Message = $"{subscription.ServiceName} payment of ?{subscription.Price:N2} due tomorrow",
+                            Message = $"{subscription.ServiceName} payment of ₱{subscription.Price:N2} due tomorrow",
                             SubscriptionId = subscription.Id,
                             Priority = "high",
                             IsRead = false
@@ -129,7 +129,7 @@ namespace ASIGNAR_SubscriptionSystem.Services
                             Type = "warning",
                             Icon = "bi-bell",
                             Title = "Payment Coming Soon",
-                            Message = $"{subscription.ServiceName} payment of ?{subscription.Price:N2} due in 3 days",
+                            Message = $"{subscription.ServiceName} payment of ₱{subscription.Price:N2} due in 3 days",
                             SubscriptionId = subscription.Id,
                             Priority = "medium",
                             IsRead = false
@@ -143,7 +143,7 @@ namespace ASIGNAR_SubscriptionSystem.Services
                             Type = "info",
                             Icon = "bi-clock-history",
                             Title = "Payment Next Week",
-                            Message = $"{subscription.ServiceName} payment of ?{subscription.Price:N2} due in 1 week",
+                            Message = $"{subscription.ServiceName} payment of ₱{subscription.Price:N2} due in 1 week",
                             SubscriptionId = subscription.Id,
                             Priority = "low",
                             IsRead = false

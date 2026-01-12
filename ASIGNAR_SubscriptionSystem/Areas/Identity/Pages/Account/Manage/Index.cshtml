@@ -1,0 +1,181 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "My Account";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+    }
+    
+    .profile-card {
+        background: rgba(15, 15, 25, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1rem;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .profile-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .profile-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 0.5rem;
+    }
+    
+    .profile-subtitle {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9375rem;
+    }
+    
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .info-row:last-child {
+        border-bottom: none;
+    }
+    
+    .info-label {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    
+    .info-value {
+        color: #ffffff;
+        font-size: 0.9375rem;
+    }
+    
+    .badge-verified {
+        background: rgba(34, 197, 94, 0.2);
+        color: #86efac;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .badge-unverified {
+        background: rgba(234, 179, 8, 0.2);
+        color: #fde047;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .profile-input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        width: 100%;
+    }
+    
+    .profile-input:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: #6366f1;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+    
+    .profile-input:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .save-btn {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border: none;
+        color: #ffffff;
+        padding: 0.75rem 2rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .save-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    }
+    
+    .status-message {
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        color: #86efac;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="profile-container">
+    @if (!string.IsNullOrEmpty(Model.StatusMessage))
+    {
+        <div class="status-message">@Model.StatusMessage</div>
+    }
+    
+    <div class="profile-card">
+        <div class="profile-header">
+            <h3 class="profile-title">Account Information</h3>
+            <p class="profile-subtitle">Your personal account details</p>
+        </div>
+        
+        <div class="info-row">
+            <span class="info-label">Username</span>
+            <span class="info-value">@Model.Username</span>
+        </div>
+        
+        <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value">@Model.Email</span>
+        </div>
+        
+        <div class="info-row">
+            <span class="info-label">Email Status</span>
+            <span class="@(Model.EmailConfirmed ? "badge-verified" : "badge-unverified")">
+                @(Model.EmailConfirmed ? "Verified" : "Not Verified")
+            </span>
+        </div>
+    </div>
+    
+    <div class="profile-card">
+        <div class="profile-header">
+            <h3 class="profile-title">Update Profile</h3>
+            <p class="profile-subtitle">Manage your contact information</p>
+        </div>
+        
+        <form id="profile-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+            
+            <div class="mb-3">
+                <label class="info-label mb-2">Phone Number</label>
+                <input asp-for="Input.PhoneNumber" class="profile-input" placeholder="Enter your phone number" />
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger small d-block mt-1"></span>
+            </div>
+            
+            <button id="update-profile-button" type="submit" class="save-btn">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

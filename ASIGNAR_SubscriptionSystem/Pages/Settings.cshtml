@@ -271,101 +271,6 @@
             border-color: rgba(255, 255, 255, 0.2);
         }
         
-        /* Danger Zone */
-        .danger-zone {
-            background: rgba(239, 68, 68, 0.05);
-            border: 2px solid rgba(239, 68, 68, 0.2);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .danger-zone-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-        }
-        
-        .danger-zone-header i {
-            color: #ef4444;
-            font-size: 1.5rem;
-        }
-        
-        .danger-zone-header h5 {
-            color: #ef4444;
-            font-weight: 700;
-            margin: 0;
-        }
-        
-        .danger-zone-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 2rem;
-        }
-        
-        .danger-zone-text {
-            flex: 1;
-        }
-        
-        .danger-zone-text p {
-            color: rgba(255, 255, 255, 0.7);
-            margin: 0 0 0.5rem 0;
-        }
-        
-        .danger-zone-warning {
-            font-size: 0.875rem;
-            color: rgba(239, 68, 68, 0.8);
-            margin: 0;
-        }
-        
-        .btn-danger-settings {
-            padding: 0.75rem 1.5rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            background: transparent;
-            border: 2px solid #ef4444;
-            border-radius: 10px;
-            color: #ef4444;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-        
-        .btn-danger-settings:hover {
-            background: #ef4444;
-            color: white;
-            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
-        }
-        
-        .save-notification {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: rgba(16, 185, 129, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            display: none;
-            align-items: center;
-            gap: 0.75rem;
-            box-shadow: 0 12px 40px rgba(16, 185, 129, 0.4);
-            z-index: 10000;
-            animation: slideInUp 0.3s ease;
-        }
-        
-        .save-notification.show {
-            display: flex;
-        }
-        
-        @@keyframes slideInUp {
-            from { transform: translateY(100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
         @@media (max-width: 768px) {
             .settings-header {
                 flex-direction: column;
@@ -384,15 +289,6 @@
             .btn-settings-secondary {
                 width: 100%;
             }
-            
-            .danger-zone-content {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .btn-danger-settings {
-                width: 100%;
-            }
         }
     </style>
 }
@@ -405,13 +301,21 @@
                 <!-- Header -->
                 <div class="settings-header d-flex align-items-center">
                     <div class="profile-avatar">
-                        JD
+                        @(Model.Username?.Substring(0, 1).ToUpper() ?? "U")
                     </div>
                     <div>
                         <h1 class="fw-bold text-white mb-2">Account Settings</h1>
-                        <p class="text-white-50 mb-0">Manage your profile, preferences, and account security</p>
+                        <p class="text-white-50 mb-0">Manage your profile and preferences</p>
                     </div>
                 </div>
+
+                @if (TempData["StatusMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: #86efac;">
+                        <i class="bi bi-check-circle me-2"></i>@TempData["StatusMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
 
                 <form method="post" id="settings-form">
 
@@ -419,20 +323,20 @@
                     <div class="settings-section">
                         <div class="section-title">
                             <i class="bi bi-person-circle"></i>
-                            <span>General Information</span>
+                            <span>Profile Information</span>
                         </div>
-                        <p class="section-subtitle">Update your personal details and contact information</p>
+                        <p class="section-subtitle">Your account details from LocalDB</p>
 
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-group-settings">
                                     <label class="form-label-settings">
-                                        <i class="bi bi-person me-1"></i> Full Name
+                                        <i class="bi bi-person me-1"></i> Username
                                     </label>
-                                    <input asp-for="FullName" class="form-control-settings" placeholder="Enter your full name" />
+                                    <input asp-for="Username" class="form-control-settings" readonly />
                                     <div class="helper-text">
-                                        <i class="bi bi-info-circle"></i>
-                                        <span>Your name as it appears on your account</span>
+                                        <i class="bi bi-lock"></i>
+                                        <span>Username cannot be changed</span>
                                     </div>
                                 </div>
                             </div>
@@ -441,29 +345,23 @@
                                     <label class="form-label-settings">
                                         <i class="bi bi-envelope me-1"></i> Email Address
                                     </label>
-                                    <input asp-for="Email" class="form-control-settings" placeholder="your.email@example.com" readonly />
-                                    <div class="helper-text">
-                                        <i class="bi bi-lock"></i>
-                                        <span>Contact support to change your email</span>
-                                    </div>
+                                    <input asp-for="Email" type="email" class="form-control-settings" />
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                    @if (Model.EmailConfirmed)
+                                    {
+                                        <div class="helper-text text-success">
+                                            <i class="bi bi-check-circle-fill"></i>
+                                            <span>Email verified</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="helper-text text-warning">
+                                            <i class="bi bi-exclamation-circle-fill"></i>
+                                            <span>Email not verified</span>
+                                        </div>
+                                    }
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group-settings">
-                            <label class="form-label-settings">
-                                <i class="bi bi-currency-exchange me-1"></i> Default Currency
-                            </label>
-                            <select asp-for="Currency" class="form-select-settings">
-                                <option value="PHP" selected>₱ PHP - Philippine Peso (Recommended)</option>
-                                <option value="USD">$ USD - United States Dollar</option>
-                                <option value="EUR">€ EUR - Euro</option>
-                                <option value="GBP">£ GBP - British Pound</option>
-                                <option value="JPY">¥ JPY - Japanese Yen</option>
-                            </select>
-                            <div class="helper-text">
-                                <i class="bi bi-info-circle"></i>
-                                <span>All monetary values will be displayed in this currency</span>
                             </div>
                         </div>
                     </div>
@@ -471,46 +369,20 @@
                     <!-- App Preferences -->
                     <div class="settings-section">
                         <div class="section-title">
-                            <i class="bi bi-gear-fill"></i>
-                            <span>App Preferences</span>
+                            <i class="bi bi-bell"></i>
+                            <span>Notifications</span>
                         </div>
-                        <p class="section-subtitle">Customize your notification settings and app behavior</p>
+                        <p class="section-subtitle">Manage how you receive updates</p>
 
                         <div class="preference-item">
                             <div class="preference-content">
                                 <h6>
                                     <i class="bi bi-bell me-2"></i>Email Notifications
                                 </h6>
-                                <p>Receive email alerts when subscription payments are due</p>
+                                <p>Receive email alerts for upcoming subscription payments</p>
                             </div>
                             <label class="toggle-switch">
                                 <input type="checkbox" asp-for="EmailNotifications" />
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="preference-item">
-                            <div class="preference-content">
-                                <h6>
-                                    <i class="bi bi-file-earmark-bar-graph me-2"></i>Monthly Reports
-                                </h6>
-                                <p>Get a detailed spending summary delivered to your inbox every month</p>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked />
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="preference-item">
-                            <div class="preference-content">
-                                <h6>
-                                    <i class="bi bi-clock-history me-2"></i>Payment Reminders
-                                </h6>
-                                <p>Get reminders 3 days before subscription payments are due</p>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked />
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
@@ -518,163 +390,21 @@
 
                     <!-- Action Buttons -->
                     <div class="action-buttons">
-                        <button type="button" class="btn-settings-secondary" onclick="window.location.href='/Dashboard'">
+                        <a href="/Dashboard" class="btn-settings-secondary">
                             <i class="bi bi-x-lg me-2"></i>Cancel
-                        </button>
-                        <button type="submit" class="btn-settings-primary" id="save-button">
+                        </a>
+                        <button type="submit" class="btn-settings-primary">
                             <i class="bi bi-check-lg me-2"></i>Save Changes
                         </button>
                     </div>
 
                 </form>
 
-                <!-- Danger Zone -->
-                <div class="danger-zone">
-                    <div class="danger-zone-header">
-                        <i class="bi bi-exclamation-triangle-fill"></i>
-                        <h5>Danger Zone</h5>
-                    </div>
-                    <div class="danger-zone-content">
-                        <div class="danger-zone-text">
-                            <p>Permanently delete your account and all subscription data</p>
-                            <p class="danger-zone-warning">
-                                <i class="bi bi-shield-exclamation me-1"></i>
-                                <strong>Warning:</strong> This action cannot be undone. All your data will be lost forever.
-                            </p>
-                        </div>
-                        <button type="button" class="btn-danger-settings" id="delete-account-btn">
-                            <i class="bi bi-trash me-2"></i>Delete Account
-                        </button>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
 </div>
 
-<!-- Save Notification -->
-<div class="save-notification" id="save-notification">
-    <i class="bi bi-check-circle-fill fs-4"></i>
-    <span>Settings saved successfully!</span>
-</div>
-
 @section Scripts {
-    <script src="~/js/currency-manager.js" asp-append-version="true"></script>
-    <script>
-        (function() {
-            'use strict';
-            
-            const form = document.getElementById('settings-form');
-            const saveBtn = document.getElementById('save-button');
-            const saveNotification = document.getElementById('save-notification');
-            const currencySelect = document.querySelector('select[name="Currency"]');
-            
-            // Load saved currency preference on page load
-            if (window.CurrencyManager && currencySelect) {
-                const savedCurrency = window.CurrencyManager.getCurrency();
-                currencySelect.value = savedCurrency;
-            }
-            
-            // Form submission
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Show loading state
-                saveBtn.disabled = true;
-                saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
-                
-                // Save currency preference
-                if (window.CurrencyManager && currencySelect) {
-                    const selectedCurrency = currencySelect.value;
-                    window.CurrencyManager.saveCurrency(selectedCurrency);
-                    console.log('Currency preference saved:', selectedCurrency);
-                }
-                
-                // Simulate async save
-                setTimeout(() => {
-                    // Reset button
-                    saveBtn.disabled = false;
-                    saveBtn.innerHTML = '<i class="bi bi-check-lg me-2"></i>Save Changes';
-                    
-                    // Show success notification
-                    saveNotification.classList.add('show');
-                    
-                    // Hide notification after 3 seconds
-                    setTimeout(() => {
-                        saveNotification.classList.remove('show');
-                    }, 3000);
-                    
-                    // In production, submit the form for real
-                    // form.submit();
-                }, 1000);
-            });
-            
-            // Delete account functionality
-            const deleteBtn = document.getElementById('delete-account-btn');
-            deleteBtn.addEventListener('click', function() {
-                const confirmed = confirm(
-                    '⚠️ DANGER: Delete Account\n\n' +
-                    'This will PERMANENTLY DELETE:\n' +
-                    '• Your entire profile\n' +
-                    '• All subscription data\n' +
-                    '• Payment history\n' +
-                    '• App preferences\n\n' +
-                    'This action CANNOT be undone!\n\n' +
-                    'Are you absolutely sure you want to continue?'
-                );
-                
-                if (confirmed) {
-                    const doubleCheck = confirm(
-                        '⚠️ FINAL WARNING\n\n' +
-                        'Your account will be deleted in 5 seconds.\n\n' +
-                        'Click OK to proceed with deletion.\n' +
-                        'Click Cancel to abort.'
-                    );
-                    
-                    if (doubleCheck) {
-                        // Show loading state
-                        deleteBtn.disabled = true;
-                        deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Deleting...';
-                        
-                        // Simulate API call
-                        setTimeout(() => {
-                            // Clear all data
-                            localStorage.clear();
-                            sessionStorage.clear();
-                            
-                            // Show farewell message
-                            alert('Your account has been deleted. Goodbye! 👋');
-                            
-                            // Redirect to home
-                            window.location.href = '/Home';
-                        }, 2000);
-                    }
-                }
-            });
-            
-            // Mark form as modified
-            let isModified = false;
-            form.querySelectorAll('input, select, textarea').forEach(input => {
-                input.addEventListener('change', () => {
-                    isModified = true;
-                });
-            });
-            
-            // Warn before leaving if modified
-            window.addEventListener('beforeunload', (e) => {
-                if (isModified) {
-                    e.preventDefault();
-                    e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
-                    return e.returnValue;
-                }
-            });
-            
-            // Reset modified flag on save
-            form.addEventListener('submit', () => {
-                isModified = false;
-            });
-            
-        })();
-    </script>
+    <partial name="_ValidationScriptsPartial" />
 }

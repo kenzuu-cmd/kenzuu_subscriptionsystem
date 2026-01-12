@@ -2,12 +2,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SubscriptionSystem.Models;
 using ASIGNAR_SubscriptionSystem.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SubscriptionSystem.Pages
 {
     /// <summary>
     /// Dashboard page - Analytics overview and quick insights
     /// </summary>
+    [Authorize]
     public class DashboardModel : PageModel
     {
         private readonly SubscriptionContext _context;

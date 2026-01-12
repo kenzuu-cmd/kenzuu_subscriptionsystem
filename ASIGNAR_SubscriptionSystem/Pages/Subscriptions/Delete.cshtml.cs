@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SubscriptionSystem.Models;
 using ASIGNAR_SubscriptionSystem.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASIGNAR_SubscriptionSystem.Pages.Subscriptions
 {
+    [Authorize]
     public class DeleteModel : PageModel
     {
         private readonly SubscriptionContext _context;

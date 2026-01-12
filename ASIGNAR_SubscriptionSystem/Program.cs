@@ -1,12 +1,32 @@
 using Microsoft.EntityFrameworkCore;
 using ASIGNAR_SubscriptionSystem.Data;
 using ASIGNAR_SubscriptionSystem.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add DbContext with SQL Server
 builder.Services.AddDbContext<SubscriptionContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add Identity DbContext with SQL Server
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add Identity services
+builder.Services.AddDefaultIdentity<IdentityUser>(options => {
+    options.SignIn.RequireConfirmedAccount = true; // Require email confirmation before login
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>();
+
+// Register Email Sender (Development mode for LocalDB - logs to console)
+builder.Services.AddTransient<IEmailSender, DevEmailSender>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -55,6 +75,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

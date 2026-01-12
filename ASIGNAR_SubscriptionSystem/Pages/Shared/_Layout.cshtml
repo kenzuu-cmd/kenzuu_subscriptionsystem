@@ -109,8 +109,14 @@
         }
     </main>
 
-    <!-- Footer (Unified Partial) -->
-    @await Html.PartialAsync("_Footer")
+    <!-- Footer (Hidden on auth pages) -->
+    @{
+        var hideFooter = ViewData["HideNav"] as bool? ?? false;
+    }
+    @if (!hideFooter)
+    {
+        @await Html.PartialAsync("_Footer")
+    }
 
     <!-- JavaScript -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

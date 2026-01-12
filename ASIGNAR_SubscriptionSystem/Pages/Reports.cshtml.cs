@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ASIGNAR_SubscriptionSystem.Data;
 using SubscriptionSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASIGNAR_SubscriptionSystem.Pages;
 
@@ -9,6 +10,7 @@ namespace ASIGNAR_SubscriptionSystem.Pages;
 /// Reports and Analytics page - 100% Database-driven insights
 /// Handles database unavailability gracefully without blocking page load
 /// </summary>
+[Authorize]
 public class ReportsModel : PageModel
 {
     private readonly SubscriptionContext _context;

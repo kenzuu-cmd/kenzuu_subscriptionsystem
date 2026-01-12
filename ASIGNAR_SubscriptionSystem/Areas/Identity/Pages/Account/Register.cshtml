@@ -1,0 +1,224 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    ViewData["HideNav"] = true;
+}
+
+<style>
+    .auth-page-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+        background: #000000;
+    }
+    
+    .auth-card {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(26, 30, 46, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 1rem;
+        padding: 3rem 2.5rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+    
+    .auth-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.02em;
+    }
+    
+    .auth-subtitle {
+        color: rgba(255, 255, 255, 0.55);
+        margin-bottom: 2rem;
+        font-size: 0.9375rem;
+    }
+    
+    .auth-label {
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        display: block;
+    }
+    
+    .auth-input {
+        background: rgba(15, 18, 28, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        padding: 0.875rem 1rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+        font-size: 0.9375rem;
+        width: 100%;
+    }
+    
+    .auth-input:focus {
+        background: rgba(15, 18, 28, 0.95);
+        border-color: #6366f1;
+        color: #ffffff;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+    
+    .auth-input::placeholder {
+        color: rgba(255, 255, 255, 0.35);
+    }
+    
+    .auth-submit-btn {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border: none;
+        color: #ffffff;
+        padding: 0.875rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        width: 100%;
+        cursor: pointer;
+    }
+    
+    .auth-submit-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    }
+    
+    .auth-submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    
+    .auth-link {
+        color: #6366f1;
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+    }
+    
+    .auth-link:hover {
+        color: #8b5cf6;
+    }
+    
+    .password-hint {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.45);
+        margin-top: 0.5rem;
+    }
+    
+    .error-message {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+    }
+    
+    .already-account {
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 0.875rem;
+    }
+    
+    .back-button {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+    }
+    
+    .back-button:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.05);
+    }
+</style>
+
+<a href="~/" class="back-button">
+    <i class="bi bi-arrow-left"></i>
+    <span>Back to Home</span>
+</a>
+
+<div class="auth-page-container">
+    <div class="auth-card">
+        <h1 class="auth-title">Create account</h1>
+        <p class="auth-subtitle">Start tracking your subscriptions for free.</p>
+        
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="ModelOnly" class="error-message" role="alert"></div>
+            
+            <div class="mb-3">
+                <label asp-for="Input.Email" class="auth-label">Email</label>
+                <input asp-for="Input.Email" 
+                       class="auth-input" 
+                       autocomplete="username" 
+                       aria-required="true" 
+                       aria-describedby="email-error" 
+                       placeholder="your@email.com" />
+                <span asp-validation-for="Input.Email" 
+                      id="email-error" 
+                      class="text-danger small d-block mt-1" 
+                      role="alert"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="Input.Password" class="auth-label">Password</label>
+                <input asp-for="Input.Password" 
+                       type="password" 
+                       class="auth-input" 
+                       autocomplete="new-password" 
+                       aria-required="true" 
+                       aria-describedby="password-hint password-error" 
+                       placeholder="••••••••" />
+                <span asp-validation-for="Input.Password" 
+                      id="password-error" 
+                      class="text-danger small d-block mt-1" 
+                      role="alert"></span>
+                <div id="password-hint" class="password-hint">At least 6 characters with uppercase, lowercase, and number</div>
+            </div>
+            
+            <div class="mb-4">
+                <label asp-for="Input.ConfirmPassword" class="auth-label">Confirm Password</label>
+                <input asp-for="Input.ConfirmPassword" 
+                       type="password" 
+                       class="auth-input" 
+                       autocomplete="new-password" 
+                       aria-required="true" 
+                       aria-describedby="confirm-password-error" 
+                       placeholder="••••••••" />
+                <span asp-validation-for="Input.ConfirmPassword" 
+                      id="confirm-password-error" 
+                      class="text-danger small d-block mt-1" 
+                      role="alert"></span>
+            </div>
+            
+            <button id="registerSubmit" type="submit" class="auth-submit-btn mb-3">Sign Up Free</button>
+            
+            <div class="text-center">
+                <span class="already-account">Already have an account? </span>
+                <a class="auth-link" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Log in</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/auth-validation.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,53 @@
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link nav-link-clean dropdown-toggle d-flex align-items-center gap-2" 
+           href="#" 
+           role="button" 
+           data-bs-toggle="dropdown" 
+           aria-expanded="false"
+           style="min-width: 44px; min-height: 44px;">
+            <i class="bi bi-person-circle" style="font-size: 1.25rem;"></i>
+            <span class="d-none d-lg-inline">@UserManager.GetUserName(User)</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" style="background: rgba(20, 20, 30, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);">
+            <li>
+                <a class="dropdown-item text-white" asp-page="/Settings">
+                    <i class="bi bi-gear me-2"></i>Settings
+                </a>
+            </li>
+            <li><hr class="dropdown-divider" style="border-color: rgba(255, 255, 255, 0.1);"></li>
+            <li>
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Home", new { area = "" })" method="post">
+                    <button type="submit" class="dropdown-item text-white" style="cursor: pointer;">
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link nav-link-clean" asp-area="Identity" asp-page="/Account/Login" aria-label="Login">
+            <i class="bi bi-box-arrow-in-right"></i>
+            <span>Login</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="btn btn-primary rounded-pill px-4 py-2 fw-semibold d-flex align-items-center gap-2" 
+           asp-area="Identity" 
+           asp-page="/Account/Register"
+           style="box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); transition: all 0.3s ease; white-space: nowrap;"
+           aria-label="Register for free account">
+            <span>Sign Up Free</span>
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+        </a>
+    </li>
+}

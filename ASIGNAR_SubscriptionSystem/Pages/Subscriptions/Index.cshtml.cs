@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SubscriptionSystem.Models;
 using ASIGNAR_SubscriptionSystem.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASIGNAR_SubscriptionSystem.Pages.Subscriptions
 {
@@ -9,6 +10,7 @@ namespace ASIGNAR_SubscriptionSystem.Pages.Subscriptions
     /// Subscriptions Index - Complete list management with database integration
     /// Handles database unavailability gracefully without blocking page load
     /// </summary>
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly SubscriptionContext _context;
