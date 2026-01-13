@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SubscriptionSystem.Models;
@@ -32,25 +33,17 @@ namespace SubscriptionSystem.Pages
         
         // Upcoming payments
         public IList<Subscription> UpcomingPayments { get; set; } = new List<Subscription>();
-        
-        // Database status
-        public bool IsDatabaseAvailable { get; set; }
-        public string ErrorMessage { get; set; } = string.Empty;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             try
             {
                 // Check database connectivity
                 if (!await _context.Database.CanConnectAsync())
                 {
-                    IsDatabaseAvailable = false;
-                    ErrorMessage = "Database connection is not available. Please ensure your SQL Server is running and the connection string is configured correctly.";
                     _logger.LogWarning("Dashboard: Database connection failed");
-                    return;
+                    return RedirectToPage("/DatabaseUnavailable", new { returnUrl = "/Dashboard" });
                 }
-
-                IsDatabaseAvailable = true;
 
                 // Load all subscriptions from database
                 var allSubscriptions = await _context.Subscriptions
@@ -60,7 +53,7 @@ namespace SubscriptionSystem.Pages
                 if (allSubscriptions.Count == 0)
                 {
                     _logger.LogInformation("Dashboard: No subscriptions found in database");
-                    return;
+                    return Page();
                 }
 
                 // Calculate metrics from live data
@@ -92,12 +85,12 @@ namespace SubscriptionSystem.Pages
                     .ToList();
 
                 _logger.LogInformation($"Dashboard loaded successfully with {allSubscriptions.Count} subscriptions");
+                return Page();
             }
             catch (Exception ex)
             {
-                IsDatabaseAvailable = false;
-                ErrorMessage = "An error occurred while loading dashboard data. Please try again later.";
                 _logger.LogError(ex, "Error loading Dashboard data");
+                return RedirectToPage("/DatabaseUnavailable", new { returnUrl = "/Dashboard" });
             }
         }
     }

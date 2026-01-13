@@ -10,36 +10,60 @@ namespace ASIGNAR_SubscriptionSystem.Pages.Subscriptions
     public class CreateModel : PageModel
     {
         private readonly SubscriptionContext _context;
+        private readonly ILogger<CreateModel> _logger;
 
-        public CreateModel(SubscriptionContext context)
+        public CreateModel(SubscriptionContext context, ILogger<CreateModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]
         public Subscription Subscription { get; set; } = default!;
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            // Initialize empty subscription - let user fill all fields
-            // This prevents confusion with pre-filled values
-            Subscription = new Subscription();
-            return Page();
+            try
+            {
+                // Check database connectivity
+                if (!await _context.Database.CanConnectAsync())
+                {
+                    _logger.LogWarning("Create Subscription: Database connection failed");
+                    return RedirectToPage("/DatabaseUnavailable", new { returnUrl = "/Subscriptions/Create" });
+                }
+
+                // Initialize empty subscription
+                Subscription = new Subscription();
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading Create Subscription page");
+                return RedirectToPage("/DatabaseUnavailable", new { returnUrl = "/Subscriptions/Create" });
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
-                // Return to page with validation errors
-                // Client-side validation will highlight issues
                 return Page();
             }
 
-            _context.Subscriptions.Add(Subscription);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Subscriptions.Add(Subscription);
+                await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+                _logger.LogInformation("Subscription created successfully: {ServiceName}", Subscription.ServiceName);
+                return RedirectToPage("./Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating subscription");
+                ModelState.AddModelError(string.Empty, "Database unavailable. Please try again later.");
+                return Page();
+            }
         }
     }
 }

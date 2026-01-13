@@ -38,27 +38,7 @@
         
         @await Html.PartialAsync("_PageHeader")
 
-        @if (!Model.IsDatabaseAvailable)
-        {
-            <div class="row g-4">
-                <div class="col-12">
-                    <div class="table-card">
-                        <div class="empty-state py-5">
-                            <div class="text-center">
-                                <i class="bi bi-exclamation-triangle display-1 text-warning mb-3"></i>
-                                <h3 class="text-white mb-2">Database Not Available</h3>
-                                <p class="text-muted mb-4">@Model.ErrorMessage</p>
-                                <a asp-page="/Dashboard" class="btn btn-secondary">
-                                    <i class="bi bi-arrow-left me-2"></i>
-                                    Back to Dashboard
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-        else if (Model.Subscriptions.Count == 0)
+        @if (Model.Subscriptions.Count == 0)
         {
             <div class="row g-4">
                 <div class="col-12">

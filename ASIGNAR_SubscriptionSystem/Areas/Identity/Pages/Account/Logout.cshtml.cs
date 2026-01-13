@@ -25,8 +25,17 @@ namespace ASIGNAR_SubscriptionSystem.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
+            try
+            {
+                await _signInManager.SignOutAsync();
+                _logger.LogInformation("User logged out.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during logout");
+                // Continue with redirect even if signout fails
+            }
+            
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);

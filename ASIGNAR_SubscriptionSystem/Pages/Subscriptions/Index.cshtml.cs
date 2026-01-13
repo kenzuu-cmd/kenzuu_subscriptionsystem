@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SubscriptionSystem.Models;
@@ -8,7 +9,6 @@ namespace ASIGNAR_SubscriptionSystem.Pages.Subscriptions
 {
     /// <summary>
     /// Subscriptions Index - Complete list management with database integration
-    /// Handles database unavailability gracefully without blocking page load
     /// </summary>
     [Authorize]
     public class IndexModel : PageModel
@@ -27,25 +27,17 @@ namespace ASIGNAR_SubscriptionSystem.Pages.Subscriptions
         public decimal YearlyProjected { get; set; }
         public int DueSoonCount { get; set; }
         public int ActiveCount { get; set; }
-        
-        public bool IsDatabaseAvailable { get; set; } = true;
-        public string ErrorMessage { get; set; } = string.Empty;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             try
             {
-                var canConnect = await _context.Database.CanConnectAsync();
-                
-                if (!canConnect)
+                // Check database connectivity
+                if (!await _context.Database.CanConnectAsync())
                 {
-                    IsDatabaseAvailable = false;
-                    ErrorMessage = "Database connection is not available. Please ensure your SQL Server is running and the connection string is configured correctly.";
                     _logger.LogWarning("Subscriptions Index: Database connection failed");
-                    return;
+                    return RedirectToPage("/DatabaseUnavailable", new { returnUrl = "/Subscriptions/Index" });
                 }
-
-                IsDatabaseAvailable = true;
 
                 Subscriptions = await _context.Subscriptions
                     .OrderBy(s => s.NextPaymentDate)
@@ -54,7 +46,7 @@ namespace ASIGNAR_SubscriptionSystem.Pages.Subscriptions
                 if (Subscriptions.Count == 0)
                 {
                     _logger.LogInformation("Subscriptions Index: No subscriptions found in database");
-                    return;
+                    return Page();
                 }
 
                 var monthlySubscriptions = Subscriptions.Where(x => x.BillingCycle == "Monthly");
@@ -70,12 +62,12 @@ namespace ASIGNAR_SubscriptionSystem.Pages.Subscriptions
                 ActiveCount = Subscriptions.Count;
 
                 _logger.LogInformation($"Subscriptions Index loaded successfully with {Subscriptions.Count} subscriptions");
+                return Page();
             }
             catch (Exception ex)
             {
-                IsDatabaseAvailable = false;
-                ErrorMessage = "An error occurred while loading subscription data. Please try again later.";
                 _logger.LogError(ex, "Error loading Subscriptions Index data");
+                return RedirectToPage("/DatabaseUnavailable", new { returnUrl = "/Subscriptions/Index" });
             }
         }
     }

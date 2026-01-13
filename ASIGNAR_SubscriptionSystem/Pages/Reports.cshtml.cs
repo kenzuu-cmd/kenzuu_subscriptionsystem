@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ASIGNAR_SubscriptionSystem.Data;
 using SubscriptionSystem.Models;
@@ -8,7 +9,6 @@ namespace ASIGNAR_SubscriptionSystem.Pages;
 
 /// <summary>
 /// Reports and Analytics page - 100% Database-driven insights
-/// Handles database unavailability gracefully without blocking page load
 /// </summary>
 [Authorize]
 public class ReportsModel : PageModel
@@ -34,25 +34,17 @@ public class ReportsModel : PageModel
     public decimal AverageMonthlyCost { get; set; }
     public decimal HighestSubscriptionCost { get; set; }
     public decimal LowestSubscriptionCost { get; set; }
-    
-    public bool IsDatabaseAvailable { get; set; } = true;
-    public string ErrorMessage { get; set; } = string.Empty;
 
-    public async Task OnGetAsync()
+    public async Task<IActionResult> OnGetAsync()
     {
         try
         {
-            var canConnect = await _context.Database.CanConnectAsync();
-            
-            if (!canConnect)
+            // Check database connectivity
+            if (!await _context.Database.CanConnectAsync())
             {
-                IsDatabaseAvailable = false;
-                ErrorMessage = "Database connection is not available. Please ensure the database is configured and running.";
                 _logger.LogWarning("Reports page: Database connection failed");
-                return;
+                return RedirectToPage("/DatabaseUnavailable", new { returnUrl = "/Reports" });
             }
-
-            IsDatabaseAvailable = true;
 
             AllSubscriptions = await _context.Subscriptions
                 .OrderBy(s => s.NextPaymentDate)
@@ -61,7 +53,7 @@ public class ReportsModel : PageModel
             if (AllSubscriptions.Count == 0)
             {
                 _logger.LogInformation("Reports page: No subscriptions found in database");
-                return;
+                return Page();
             }
 
             CategorySpending = AllSubscriptions
@@ -106,12 +98,12 @@ public class ReportsModel : PageModel
             CalculateMonthlyTrends();
 
             _logger.LogInformation($"Reports page loaded successfully with {AllSubscriptions.Count} subscriptions");
+            return Page();
         }
         catch (Exception ex)
         {
-            IsDatabaseAvailable = false;
-            ErrorMessage = "An error occurred while loading analytics data. Please try again later.";
             _logger.LogError(ex, "Error loading Reports page data");
+            return RedirectToPage("/DatabaseUnavailable", new { returnUrl = "/Reports" });
         }
     }
 

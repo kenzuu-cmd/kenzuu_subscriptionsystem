@@ -458,6 +458,8 @@
                     <form method="post" id="delete-form">
                         <input type="hidden" asp-for="Subscription.Id" />
                         
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+                        
                         <div class="confirmation-checkbox">
                             <input type="checkbox" 
                                    id="confirm-delete" 

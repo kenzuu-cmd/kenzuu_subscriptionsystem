@@ -11,10 +11,12 @@ namespace ASIGNAR_SubscriptionSystem.Areas.Identity.Pages.Account
     public class ConfirmEmailModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ILogger<ConfirmEmailModel> _logger;
 
-        public ConfirmEmailModel(UserManager<IdentityUser> userManager)
+        public ConfirmEmailModel(UserManager<IdentityUser> userManager, ILogger<ConfirmEmailModel> logger)
         {
             _userManager = userManager;
+            _logger = logger;
         }
 
         [TempData]
@@ -27,15 +29,24 @@ namespace ASIGNAR_SubscriptionSystem.Areas.Identity.Pages.Account
                 return RedirectToPage("/Index");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
+            try
             {
-                return NotFound($"Unable to load user with ID '{userId}'.");
-            }
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{userId}'.");
+                }
 
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+                code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+                var result = await _userManager.ConfirmEmailAsync(user, code);
+                StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Database error during email confirmation for user {UserId}", userId);
+                StatusMessage = "The service is temporarily unavailable due to database connectivity. Please try again later.";
+            }
+            
             return Page();
         }
     }
