@@ -21,7 +21,7 @@ namespace SubscriptionSystem.Models
 
         [Required(ErrorMessage = "Billing cycle is required")]
         [Display(Name = "Billing Cycle")]
-        public string BillingCycle { get; set; } = "Monthly";
+        public string BillingCycle { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Next payment date is required")]
         [DataType(DataType.Date)]
@@ -30,6 +30,6 @@ namespace SubscriptionSystem.Models
 
         [Required(ErrorMessage = "Category is required")]
         [Display(Name = "Category")]
-        public string Category { get; set; } = "Entertainment";
+        public string Category { get; set; } = string.Empty;
     }
 }

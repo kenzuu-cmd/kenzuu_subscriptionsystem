@@ -876,10 +876,7 @@
             const today = new Date().toISOString().split('T')[0];
             if (dateInput) {
                 dateInput.setAttribute('min', today);
-                // Set default value to today
-                if (!dateInput.value) {
-                    dateInput.value = today;
-                }
+                // Do NOT auto-fill - user must explicitly select a date
             }
             
             // Hide all validation messages on load
@@ -926,6 +923,16 @@
                     } else if (field.value.trim().length < 2) {
                         isValid = false;
                         errorMessage = 'Service name must be at least 2 characters';
+                    }
+                } else if (field.id === 'Subscription_BillingCycle') {
+                    if (!field.value || field.value === '') {
+                        isValid = false;
+                        errorMessage = 'Billing cycle is required';
+                    }
+                } else if (field.id === 'Subscription_Category') {
+                    if (!field.value || field.value === '') {
+                        isValid = false;
+                        errorMessage = 'Category is required';
                     }
                 } else if (field.tagName === 'SELECT' && !field.value) {
                     isValid = false;
