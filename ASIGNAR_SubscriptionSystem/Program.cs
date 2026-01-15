@@ -28,8 +28,20 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
 // Register Email Sender (Development mode for LocalDB - logs to console)
 builder.Services.AddTransient<IEmailSender, DevEmailSender>();
 
+// Add IHttpContextAccessor for session access in views
+builder.Services.AddHttpContextAccessor();
+
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+// Add session support for admin authentication
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 // Register background service for automatic notification generation
 builder.Services.AddHostedService<NotificationService>();
@@ -74,6 +86,8 @@ app.Use(async (context, next) =>
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

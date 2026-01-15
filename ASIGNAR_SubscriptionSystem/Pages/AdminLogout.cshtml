@@ -1,0 +1,13 @@
+@page
+@{
+    // Clear admin session
+    HttpContext.Session.Remove("IsAdmin");
+    HttpContext.Session.Remove("AdminUsername");
+    HttpContext.Session.Remove("AdminEmail");
+    HttpContext.Session.Remove("AdminFirstName");
+    HttpContext.Session.Remove("AdminLastName");
+    HttpContext.Session.Clear();
+    
+    // Redirect to home page
+    Response.Redirect("/Home");
+}
