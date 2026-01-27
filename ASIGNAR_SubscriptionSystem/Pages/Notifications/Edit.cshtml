@@ -1,0 +1,104 @@
+@page
+@model ASIGNAR_SubscriptionSystem.Pages.Notifications.EditModel
+@{
+    ViewData["Title"] = "Edit Notification";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="glass-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="h3 mb-0">
+                        <i class="bi bi-pencil-fill me-2"></i>Edit Notification
+                    </h1>
+                    <a asp-page="./Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-2"></i>Back to List
+                    </a>
+                </div>
+
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="Notification.Id" />
+                    <input type="hidden" asp-for="Notification.CreatedAt" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Notification.Type" class="form-label"></label>
+                            <select asp-for="Notification.Type" class="form-select glass-input">
+                                <option value="info">Info</option>
+                                <option value="success">Success</option>
+                                <option value="warning">Warning</option>
+                                <option value="error">Error</option>
+                            </select>
+                            <span asp-validation-for="Notification.Type" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Notification.Priority" class="form-label"></label>
+                            <select asp-for="Notification.Priority" class="form-select glass-input">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                            <span asp-validation-for="Notification.Priority" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Notification.Title" class="form-label"></label>
+                        <input asp-for="Notification.Title" class="form-control glass-input" />
+                        <span asp-validation-for="Notification.Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Notification.Message" class="form-label"></label>
+                        <textarea asp-for="Notification.Message" class="form-control glass-input" rows="3"></textarea>
+                        <span asp-validation-for="Notification.Message" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Notification.Icon" class="form-label"></label>
+                            <input asp-for="Notification.Icon" class="form-control glass-input" placeholder="bi-bell-fill" />
+                            <span asp-validation-for="Notification.Icon" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Notification.SubscriptionId" class="form-label">Related Subscription</label>
+                            <select asp-for="Notification.SubscriptionId" class="form-select glass-input" asp-items="ViewBag.SubscriptionId">
+                                <option value="">-- None --</option>
+                            </select>
+                            <span asp-validation-for="Notification.SubscriptionId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check">
+                                <input asp-for="Notification.IsRead" class="form-check-input" />
+                                <label asp-for="Notification.IsRead" class="form-check-label"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Notification.ReadAt" class="form-label"></label>
+                            <input asp-for="Notification.ReadAt" class="form-control glass-input" type="datetime-local" />
+                            <span asp-validation-for="Notification.ReadAt" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg me-2"></i>Save Changes
+                        </button>
+                        <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

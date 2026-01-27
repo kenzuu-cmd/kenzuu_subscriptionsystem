@@ -1,0 +1,90 @@
+@page
+@model ASIGNAR_SubscriptionSystem.Pages.Notifications.IndexModel
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">
+            <i class="bi bi-bell-fill me-2"></i>Notifications
+        </h1>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-2"></i>New Notification
+        </a>
+    </div>
+
+    <div class="glass-card p-4">
+        @if (Model.Notifications?.Count > 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Title</th>
+                            <th>Message</th>
+                            <th>Priority</th>
+                            <th>Subscription</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Notifications)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="badge bg-@(item.Type == "error" ? "danger" : item.Type == "warning" ? "warning" : item.Type == "success" ? "success" : "info")">
+                                        @item.Type
+                                    </span>
+                                </td>
+                                <td>
+                                    <i class="@item.Icon me-1"></i>
+                                    @item.Title
+                                </td>
+                                <td class="text-truncate" style="max-width: 200px;">@item.Message</td>
+                                <td>
+                                    <span class="badge bg-@(item.Priority == "high" ? "danger" : item.Priority == "medium" ? "warning" : "secondary")">
+                                        @item.Priority
+                                    </span>
+                                </td>
+                                <td>@(item.Subscription?.ServiceName ?? "N/A")</td>
+                                <td>
+                                    @if (item.IsRead)
+                                    {
+                                        <span class="badge bg-success">Read</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning">Unread</span>
+                                    }
+                                </td>
+                                <td>@item.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                <td class="text-end">
+                                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-bell-slash display-4 text-muted mb-3"></i>
+                <p class="text-muted">No notifications found.</p>
+                <a asp-page="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-lg me-2"></i>Create First Notification
+                </a>
+            </div>
+        }
+    </div>
+</div>
